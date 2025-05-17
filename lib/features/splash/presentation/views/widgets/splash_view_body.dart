@@ -25,18 +25,22 @@ class _SplashViewBodyState extends State<SplashViewBody>
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 0.6, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 0.6,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
     _controller.forward();
 
-    Timer(const Duration(milliseconds: 2500), () {
-      Navigator.pushReplacementNamed(
-        context,OnBoardingView.routeName
+    Timer(const Duration(milliseconds: 2000), () {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        OnBoardingView.routeName,
+        (route) => false,
       );
     });
   }
@@ -59,10 +63,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
               opacity: _fadeAnimation.value,
               child: Transform.scale(
                 scale: _scaleAnimation.value,
-                child: SvgPicture.asset(
-                  Assets.imagesStethoscope,
-                  width: 180,
-                ),
+                child: SvgPicture.asset(Assets.imagesStethoscope, width: 180),
               ),
             );
           },

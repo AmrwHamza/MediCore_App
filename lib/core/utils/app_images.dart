@@ -11,7 +11,7 @@ class Assets {
   static const String otpImage = "assets/images/doctor.svg";
   static const String doctors = "assets/images/Doctors.svg";
   static const String jointsDepartment = "assets/images/joints.svg";
-  static const String logoWithoutBackground = "assets/images/Logo_without_background.svg";
+  static const String logoWithoutBackground =
+      "assets/images/Logo_without_background.png";
   static const String backgroundAuth = "assets/images/Background_Auth.jpg";
-
 }

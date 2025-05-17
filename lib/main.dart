@@ -14,7 +14,7 @@ class MediCoreApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: onGenerateRoute,
-initialRoute:SplashView.routeName ,
+      initialRoute: SplashView.routeName,
     );
   }
 }
