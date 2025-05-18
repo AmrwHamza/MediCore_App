@@ -1,6 +1,7 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/features/auth/first_page/view/first_page_auth.dart';
 import 'package:medicore_app/features/on_boarding/presentation/views/widget/on_boarding_page_view.dart';
@@ -56,11 +57,7 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                   },
                   child: Text(
                     'Skip>>',
-                    style: TextStyle(
-                      color: KGrey,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: TextStyles.public.copyWith(color: KGrey)
                   ),
                 ),
               ],

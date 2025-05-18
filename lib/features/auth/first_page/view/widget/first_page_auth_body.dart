@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/widget/custom_divider.dart';
 import 'package:medicore_app/features/auth/first_page/view/widget/auth_section.dart';
@@ -29,16 +30,14 @@ class FirstPageAuthBody extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     'Your health journey starts right here',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: TextStyles.H1.copyWith(
                       color: Colors.white,
-                      fontFamily: 'RobotoSlab',
                       fontSize: 35,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

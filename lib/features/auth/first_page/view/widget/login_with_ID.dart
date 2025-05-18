@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 
 class LoginWithID extends StatelessWidget {
   const LoginWithID({super.key});
@@ -20,10 +21,7 @@ class LoginWithID extends StatelessWidget {
             children: [
               Icon(Icons.credit_card, color: KDarkBlue),
               const SizedBox(width: 16),
-              const Text(
-                'Login with ID',
-                style: TextStyle(fontFamily: 'RobotoSlab'),
-              ),
+              Text('Login with ID', style: TextStyles.public),
             ],
           ),
         ),

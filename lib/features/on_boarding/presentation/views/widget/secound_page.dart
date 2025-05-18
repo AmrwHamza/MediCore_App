@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 
 class SecoundPage extends StatelessWidget {
@@ -22,12 +22,7 @@ class SecoundPage extends StatelessWidget {
           Text(
             'Your best way to protect your health and your children\'s health',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: KPrimaryColor,
-              fontSize: 24,
-              fontFamily: 'RobotoSlab',
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyles.H1.copyWith(color: KPrimaryColor)
           ),
           Spacer(flex: 5),
         ],

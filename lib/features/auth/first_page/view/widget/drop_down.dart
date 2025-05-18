@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/features/auth/first_page/view_model/language_cubit/language_cubit.dart';
 import 'package:medicore_app/features/auth/first_page/view_model/language_cubit/language_state.dart';
 
@@ -28,12 +29,7 @@ class DropDown extends StatelessWidget {
             child: DropdownButton<Locale>(
               value: state.selectedLanguage,
               dropdownColor: Colors.white,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: "RobotoSlab",
-                fontWeight: FontWeight.w400,
-              ),
+              style:  TextStyles.public.copyWith(color: Colors.black),
               isExpanded: false,
               elevation: 8,
               icon: const Icon(
@@ -41,10 +37,10 @@ class DropDown extends StatelessWidget {
                 size: 35,
                 color: Colors.black,
               ),
-              items: const [
+              items:  [
                 DropdownMenuItem(
                   value: Locale('en'),
-                  child: Text('English', style: TextStyle(color: Colors.black)),
+                  child: Text('English', style: TextStyles.public.copyWith(color: Colors.black),),
                 ),
                 DropdownMenuItem(
                   value: Locale('ar'),
@@ -65,13 +61,13 @@ class DropDown extends StatelessWidget {
                 }
               },
               selectedItemBuilder: (BuildContext context) {
-                return const [
+                return  [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Icon(Icons.language, color: KDarkBlue),
                       SizedBox(width: 8),
-                      Text('English', style: TextStyle(color: Colors.black)),
+                      Text('English', style: TextStyles.public.copyWith(color: Colors.black),),
                       SizedBox(width: 8),
                     ],
                   ),

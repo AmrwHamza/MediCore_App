@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 
 class FirstPage extends StatelessWidget {
@@ -14,12 +15,7 @@ class FirstPage extends StatelessWidget {
         Spacer(flex: 1),
         Text(
           'Welcome to MediCore app',
-          style: TextStyle(
-            fontFamily: 'RobotoSlab',
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-            color: KPrimaryColor,
-          ),
+          style: TextStyles.H1.copyWith(color: KPrimaryColor)
         ),
         Spacer(flex: 4),
         Expanded(flex: 50, child: SvgPicture.asset(Assets.doctors)),
