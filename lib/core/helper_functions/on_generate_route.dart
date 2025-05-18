@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:medicore_app/features/auth/first_page/view/first_page_auth.dart';
 import 'package:medicore_app/features/on_boarding/presentation/views/on_boarding_view.dart';
 import 'package:medicore_app/features/splash/presentation/views/splash_view.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case SplashView.routeName:
-      return _fadeScaleRoute(SplashView(), settings);
+      return _fadeRoute(SplashView(), settings);
 
     case OnBoardingView.routeName:
       return _fadeScaleRoute(OnBoardingView(), settings);
+
+    case FirstPageAuth.routeName:
+      return _slideRoute(FirstPageAuth(), settings);
 
     default:
       return MaterialPageRoute(

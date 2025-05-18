@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
+import 'package:medicore_app/features/auth/first_page/view/first_page_auth.dart';
 import 'package:medicore_app/features/on_boarding/presentation/views/widget/on_boarding_page_view.dart';
 
 class OnBoardingViewBody extends StatefulWidget {
@@ -46,7 +47,13 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      FirstPageAuth.routeName,
+                      (route) => false,
+                    );
+                  },
                   child: Text(
                     'Skip>>',
                     style: TextStyle(
@@ -70,7 +77,13 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
           SizedBox(height: 40),
           CustomButton(
             title: 'Next',
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                FirstPageAuth.routeName,
+                (route) => false,
+              );
+            },
             isVisible: currentPage == 0 ? false : true,
           ),
           SizedBox(height: 20),
