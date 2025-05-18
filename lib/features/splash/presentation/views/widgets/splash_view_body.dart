@@ -16,27 +16,35 @@ class _SplashViewBodyState extends State<SplashViewBody>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+  late Animation<double> _rotationAnimation;
 
   @override
   void initState() {
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 1800),
       vsync: this,
     );
+
     _scaleAnimation = Tween<double>(
-      begin: 0.6,
+      begin: 0.5,
       end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
+
     _fadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
+    _rotationAnimation = Tween<double>(
+      begin: -0.05,
+      end: 0.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
     _controller.forward();
 
-    Timer(const Duration(milliseconds: 2000), () {
+    Timer(const Duration(milliseconds: 2300), () {
       Navigator.pushNamedAndRemoveUntil(
         context,
         OnBoardingView.routeName,
@@ -61,9 +69,15 @@ class _SplashViewBodyState extends State<SplashViewBody>
           builder: (context, child) {
             return Opacity(
               opacity: _fadeAnimation.value,
-              child: Transform.scale(
-                scale: _scaleAnimation.value,
-                child: SvgPicture.asset(Assets.imagesStethoscope, width: 180),
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.identity()
+                  ..scale(_scaleAnimation.value)
+                  ..rotateZ(_rotationAnimation.value),
+                child: SvgPicture.asset(
+                  Assets.imagesStethoscope,
+                  width: 180,
+                ),
               ),
             );
           },
