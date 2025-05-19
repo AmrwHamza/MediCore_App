@@ -1,0 +1,15 @@
+{
+    "skip": "تخطي >>",
+    "next": "التالي",
+    "first page title in onBoarding": "مرحبًا بك في تطبيق MediCore",
+    "secound page title in onBoarding": "أفضل وسيلة لحماية صحتك وصحة أطفالك",
+
+    "title of auth": "رحلتك الصحية تبدأ من هنا",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "greate account": "إنشاء حساب",
+    "have account": "هل لديك حساب بالفعل؟",
+    "login": "تسجيل الدخول",
+    "or": "أو",
+    "login with ID": "تسجيل الدخول عبر الهوية"
+}

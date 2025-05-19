@@ -1,16 +1,29 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/features/auth/first_page/view_model/language_cubit/language_cubit.dart';
-import 'package:medicore_app/features/auth/first_page/view_model/language_cubit/language_state.dart';
+import 'package:medicore_app/features/auth/first_page/view_model/cubit/change_language_cubit.dart';
 
 class DropDown extends StatelessWidget {
   const DropDown({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LanguageCubit, LanguageState>(
+    final languages = [
+      {
+        'locale': const Locale('en'),
+        'label': 'English',
+        'fontFamily': null,
+      },
+      {
+        'locale': const Locale('ar'),
+        'label': 'العربية',
+        'fontFamily': 'Tajawal',
+      },
+    ];
+
+    return BlocBuilder<ChangeLanguageCubit, ChangeLanguageState>(
       builder: (context, state) {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -19,7 +32,7 @@ class DropDown extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.12),
+                color: Colors.black.withAlpha(12),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -27,58 +40,46 @@ class DropDown extends StatelessWidget {
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<Locale>(
-              value: state.selectedLanguage,
+              value: state.language,
               dropdownColor: Colors.white,
-              style:  TextStyles.public.copyWith(color: Colors.black),
-              isExpanded: false,
+              style: TextStyles.public.copyWith(color: Colors.black),
               elevation: 8,
               icon: const Icon(
                 Icons.arrow_drop_down,
                 size: 35,
                 color: Colors.black,
               ),
-              items:  [
-                DropdownMenuItem(
-                  value: Locale('en'),
-                  child: Text('English', style: TextStyles.public.copyWith(color: Colors.black),),
-                ),
-                DropdownMenuItem(
-                  value: Locale('ar'),
+              items: languages.map((lang) {
+                return DropdownMenuItem<Locale>(
+                  value: lang['locale'] as Locale,
                   child: Text(
-                    'العربية',
+                    lang['label'] as String,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 16,
-                      fontFamily: "Tajawal",
-                      fontWeight: FontWeight.w400,
+                      fontFamily: lang['fontFamily'] as String?,
                     ),
                   ),
-                ),
-              ],
-              onChanged: (newLocale) {
-                if (newLocale != null) {
-                  context.read<LanguageCubit>().changeLanguage(newLocale);
+                );
+              }).toList(),
+              onChanged: (newLanguage) {
+                if (newLanguage != null) {
+                  context.read<ChangeLanguageCubit>().changeLanguage(newLanguage);
+                  context.setLocale(newLanguage);
                 }
               },
-              selectedItemBuilder: (BuildContext context) {
-                return  [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+              selectedItemBuilder: (context) {
+                return languages.map((lang) {
+                  return Row(
                     children: [
                       Icon(Icons.language, color: KDarkBlue),
-                      SizedBox(width: 8),
-                      Text('English', style: TextStyles.public.copyWith(color: Colors.black),),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
+                      Text(
+                        lang['label'] as String,
+                        style: TextStyles.public.copyWith(color: Colors.black),
+                      ),
                     ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.language, color: KDarkBlue),
-                      SizedBox(width: 25),
-                      Text('العربية', style: TextStyle(color: Colors.black)),
-                    ],
-                  ),
-                ];
+                  );
+                }).toList();
               },
             ),
           ),

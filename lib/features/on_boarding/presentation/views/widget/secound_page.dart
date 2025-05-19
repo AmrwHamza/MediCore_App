@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
@@ -20,10 +21,10 @@ class SecoundPage extends StatelessWidget {
 
           Spacer(flex: 2),
           Text(
-            'Your best way to protect your health and your children\'s health',
+            'secound page title in onBoarding',
             textAlign: TextAlign.center,
             style: TextStyles.H1.copyWith(color: KPrimaryColor)
-          ),
+          ).tr(),
           Spacer(flex: 5),
         ],
       ),

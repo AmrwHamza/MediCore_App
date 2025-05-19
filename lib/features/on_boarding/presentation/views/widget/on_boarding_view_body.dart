@@ -1,4 +1,5 @@
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
@@ -56,9 +57,9 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                     );
                   },
                   child: Text(
-                    'Skip>>',
+                    'skip',
                     style: TextStyles.public.copyWith(color: KGrey)
-                  ),
+                  ).tr(),
                 ),
               ],
             ),
@@ -73,7 +74,7 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
           ),
           SizedBox(height: 40),
           CustomButton(
-            title: 'Next',
+            title: 'next'.tr(),
             onTap: () {
               Navigator.pushNamedAndRemoveUntil(
                 context,

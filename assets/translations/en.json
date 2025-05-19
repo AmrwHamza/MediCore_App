@@ -1,0 +1,15 @@
+{
+    "skip" : "Skip>>",
+    "next" : "Next",
+    "first page title in onBoarding" : "Welcome to MediCore app",
+    "secound page title in onBoarding" : "Your best way to protect your health and your children's health",
+
+    "title of auth" : "Your health journey starts right here",
+    "english" : "English",
+    "arabic" : "Arabic",
+    "greate account" : "Greate account",
+    "have account" : "Already have an account ?",
+    "login" : "Login",
+    "or" : "OR",
+    "login with ID" : "Login with ID"
+}

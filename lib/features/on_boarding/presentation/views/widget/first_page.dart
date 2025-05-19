@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicore_app/constants.dart';
@@ -14,8 +15,8 @@ class FirstPage extends StatelessWidget {
       children: [
         Spacer(flex: 1),
         Text(
-          'Welcome to MediCore app',
-          style: TextStyles.H1.copyWith(color: KPrimaryColor)
+          'first page title in onBoarding'.tr(),
+          style: TextStyles.H1.copyWith(color: KPrimaryColor),
         ),
         Spacer(flex: 4),
         Expanded(flex: 50, child: SvgPicture.asset(Assets.doctors)),

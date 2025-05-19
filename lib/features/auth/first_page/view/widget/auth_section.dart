@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
@@ -10,23 +11,27 @@ class AuthSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomButton(title: 'Greate account', onTap: () {}),
+        CustomButton(title: 'greate account'.tr(), onTap: () {}),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Already have an account ?',
+              'have account',
               style: TextStyles.public.copyWith(color: Colors.white),
-            ),
+            ).tr(),
             TextButton(
               onPressed: () {},
-              child: Text(
-                'Login',
-                style: TextStyles.public.copyWith(color: Colors.white),
-              ),
+              child:
+                  Text(
+                    'login',
+                    style: TextStyles.public.copyWith(color: KCyan),
+                  ).tr(),
             ),
           ],
         ),
+        context.locale.languageCode == 'ar'
+            ? SizedBox(height: 10)
+            : SizedBox(height: 1),
       ],
     );
   }

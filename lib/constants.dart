@@ -18,5 +18,6 @@ const String baseurlImg = '$base/storage/project/';
 
 class SharedPrefKeys {
   static const String userToken = 'userToken';
+  static const String isDarkTheme = 'isDarkTheme';
+  static const String language = 'language';
 }
-
