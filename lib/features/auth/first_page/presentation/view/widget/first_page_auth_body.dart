@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/widget/custom_divider.dart';
-import 'package:medicore_app/features/auth/first_page/view/widget/auth_section.dart';
-import 'package:medicore_app/features/auth/first_page/view/widget/drop_down.dart';
+import 'package:medicore_app/features/auth/first_page/presentation/view/widget/auth_section.dart';
+import 'package:medicore_app/features/auth/first_page/presentation/view/widget/drop_down.dart';
 import 'package:medicore_app/features/auth/first_page/view/widget/login_with_id.dart';
-import 'package:medicore_app/features/auth/first_page/view_model/cubit/change_language_cubit.dart';
+import 'package:medicore_app/features/auth/first_page/presentation/view_model/change_lang_cubit/change_language_cubit.dart';
 
 class FirstPageAuthBody extends StatelessWidget {
   const FirstPageAuthBody({super.key});

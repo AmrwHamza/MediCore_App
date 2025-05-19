@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/helper/observer.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 import 'package:medicore_app/core/helper_functions/on_generate_route.dart';
-import 'package:medicore_app/features/auth/first_page/view/first_page_auth.dart';
-import 'package:medicore_app/features/auth/first_page/view_model/cubit/change_language_cubit.dart';
+import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
+import 'package:medicore_app/features/auth/first_page/presentation/view_model/change_lang_cubit/change_language_cubit.dart';
 import 'package:medicore_app/features/splash/presentation/views/splash_view.dart';
 
 void main() async {
