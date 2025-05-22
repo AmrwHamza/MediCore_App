@@ -1,14 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:medicore_app/constants.dart';
 
-class SharedPrefsManager {
-  static final SharedPrefsManager _instance = SharedPrefsManager._internal();
+class SharedPrefHelper {
+  static final SharedPrefHelper _instance = SharedPrefHelper._internal();
 
-  factory SharedPrefsManager() {
+  factory SharedPrefHelper() {
     return _instance;
   }
 
-  SharedPrefsManager._internal();
+  SharedPrefHelper._internal();
 
   SharedPreferences? _prefs;
 
@@ -43,5 +44,46 @@ class SharedPrefsManager {
 
   Future<void> clearAll() async {
     await _prefs?.clear();
+  }
+
+
+   static getString(String key) async {
+    try {
+      debugPrint('SharedPrefHelper : getString with key : $key');
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      return sharedPreferences.getString(key) ?? '';
+    } on Exception catch (e) {
+      debugPrint('=================Error while get string:======= $e');
+    }
+  }
+
+
+    static setData(String key, value) async {
+    try {
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      debugPrint(
+          "SharedPrefHelper : setData with key : $key and value : $value");
+      switch (value.runtimeType) {
+        case String:
+          await sharedPreferences.setString(key, value);
+          break;
+        case int:
+          await sharedPreferences.setInt(key, value);
+          break;
+        case bool:
+          await sharedPreferences.setBool(key, value);
+          break;
+        case double:
+          await sharedPreferences.setDouble(key, value);
+          break;
+        default:
+          return throw Exception(
+              "==||==Unsupported value type:==||== ${value.runtimeType}");
+      }
+    } on Exception catch (e) {
+      debugPrint('=================Error while setting data:======= $e');
+    }
   }
 }

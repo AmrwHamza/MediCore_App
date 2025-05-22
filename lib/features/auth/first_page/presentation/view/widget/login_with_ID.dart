@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
+import 'package:medicore_app/features/auth/login_with_ID/presentation/view/login_with_ID_view.dart';
 
 class LoginWithID extends StatelessWidget {
   const LoginWithID({super.key});
@@ -12,11 +13,13 @@ class LoginWithID extends StatelessWidget {
       color: Colors.white,
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, LoginWithIDView.routeName);
+        },
         borderRadius: BorderRadius.circular(8),
         child: Container(
           height: 40,
-          width: context.locale.languageCode == 'ar' ? 250 : 190,
+          width: context.locale.languageCode == 'ar' ? 260 : 190,
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

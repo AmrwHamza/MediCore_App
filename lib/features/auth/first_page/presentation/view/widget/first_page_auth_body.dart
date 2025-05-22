@@ -7,7 +7,7 @@ import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/widget/custom_divider.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/widget/auth_section.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/widget/drop_down.dart';
-import 'package:medicore_app/features/auth/first_page/view/widget/login_with_id.dart';
+import 'package:medicore_app/features/auth/first_page/presentation/view/widget/login_with_ID.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view_model/change_lang_cubit/change_language_cubit.dart';
 
 class FirstPageAuthBody extends StatelessWidget {

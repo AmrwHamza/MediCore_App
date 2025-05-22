@@ -10,11 +10,13 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.isVisible,
+    this.color
   });
 
   final String title;
   final VoidCallback onTap;
   bool? isVisible;
+  Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class CustomButton extends StatelessWidget {
       maintainState: true,
       maintainSize: true,
       child: Material(
-        color: KPrimaryColor,
+        color:color == null? KPrimaryColor: color,
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
           onTap: onTap,

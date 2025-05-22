@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicore_app/constants.dart';
 
 class TextStyles {
   static const TextStyle H1 = TextStyle(
@@ -19,6 +20,7 @@ class TextStyles {
   static const TextStyle notes = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w300,
+    color: KGrey
   );
 
   static const TextStyle button = TextStyle(

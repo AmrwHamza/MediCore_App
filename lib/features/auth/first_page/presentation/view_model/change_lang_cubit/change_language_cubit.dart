@@ -6,10 +6,10 @@ import 'package:medicore_app/core/helper/shared_pref.dart';
 part 'change_language_state.dart';
 
 class ChangeLanguageCubit extends Cubit<ChangeLanguageState> {
-  final SharedPrefsManager prefs;
+  final SharedPrefHelper prefs;
 
   ChangeLanguageCubit(this.prefs)
-      : super(ChangeLanguageInitial(Locale(prefs.languageCode)));
+    : super(ChangeLanguageInitial(Locale(prefs.languageCode)));
 
   void changeLanguage(Locale locale) async {
     await prefs.setLanguageCode(locale.languageCode);

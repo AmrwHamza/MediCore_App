@@ -4,6 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/helper/observer.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 import 'package:medicore_app/core/helper_functions/on_generate_route.dart';
+import 'package:medicore_app/features/auth/OTP/presentation/view/otp_view.dart';
+import 'package:medicore_app/features/auth/OTP/presentation/view_model/cubit/otp_cubit.dart';
+import 'package:medicore_app/features/auth/create_account/presentation/view/create_account.dart';
+import 'package:medicore_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view_model/change_lang_cubit/change_language_cubit.dart';
 import 'package:medicore_app/features/splash/presentation/views/splash_view.dart';
@@ -12,7 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  final prefs = SharedPrefsManager();
+  final prefs = SharedPrefHelper();
   await prefs.init();
 
   Bloc.observer = const CounterObserver();
@@ -29,7 +33,7 @@ void main() async {
 }
 
 class MediCoreApp extends StatelessWidget {
-  final SharedPrefsManager prefs;
+  final SharedPrefHelper prefs;
   const MediCoreApp({super.key, required this.prefs});
 
   @override
@@ -39,17 +43,24 @@ class MediCoreApp extends StatelessWidget {
         BlocProvider<ChangeLanguageCubit>(
           create: (_) => ChangeLanguageCubit(prefs),
         ),
+        BlocProvider(create: (_) => AuthCubit()),
+        BlocProvider(create: (_) => OTPCubit()),
       ],
       child: Builder(
         builder: (context) {
           return MaterialApp(
-            theme: ThemeData(fontFamily: context.locale.languageCode == 'ar' ? 'Tajawal' : 'RobotoSLab'),
+            theme: ThemeData(
+              fontFamily:
+                  context.locale.languageCode == 'ar'
+                      ? 'Tajawal'
+                      : 'RobotoSLab',
+            ),
             locale: context.locale,
             supportedLocales: context.supportedLocales,
             localizationsDelegates: context.localizationDelegates,
             debugShowCheckedModeBanner: false,
             onGenerateRoute: onGenerateRoute,
-            initialRoute: FirstPageAuth.routeName,
+            initialRoute: SplashView.routeName,
           );
         },
       ),
