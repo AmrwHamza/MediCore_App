@@ -1,36 +1,46 @@
-class OTPState {
-  final List<String> digits;
-  final bool hasError;
-  final int timerSeconds;
-  final bool isTimerActive;
+part of 'otp_cubit.dart';
 
-  const OTPState({
-    required this.digits,
-    required this.hasError,
-    required this.timerSeconds,
-    required this.isTimerActive,
-  });
+sealed class OtpState extends Equatable {
+  const OtpState();
 
-  factory OTPState.initial() {
-    return const OTPState(
-      digits: ['', '', '', '', '', ''],
-      hasError: false,
-      timerSeconds: 60,
-      isTimerActive: true,
-    );
-  }
-
-  OTPState copyWith({
-    List<String>? digits,
-    bool? hasError,
-    int? timerSeconds,
-    bool? isTimerActive,
-  }) {
-    return OTPState(
-      digits: digits ?? this.digits,
-      hasError: hasError ?? this.hasError,
-      timerSeconds: timerSeconds ?? this.timerSeconds,
-      isTimerActive: isTimerActive ?? this.isTimerActive,
-    );
-  }
+  @override
+  List<Object> get props => [];
 }
+
+final class OtpInitial extends OtpState {}
+
+final class OtpLoading extends OtpState {}
+
+final class SendCodeFailure extends OtpState {
+  final String error;
+
+  SendCodeFailure({required this.error});
+}
+
+final class SendCodeSuccess extends OtpState {
+  final String message;
+
+  SendCodeSuccess({required this.message});
+}
+
+final class ResendFailure extends OtpState {
+  final String error;
+
+  ResendFailure({required this.error});
+}
+
+final class ResendSuccess extends OtpState {
+  final int code;
+
+  ResendSuccess({required this.code});
+}
+
+final class TimerUpdated extends OtpState {
+  final int secondsLeft;
+
+  const TimerUpdated(this.secondsLeft);
+
+  @override
+  List<Object> get props => [secondsLeft];
+}
+

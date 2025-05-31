@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
+import 'package:flutter/services.dart';
 
 class CustomPhoneField extends StatelessWidget {
   final String label;
@@ -26,18 +27,23 @@ class CustomPhoneField extends StatelessWidget {
           const SizedBox(height: 6),
           IntlPhoneField(
             initialCountryCode: 'SY',
+            disableLengthCheck: true,
+            inputFormatters: [LengthLimitingTextInputFormatter(9)],
             decoration: InputDecoration(
+              counterText: '',
               filled: true,
               fillColor: KWhite,
               labelStyle: const TextStyle(color: KGrey),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: KDarkBlue.withOpacity(0.2)),
+                borderSide: BorderSide(
+                  color: KDarkBlue.withAlpha((255 * 2).round()),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                  color: KDarkBlue.withOpacity(0.5),
+                  color: KDarkBlue.withAlpha((5 * 255).round()),
                   width: 1.2,
                 ),
               ),

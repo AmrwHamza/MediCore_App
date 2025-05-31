@@ -3,7 +3,6 @@ import 'package:medicore_app/features/auth/OTP/presentation/view/otp_view.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view/create_account.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
 import 'package:medicore_app/features/auth/login/presentation/view/login_view.dart';
-import 'package:medicore_app/features/auth/login_with_ID/presentation/view/login_with_ID_view.dart';
 import 'package:medicore_app/features/home/presentation/view/home_view.dart';
 import 'package:medicore_app/features/on_boarding/presentation/views/on_boarding_view.dart';
 import 'package:medicore_app/features/splash/presentation/views/splash_view.dart';
@@ -25,9 +24,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
 
     case LoginView.routeName:
       return _slideRoute(LoginView(), settings);
-
-    case LoginWithIDView.routeName:
-      return _slideRoute(LoginWithIDView(), settings);
     case OTPView.routeName:
       return _fadeThroughTransition(OTPView(), settings);
     case HomeView.routeName:

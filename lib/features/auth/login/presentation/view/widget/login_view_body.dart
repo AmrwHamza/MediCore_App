@@ -7,11 +7,18 @@ import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/core/widget/custom_curve_shape.dart';
 import 'package:medicore_app/core/widget/custom_form_field.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view/widget/custom_phone_field.dart';
-import 'package:medicore_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
-import 'package:medicore_app/features/auth/cubits/auth_cubit/auth_state.dart';
+import 'package:medicore_app/features/auth/login/presentation/view_model/login_cubit/login_cubit.dart';
+import 'package:medicore_app/features/auth/public_cubits/auth_cubit/auth_cubit.dart';
+import 'package:medicore_app/features/auth/public_cubits/auth_cubit/auth_state.dart';
 
+// ignore: must_be_immutable
 class LoginViewBody extends StatelessWidget {
-  const LoginViewBody({super.key});
+  LoginViewBody({super.key});
+
+  String? email;
+  String? password;
+  int? id;
+  String? phine;
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +45,12 @@ class LoginViewBody extends StatelessWidget {
               icon: Icons.email,
               keyboardType: TextInputType.emailAddress,
               validator: cubit.validateEmail,
-              onChanged: (value) => cubit.email = value,
+              onChanged: (value) {
+                cubit.email = value;
+                email = value;
+              },
             ),
             SizedBox(height: 10),
-
-            CustomPhoneField(
-              label: 'phone_hint'.tr(),
-              onChanged: (val) => cubit.phone = val,
-              validator: cubit.validatePhone,
-            ),
-            SizedBox(height: 10),
-
             BlocBuilder<AuthCubit, AuthState>(
               buildWhen:
                   (previous, current) => current is ChangePasswordObscure,
@@ -61,16 +63,26 @@ class LoginViewBody extends StatelessWidget {
                   obscure: cubit.obscurePassword,
                   toggleVisibility: cubit.changeObscurePassword,
                   validator: cubit.validatePassword,
-                  onChanged: (value) => cubit.password = value,
+                  onChanged: (value) {
+                    cubit.password = value;
+                    password = value;
+                  },
                 );
               },
             ),
+            SizedBox(height: 10),
 
             const SizedBox(height: 30),
             CustomButton(
               title: 'login_btn'.tr(),
               onTap: () {
-                if (formKey.currentState!.validate()) {}
+                if (formKey.currentState!.validate()) {
+                  context.read<LoginCubit>().login(
+                    email: email!,
+                    phoneNumber: phine!,
+                    password: password!,
+                  );
+                }
               },
             ),
           ],

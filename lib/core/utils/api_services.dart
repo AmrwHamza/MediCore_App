@@ -4,7 +4,6 @@ import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 import 'package:medicore_app/core/utils/errors/failure.dart';
 
-
 class Api {
   late Dio dio;
 
@@ -15,20 +14,32 @@ class Api {
         receiveDataWhenStatusError: true,
         connectTimeout: const Duration(seconds: 60),
         receiveTimeout: const Duration(seconds: 60),
+        headers: {'ngrok-skip-browser-warning': 'true'},
       );
 
       dio = Dio(options);
     }
   }
 
-  Future<Either<Failure, Map<String, dynamic>>> post(
-      {required endPoint, required data, Map<String, String>? headers}) async {
+  Future<Either<Failure, Map<String, dynamic>>> post({
+    required endPoint,
+    required data,
+    Map<String, String>? headers,
+  }) async {
     try {
+      print('$endPoint=====eeee');
+      print('$data=====3333');
+      print('$headers=====444');
+
       final response = await dio.post(
         '$endPoint',
         data: data,
         options: Options(headers: headers),
       );
+
+      print('${response.data}=====response data==');
+      print('${response.statusCode}=status code======');
+      print('${response.statusMessage}=statue messaage======');
 
       return Right(response.data);
     } on DioException catch (dioException) {
@@ -46,15 +57,16 @@ class Api {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
         return const Left(
-            ValidationFailure('====Token is missing or invalid===='));
+          ValidationFailure('====Token is missing or invalid===='),
+        );
       }
-      final options = Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
+      final options = Options(headers: {'Authorization': 'Bearer $token'});
 
-      final response = await dio.post('$endPoint', data: data, options: options);
+      final response = await dio.post(
+        '$endPoint',
+        data: data,
+        options: options,
+      );
 
       return Right(response.data);
     } on DioException catch (dioException) {
@@ -64,10 +76,11 @@ class Api {
     }
   }
 
-  Future<Either<Failure, Map<String, dynamic>>> get(
-      {required endPoint,
-      Map<String, dynamic>? queryParameters,
-      Map<String, String>? headers}) async {
+  Future<Either<Failure, Map<String, dynamic>>> get({
+    required endPoint,
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? headers,
+  }) async {
     try {
       final response = await dio.get(
         '$endPoint',
@@ -90,33 +103,40 @@ class Api {
     try {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
-
         return const Left(
-            ValidationFailure('====Token is missing or invalid===='));
+          ValidationFailure('====Token is missing or invalid===='),
+        );
       }
       final options = Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },responseType: responseType,
+        headers: {'Authorization': 'Bearer $token'},
+        responseType: responseType,
       );
 
-      final response = await dio.get('$endPoint',
-          queryParameters: queryParameters ?? {}, options: options);
+      final response = await dio.get(
+        '$endPoint',
+        queryParameters: queryParameters ?? {},
+        options: options,
+      );
       // print(response.data.toString());
       return Right(response.data);
     } on DioException catch (dioException) {
-
       return Left(handleDioError(dioException));
     } catch (e) {
       return const Left(UnknownFailure());
     }
   }
 
-  Future<Either<Failure, Map<String, dynamic>>> delete(
-      {required endPoint, required data, Map<String, String>? headers}) async {
+  Future<Either<Failure, Map<String, dynamic>>> delete({
+    required endPoint,
+    required data,
+    Map<String, String>? headers,
+  }) async {
     try {
-      final response = await dio.delete('$endPoint',
-          data: data, options: Options(headers: headers));
+      final response = await dio.delete(
+        '$endPoint',
+        data: data,
+        options: Options(headers: headers),
+      );
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));
@@ -133,19 +153,16 @@ class Api {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
         return const Left(
-            ValidationFailure('====Token is missing or invalid===='));
+          ValidationFailure('====Token is missing or invalid===='),
+        );
       }
-      final options = Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
+      final options = Options(headers: {'Authorization': 'Bearer $token'});
       final response = await dio.delete(
         '$endPoint',
         data: data,
         options: options,
       );
-   
+
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));
@@ -154,11 +171,17 @@ class Api {
     }
   }
 
-  Future<Either<Failure, Map<String, dynamic>>> put(
-      {required endPoint, data, Map<String, String>? headers}) async {
+  Future<Either<Failure, Map<String, dynamic>>> put({
+    required endPoint,
+    data,
+    Map<String, String>? headers,
+  }) async {
     try {
-      final response = await dio.put('$endPoint',
-          data: data, options: Options(headers: headers));
+      final response = await dio.put(
+        '$endPoint',
+        data: data,
+        options: Options(headers: headers),
+      );
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));
@@ -176,14 +199,16 @@ class Api {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
         return const Left(
-            ValidationFailure('====Token is missing or invalid===='));
+          ValidationFailure('====Token is missing or invalid===='),
+        );
       }
-      final options = Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
+      final options = Options(headers: {'Authorization': 'Bearer $token'});
+      final response = await dio.put(
+        '$endPoint',
+        data: data,
+        options: options,
+        queryParameters: queryParameters,
       );
-      final response = await dio.put('$endPoint', data: data, options: options,queryParameters:queryParameters );
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));

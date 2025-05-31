@@ -4,9 +4,12 @@ import 'package:medicore_app/features/auth/create_account/domain/entities/user_e
 
 abstract class CreateAccountRepo {
   Future<Either<Failure, UserEntity>> createAccount(
+     String firstName,
+    String lastName,
     String email,
     String phoneNumber,
     String password,
     String confPassword,
+    String id,
   );
 }

@@ -16,17 +16,22 @@
   "password_hint": "Please enter Your Password",
   "confirm_password_hint": "Please confirm your Password",
   "phone_hint": "Please enter your Phone Number",
+  "ID_hint" : "Please enter your ID",
+  "first_name_hint" : "Plesse enter your first name",
+  "last_name_hint" : "Please enter your last name",
   "create_account_btn": "Greate Account",
   "invalid_email": "Please enter a valid email address",
   "password_too_short": "Password must be at least 8 characters",
   "passwords_do_not_match": "Passwords do not match",
   "invalid_phone": "Invalid or incomplete phone number",
+  "invalid_name" : "Please enter you name",
   "login_title": "Login",
   "login_btn": "Login",
   "login_with_ID_title": "Login With ID",
   "otp_title" : "OTP Verification",
   "otp_desc" : "Enter your verification code we just sent to tarekalasfour@gmail.com",
   "submit" : "Submit",
-  "Resend Code" : "Resend Code"
-
+  "Resend Code" : "Resend Code",
+  "id_question" : "turn on to Use ID",
+  "validat_otp_coe" : "Please enter all numbers"
 }

@@ -8,6 +8,7 @@ class AuthCubit extends Cubit<AuthState> {
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
 
+
   String email = '';
   String password = '';
   String confirmPassword = '';
@@ -21,6 +22,13 @@ class AuthCubit extends Cubit<AuthState> {
   void changeObscureConfirmPassword() {
     obscureConfirmPassword = !obscureConfirmPassword;
     emit(ChangeConfirmPasswordObscure(obscureConfirmPassword));
+  }
+
+  String? validateName(String? val) {
+    if (val == null) {
+      return 'invalid_name'.tr();
+    }
+    return null;
   }
 
   String? validateEmail(String? val) {

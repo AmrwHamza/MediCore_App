@@ -3,7 +3,7 @@ import 'package:medicore_app/features/auth/OTP/presentation/view/widget/controle
 import 'package:medicore_app/features/auth/OTP/presentation/view/widget/custom_field_otp.dart';
 
 class OTPRowFields extends StatelessWidget {
-  const OTPRowFields({
+  const   OTPRowFields({
     super.key,
   });
 

@@ -1,55 +1,46 @@
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'otp_state.dart';
 
-class OTPCubit extends Cubit<OTPState> {
-  Timer? _timer;
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:medicore_app/features/auth/OTP/data/repo/otp_repo_impl.dart';
 
-  OTPCubit() : super(OTPState.initial()) {
-    _startTimer();
+part 'otp_state.dart';
+
+class OtpCubit extends Cubit<OtpState> {
+  OtpCubit() : super(OtpInitial());
+
+  Timer? _resendTimer;
+
+  Future<void> sendCode({required int code}) async {
+    emit(OtpLoading());
+    final result = await OtpRepoImpl().sendCode(code);
+    result.fold(
+      (failure) => emit(SendCodeFailure(error: failure.message)),
+      (data) => emit(SendCodeSuccess(message: data.message)),
+    );
   }
 
-  void updateDigit(int index, String value) {
-    final newDigits = List<String>.from(state.digits);
-    newDigits[index] = value;
-    emit(state.copyWith(digits: newDigits, hasError: false));
-  }
-
-  void submit() {
-    final code = state.digits.join();
-    final isComplete = code.length == 6 && !state.digits.contains('');
-    if (isComplete) {
-      print("OTP submitted: $code");
-      // أضف منطق التحقق هنا
-    } else {
-      emit(state.copyWith(hasError: true));
-    }
-  }
-
-  void _startTimer() {
-    _timer?.cancel();
-    emit(state.copyWith(timerSeconds: 60, isTimerActive: true));
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final remaining = state.timerSeconds - 1;
-      if (remaining <= 0) {
-        timer.cancel();
-        emit(state.copyWith(timerSeconds: 0, isTimerActive: false));
-      } else {
-        emit(state.copyWith(timerSeconds: remaining));
-      }
+  Future<void> resendCode() async {
+    emit(OtpLoading());
+    final result = await OtpRepoImpl().resendCode();
+    result.fold((failure) => emit(ResendFailure(error: failure.message)), (
+      data,
+    ) {
+      emit(ResendSuccess(code: data.code));
+      startResendTimer();
     });
   }
 
-  void resendCode() {
-    // أضف منطق إعادة إرسال الرمز هنا
-    emit(state.copyWith(digits: List.filled(6, ''), hasError: false));
-    _startTimer();
-  }
-
-  @override
-  Future<void> close() {
-    _timer?.cancel();
-    return super.close();
+  void startResendTimer({int seconds = 60}) {
+    int time = seconds;
+    emit(TimerUpdated(time));
+    _resendTimer?.cancel();
+    _resendTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      time--;
+      emit(TimerUpdated(time));
+      if (time <= 0) {
+        timer.cancel();
+      }
+    });
   }
 }

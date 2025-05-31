@@ -1,17 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/core/widget/custom_curve_shape.dart';
 import 'package:medicore_app/core/widget/custom_form_field.dart';
-import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/auth/OTP/presentation/view/otp_view.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view/widget/custom_phone_field.dart';
-import 'package:medicore_app/features/auth/create_account/presentation/view_model/cubit/create_account_cubit.dart';
-import 'package:medicore_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
-import 'package:medicore_app/features/auth/cubits/auth_cubit/auth_state.dart';
-import 'package:medicore_app/features/home/presentation/view/home_view.dart';
+import 'package:medicore_app/features/auth/create_account/presentation/view_model/create_account_cubit/create_account_cubit.dart';
+import 'package:medicore_app/features/auth/public_cubits/auth_cubit/auth_cubit.dart';
+import 'package:medicore_app/features/auth/public_cubits/auth_cubit/auth_state.dart';
+import 'package:medicore_app/features/auth/create_account/presentation/view_model/id_cubit/id_cubit.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class CreateAccountBody extends StatelessWidget {
@@ -19,11 +19,15 @@ class CreateAccountBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AuthCubit>();
     final formKey = GlobalKey<FormState>();
+    String? firstName;
+    String? lastName;
     String? email;
     String? phoneNumber;
     String? password;
     String? confPassword;
+    String id = '';
 
     return BlocConsumer<CreateAccountCubit, CreateAccountState>(
       listener: (context, state) {
@@ -42,8 +46,8 @@ class CreateAccountBody extends StatelessWidget {
       builder: (context, state) {
         return ModalProgressHUD(
           inAsyncCall: state is CreateAccountLoading ? true : false,
-          color: KPrimaryColor,
-          child: SingleChildScrollView(
+          
+                    child: SingleChildScrollView(
             child: Form(
               key: formKey,
               child: Column(
@@ -60,17 +64,32 @@ class CreateAccountBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
                   CustomFormField(
+                    label: 'first_name_hint'.tr(),
+                    icon: Icons.person_pin,
+                    keyboardType: TextInputType.text,
+                    validator: cubit.validateName,
+                    onChanged: (val) {
+                      firstName = val;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  CustomFormField(
+                    label: 'last_name_hint'.tr(),
+                    icon: Icons.person_pin,
+                    keyboardType: TextInputType.text,
+                    validator: cubit.validateName,
+                    onChanged: (val) {
+                      lastName = val;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  CustomFormField(
                     label: 'email_hint'.tr(),
                     icon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
-                    validator: (val) {
-                      if (val == null || !val.contains('@')) {
-                        return 'invalid_email'.tr();
-                      } else {
-                        return null;
-                      }
-                    },
+                    validator: cubit.validateEmail,
                     onChanged: (value) {
+                      cubit.email = value;
                       email = value;
                     },
                   ),
@@ -79,15 +98,10 @@ class CreateAccountBody extends StatelessWidget {
                   CustomPhoneField(
                     label: 'phone_hint'.tr(),
                     onChanged: (val) {
+                      cubit.phone = val;
                       phoneNumber = val;
                     },
-                    validator: (val) {
-                      if (val == null || val.length != 9) {
-                        return 'invalid_phone'.tr();
-                      } else {
-                        return null;
-                      }
-                    },
+                    validator: cubit.validatePhone,
                   ),
                   SizedBox(height: 10),
 
@@ -102,13 +116,7 @@ class CreateAccountBody extends StatelessWidget {
                         isPassword: true,
                         obscure: cubit.obscurePassword,
                         toggleVisibility: cubit.changeObscurePassword,
-                        validator: (val) {
-                          if (val == null || val.length < 8) {
-                            return 'password_too_short'.tr();
-                          } else {
-                            return null;
-                          }
-                        },
+                        validator: cubit.validatePassword,
                         onChanged: (value) {
                           cubit.password = value;
                           password = value;
@@ -131,17 +139,40 @@ class CreateAccountBody extends StatelessWidget {
                         isPassword: true,
                         obscure: cubit.obscureConfirmPassword,
                         toggleVisibility: cubit.changeObscureConfirmPassword,
-                        validator: (val) {
-                          if (val != password) {
-                            return 'passwords_do_not_match'.tr();
-                          } else {
-                            return null;
-                          }
-                        },
+                        validator: cubit.validatePasswordMatch,
                         onChanged: (value) {
                           cubit.confirmPassword = value;
                           confPassword = value;
                         },
+                      );
+                    },
+                  ),
+                  SizedBox(height: 10),
+
+                  BlocBuilder<IdCubit, IdState>(
+                    builder: (context, state) {
+                      final hasID = state is IsHasID && state.isHasID;
+                      return Column(
+                        children: [
+                          Text('id_question'.tr()),
+                          Switch(
+                            value: hasID,
+                            onChanged: (value) {
+                              context.read<IdCubit>().showQeustion(
+                                isHasID: value,
+                              );
+                            },
+                          ),
+                          hasID
+                              ? CustomFormField(
+                                label: 'ID_hint'.tr(),
+                                icon: Icons.credit_card,
+                                keyboardType: TextInputType.phone,
+                                // validator: cubit.validateEmail,
+                                onChanged: (value) => id = value,
+                              )
+                              : SizedBox(),
+                        ],
                       );
                     },
                   ),
@@ -150,18 +181,24 @@ class CreateAccountBody extends StatelessWidget {
                   CustomButton(
                     title: 'create_account_btn'.tr(),
                     onTap: () {
-                      print('=========sdss');
                       if (formKey.currentState!.validate()) {
+                        print('==============');
+                        print(
+                          '=====$firstName===$lastName===$email=====$phoneNumber===$id',
+                        );
                         context.read<CreateAccountCubit>().createAccount(
+                          firstName: firstName!,
+                          lastName: lastName!,
                           email: email!,
                           phoneNumber: phoneNumber!,
                           password: password!,
                           confPassword: confPassword!,
+                          id,
                         );
-                        print('================');
                       }
                     },
                   ),
+                  SizedBox(height: 50),
                 ],
               ),
             ),
