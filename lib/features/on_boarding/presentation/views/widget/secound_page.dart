@@ -13,19 +13,19 @@ class SecoundPage extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Spacer(),
+          const Spacer(),
           Image.asset(
-            Assets.logoWithoutBackground,
+            Assets.imagesLogoWithoutBackground,
             width: MediaQuery.of(context).size.width * 0.6,
           ),
 
-          Spacer(flex: 2),
+          const Spacer(flex: 2),
           Text(
             'secound page title in onBoarding',
             textAlign: TextAlign.center,
-            style: TextStyles.H1.copyWith(color: KPrimaryColor)
+            style: TextStyles.H1.copyWith(color: KPrimaryColor),
           ).tr(),
-          Spacer(flex: 5),
+          const Spacer(flex: 5),
         ],
       ),
     );

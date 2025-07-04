@@ -1,11 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 import 'package:medicore_app/core/utils/errors/failure.dart';
+import 'package:medicore_app/core/utils/logger_helper.dart';
 
 class Api {
   late Dio dio;
+  final lang = Intl.getCurrentLocale().split('_').first;
 
   Api() {
     {
@@ -27,24 +30,26 @@ class Api {
     Map<String, String>? headers,
   }) async {
     try {
-      print('$endPoint=====eeee');
-      print('$data=====3333');
-      print('$headers=====444');
-
+      LoggerHelper.info('============ssssss=======');
       final response = await dio.post(
         '$endPoint',
         data: data,
         options: Options(headers: headers),
       );
-
-      print('${response.data}=====response data==');
-      print('${response.statusCode}=status code======');
-      print('${response.statusMessage}=statue messaage======');
+      LoggerHelper.info('$endPoint');
+      LoggerHelper.info('status code: ${response.statusCode}');
+      LoggerHelper.info('status message: ${response.statusMessage}');
 
       return Right(response.data);
     } on DioException catch (dioException) {
+      LoggerHelper.info('===dio exception====');
+      LoggerHelper.info('${dioException.toString()}');
+
       return Left(handleDioError(dioException));
     } catch (e) {
+      LoggerHelper.info('===exception====');
+      LoggerHelper.info('${e.toString()}');
+
       return const Left(UnknownFailure());
     }
   }
@@ -60,13 +65,17 @@ class Api {
           ValidationFailure('====Token is missing or invalid===='),
         );
       }
+      final mergedQuery = {...?data, 'lang': lang};
       final options = Options(headers: {'Authorization': 'Bearer $token'});
 
       final response = await dio.post(
         '$endPoint',
-        data: data,
+        data: mergedQuery,
         options: options,
       );
+      LoggerHelper.info('$endPoint');
+      LoggerHelper.info('status code: ${response.statusCode}');
+      LoggerHelper.info('status message: ${response.statusMessage}');
 
       return Right(response.data);
     } on DioException catch (dioException) {
@@ -87,6 +96,10 @@ class Api {
         queryParameters: queryParameters ?? {},
         options: Options(headers: headers),
       );
+      LoggerHelper.info('$endPoint');
+      LoggerHelper.info('status code: ${response.statusCode}');
+      LoggerHelper.info('status message: ${response.statusMessage}');
+
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));
@@ -103,21 +116,23 @@ class Api {
     try {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
-        return const Left(
-          ValidationFailure('====Token is missing or invalid===='),
-        );
+        return const Left(ValidationFailure('Token is missing or invalid'));
       }
+
+      final mergedQuery = {...?queryParameters, 'lang': lang};
       final options = Options(
         headers: {'Authorization': 'Bearer $token'},
         responseType: responseType,
       );
-
       final response = await dio.get(
         '$endPoint',
-        queryParameters: queryParameters ?? {},
+        queryParameters: mergedQuery,
         options: options,
       );
-      // print(response.data.toString());
+      LoggerHelper.success(lang);
+      LoggerHelper.info('$endPoint');
+      LoggerHelper.info('status code: ${response.statusCode}');
+      LoggerHelper.info('status message: ${response.statusMessage}');
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));
@@ -137,6 +152,9 @@ class Api {
         data: data,
         options: Options(headers: headers),
       );
+      LoggerHelper.info('$endPoint');
+      LoggerHelper.info('status code: ${response.statusCode}');
+      LoggerHelper.info('status message: ${response.statusMessage}');
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));
@@ -162,6 +180,9 @@ class Api {
         data: data,
         options: options,
       );
+      LoggerHelper.info('$endPoint');
+      LoggerHelper.info('status code: ${response.statusCode}');
+      LoggerHelper.info('status message: ${response.statusMessage}');
 
       return Right(response.data);
     } on DioException catch (dioException) {
@@ -182,6 +203,9 @@ class Api {
         data: data,
         options: Options(headers: headers),
       );
+      LoggerHelper.info('$endPoint');
+      LoggerHelper.info('status code: ${response.statusCode}');
+      LoggerHelper.info('status message: ${response.statusMessage}');
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));
@@ -209,6 +233,9 @@ class Api {
         options: options,
         queryParameters: queryParameters,
       );
+      LoggerHelper.info('$endPoint');
+      LoggerHelper.info('status code: ${response.statusCode}');
+      LoggerHelper.info('status message: ${response.statusMessage}');
       return Right(response.data);
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));
@@ -238,8 +265,6 @@ class Api {
         return const ValidationFailure('bad Certificate');
       case DioExceptionType.connectionError:
         return const NetworkFailure('connectio error');
-      default:
-        return UnknownFailure(dioError.message ?? 'Unexpected error');
     }
   }
 

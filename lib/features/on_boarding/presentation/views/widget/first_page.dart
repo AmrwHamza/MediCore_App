@@ -13,13 +13,13 @@ class FirstPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Spacer(flex: 1),
+        const Spacer(flex: 1),
         Text(
           'first page title in onBoarding'.tr(),
           style: TextStyles.H1.copyWith(color: KPrimaryColor),
         ),
-        Spacer(flex: 4),
-        Expanded(flex: 50, child: SvgPicture.asset(Assets.doctors)),
+        const Spacer(flex: 4),
+        Expanded(flex: 50, child: SvgPicture.asset(Assets.imagesDoctors)),
       ],
     );
   }

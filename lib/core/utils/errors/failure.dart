@@ -23,3 +23,9 @@ class UnknownFailure extends Failure {
 class ValidationFailure extends Failure {
   const ValidationFailure([super.message = 'Invalid data provided']);
 }
+
+class CacheFailure extends Failure {
+  const CacheFailure([super.message = 'Failed to cache departments: ']);
+}
+
+

@@ -1,68 +1,110 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
+import 'package:medicore_app/core/helper_function/user_information.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/core/widget/custom_curve_shape.dart';
+import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/auth/OTP/presentation/view/widget/controler_otp.dart';
+import 'package:medicore_app/features/auth/OTP/presentation/view/widget/custom_dowm_timer.dart';
 import 'package:medicore_app/features/auth/OTP/presentation/view/widget/otp_row_field.dart';
-import 'package:medicore_app/features/auth/OTP/presentation/view_model/cubit/otp_cubit.dart';
-import 'package:medicore_app/features/home/presentation/view/home_view.dart';
+import 'package:medicore_app/features/auth/OTP/presentation/view_model/otp_cubit/otp_cubit.dart';
+import 'package:medicore_app/features/auth/OTP/presentation/view_model/timer_cubit/timer_cubit.dart';
+import 'package:medicore_app/features/auth/forget_password/presentation/view/back_page_view.dart';
+import 'package:medicore_app/features/onboarding_medical_info/presentation/view/patient_info_view.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class OTPViewBody extends StatelessWidget {
-  const OTPViewBody({super.key});
+  const OTPViewBody({super.key, required this.isForgetPassword});
+
+  final bool isForgetPassword;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const CustomCurvedShape(),
-            const SizedBox(height: 30),
-            Text(
-              'otp_title'.tr(),
-              style: TextStyles.H1.copyWith(color: KPrimaryColor, fontSize: 35),
-            ),
-            const SizedBox(height: 20),
-            SvgPicture.asset(Assets.otpImage, height: 200, fit: BoxFit.fill),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
-                'otp_desc'.tr(),
-                style: TextStyles.notes,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 40),
-            const OTPRowFields(),
-            const SizedBox(height: 70),
-            BlocConsumer<OtpCubit, OtpState>(
-              listener: (context, state) {
-                if (state is SendCodeSuccess) {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    HomeView.routeName,
-                    (route) => false,
-                  );
-                } else if (state is SendCodeFailure) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(state.error)));
-                }
-              },
-              builder: (context, state) {
-                return ModalProgressHUD(
-                  inAsyncCall: state is OtpLoading,
-                  color: KPrimaryColor,
-                  child: CustomButton(
-                    title: 'Confirm'.tr(),
+    context.read<TimerCubit>().startResendTimer();
+
+    return BlocConsumer<OtpCubit, OtpState>(
+      listener: (context, state) {
+        if (state is SendCodeSuccess) {
+          isForgetPassword
+              ? context.go(BackPageView.routeName)
+              : context.go(PatientInfoView.routeName);
+        } else if (state is SendCodeFailure) {
+          CustomSnackbar.show(
+            context,
+            message: state.error,
+            type: SnackbarType.error,
+          );
+        } else if (state is ResendFailure) {
+          CustomSnackbar.show(
+            context,
+            message: state.error,
+            type: SnackbarType.error,
+          );
+        }
+      },
+      builder: (context, state) {
+        return ModalProgressHUD(
+          inAsyncCall: state is OtpLoading,
+          progressIndicator: const CircularProgressIndicator(
+            color: KPrimaryColor,
+          ),
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  const CustomCurvedShape(),
+                  const SizedBox(height: 30),
+                  Text(
+                    'otp_title'.tr(),
+                    style: TextStyles.H1.copyWith(
+                      color: KPrimaryColor,
+                      fontSize: 35,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SvgPicture.asset(
+                    Assets.imagesDoctor,
+                    height: 200,
+                    fit: BoxFit.fill,
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: FutureBuilder<String>(
+                      future: getUserEmail(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                                ConnectionState.waiting ||
+                            snapshot.hasError) {
+                          return Text(
+                            'otp_desc'.tr() + '...',
+                            style: TextStyles.notes,
+                            textAlign: TextAlign.center,
+                          );
+                        } else {
+                          return Text(
+                            'otp_desc'.tr() + '${snapshot.data}',
+                            style: TextStyles.notes,
+                            textAlign: TextAlign.center,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  const OTPRowFields(),
+                  const SizedBox(height: 25),
+                  const CountDownTimerOTP(),
+                  const SizedBox(height: 25),
+                  CustomButton(
+                    title: 'confirm'.tr(),
                     onTap: () {
                       FocusScope.of(context).unfocus();
                       final otp = _getOtpCode(context);
@@ -71,49 +113,50 @@ class OTPViewBody extends StatelessWidget {
                       }
                     },
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 25),
-            BlocBuilder<OtpCubit, OtpState>(
-              builder: (context, state) {
-                final canResend =
-                    state is TimerUpdated ? state.secondsLeft == 0 : true;
-                return ModalProgressHUD(
-                  color: KPrimaryColor,
-                  inAsyncCall: state is OtpLoading ? true : false,
-                  child: CustomButton(
-                    title:
-                        canResend
-                            ? 'Resend the Code'.tr()
-                            : 'Resend in ${state is TimerUpdated ? state.secondsLeft : 60}s',
-                    onTap:
-                        canResend
-                            ? () {
-                              FocusScope.of(context).unfocus();
-                              context.read<OtpCubit>().resendCode();
-                            }
-                          : () {},
+                  const SizedBox(height: 20),
+                  BlocBuilder<TimerCubit, TimerState>(
+                    builder: (context, state) {
+                      int? secondsLeft;
+                      if (state is TimerUpdated) {
+                        secondsLeft = state.secondsLeft;
+                      }
+                      final isDisabled = secondsLeft != null && secondsLeft > 0;
+
+                      return CustomButton(
+                        title: 'Resend_Code'.tr(),
+                        onTap:
+                            isDisabled
+                                ? null
+                                : () {
+                                  FocusScope.of(context).unfocus();
+                                  context.read<OtpCubit>().resendCode();
+                                },
+                        color: isDisabled ? Colors.grey : KPrimaryColor,
+                      );
+                    },
                   ),
-                );
-              },
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  int? _getOtpCode(BuildContext context) {
+  String? _getOtpCode(BuildContext context) {
     final codeText = c1.text + c2.text + c3.text + c4.text + c5.text + c6.text;
 
     if (codeText.length != 6 || codeText.contains(RegExp(r'[^0-9]'))) {
-      ScaffoldMessenger.of(
+      CustomSnackbar.show(
         context,
-      ).showSnackBar(SnackBar(content: Text("validat_otp_coe".tr())));
+        message: 'validate_otp_code'.tr(),
+        type: SnackbarType.error,
+      );
+
       return null;
     }
 
-    return int.tryParse(codeText);
+    return codeText;
   }
 }

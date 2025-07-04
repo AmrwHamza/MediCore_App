@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
@@ -8,13 +7,13 @@ class CustomButton extends StatelessWidget {
   CustomButton({
     super.key,
     required this.title,
-    required this.onTap,
+    this.onTap,
     this.isVisible,
-    this.color
+    this.color,
   });
 
   final String title;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   bool? isVisible;
   Color? color;
 
@@ -26,7 +25,7 @@ class CustomButton extends StatelessWidget {
       maintainState: true,
       maintainSize: true,
       child: Material(
-        color:color == null? KPrimaryColor: color,
+        color: color == null ? KPrimaryColor : color,
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
           onTap: onTap,

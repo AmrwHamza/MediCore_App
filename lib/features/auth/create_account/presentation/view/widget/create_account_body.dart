@@ -1,17 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/core/widget/custom_curve_shape.dart';
 import 'package:medicore_app/core/widget/custom_form_field.dart';
+import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/auth/OTP/presentation/view/otp_view.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view/widget/custom_phone_field.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view_model/create_account_cubit/create_account_cubit.dart';
-import 'package:medicore_app/features/auth/public_cubits/auth_cubit/auth_cubit.dart';
-import 'package:medicore_app/features/auth/public_cubits/auth_cubit/auth_state.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view_model/id_cubit/id_cubit.dart';
+import 'package:medicore_app/features/auth/public_cubits/auth_validate_cubit/auth_validate_cubit.dart';
+import 'package:medicore_app/features/auth/public_cubits/auth_validate_cubit/auth_validate_state.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class CreateAccountBody extends StatelessWidget {
@@ -19,7 +21,7 @@ class CreateAccountBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AuthCubit>();
+    final cubit = context.read<AuthValidateCubit>();
     final formKey = GlobalKey<FormState>();
     String? firstName;
     String? lastName;
@@ -32,29 +34,30 @@ class CreateAccountBody extends StatelessWidget {
     return BlocConsumer<CreateAccountCubit, CreateAccountState>(
       listener: (context, state) {
         if (state is CreateAccountFailure) {
-          ScaffoldMessenger.of(
+          CustomSnackbar.show(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+            message: state.message,
+            type: SnackbarType.error,
+          );
         } else if (state is CreateAccountSuccess) {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
+          context.goNamed(
             OTPView.routeName,
-            (route) => false,
+            extra: {"isForgetPassword": false},
           );
         }
       },
       builder: (context, state) {
         return ModalProgressHUD(
           inAsyncCall: state is CreateAccountLoading ? true : false,
-          
-                    child: SingleChildScrollView(
+
+          child: SingleChildScrollView(
             child: Form(
               key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomCurvedShape(),
-                  SizedBox(height: 32),
+                  const CustomCurvedShape(),
+                  const SizedBox(height: 32),
                   Text(
                     'create_account_title'.tr(),
                     style: TextStyles.H1.copyWith(
@@ -69,20 +72,20 @@ class CreateAccountBody extends StatelessWidget {
                     keyboardType: TextInputType.text,
                     validator: cubit.validateName,
                     onChanged: (val) {
-                      firstName = val;
+                      firstName = val.trim();
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   CustomFormField(
                     label: 'last_name_hint'.tr(),
                     icon: Icons.person_pin,
                     keyboardType: TextInputType.text,
                     validator: cubit.validateName,
                     onChanged: (val) {
-                      lastName = val;
+                      lastName = val.trim();
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   CustomFormField(
                     label: 'email_hint'.tr(),
                     icon: Icons.email,
@@ -90,36 +93,36 @@ class CreateAccountBody extends StatelessWidget {
                     validator: cubit.validateEmail,
                     onChanged: (value) {
                       cubit.email = value;
-                      email = value;
+                      email = value.trim();
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   CustomPhoneField(
                     label: 'phone_hint'.tr(),
                     onChanged: (val) {
                       cubit.phone = val;
-                      phoneNumber = val;
+                      phoneNumber = val.trim();
                     },
                     validator: cubit.validatePhone,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
-                  BlocBuilder<AuthCubit, AuthState>(
+                  BlocBuilder<AuthValidateCubit, AuthValidateState>(
                     buildWhen:
                         (previous, current) => current is ChangePasswordObscure,
                     builder: (context, state) {
-                      final cubit = context.read<AuthCubit>();
+                      final cubit = context.read<AuthValidateCubit>();
                       return CustomFormField(
                         label: 'password_hint'.tr(),
                         icon: Icons.lock,
                         isPassword: true,
                         obscure: cubit.obscurePassword,
-                        toggleVisibility: cubit.changeObscurePassword,
-                        validator: cubit.validatePassword,
+                        pressOnEye: cubit.changeObscurePassword,
+                        validator: cubit.validateNewPassword,
                         onChanged: (value) {
-                          cubit.password = value;
-                          password = value;
+                          cubit.password = value.trim();
+                          password = value.trim();
                         },
                       );
                     },
@@ -127,27 +130,27 @@ class CreateAccountBody extends StatelessWidget {
 
                   const SizedBox(height: 10),
 
-                  BlocBuilder<AuthCubit, AuthState>(
+                  BlocBuilder<AuthValidateCubit, AuthValidateState>(
                     buildWhen:
                         (previous, current) =>
                             current is ChangeConfirmPasswordObscure,
                     builder: (context, state) {
-                      final cubit = context.read<AuthCubit>();
+                      final cubit = context.read<AuthValidateCubit>();
                       return CustomFormField(
                         label: 'confirm_password_hint'.tr(),
                         icon: Icons.lock,
                         isPassword: true,
                         obscure: cubit.obscureConfirmPassword,
-                        toggleVisibility: cubit.changeObscureConfirmPassword,
+                        pressOnEye: cubit.changeObscureConfirmPassword,
                         validator: cubit.validatePasswordMatch,
                         onChanged: (value) {
-                          cubit.confirmPassword = value;
-                          confPassword = value;
+                          cubit.confirmPassword = value.trim();
+                          confPassword = value.trim();
                         },
                       );
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   BlocBuilder<IdCubit, IdState>(
                     builder: (context, state) {
@@ -156,6 +159,7 @@ class CreateAccountBody extends StatelessWidget {
                         children: [
                           Text('id_question'.tr()),
                           Switch(
+                            activeColor: KPrimaryColor,
                             value: hasID,
                             onChanged: (value) {
                               context.read<IdCubit>().showQeustion(
@@ -169,9 +173,9 @@ class CreateAccountBody extends StatelessWidget {
                                 icon: Icons.credit_card,
                                 keyboardType: TextInputType.phone,
                                 // validator: cubit.validateEmail,
-                                onChanged: (value) => id = value,
+                                onChanged: (value) => id = value.trim(),
                               )
-                              : SizedBox(),
+                              : const SizedBox(),
                         ],
                       );
                     },
@@ -182,10 +186,6 @@ class CreateAccountBody extends StatelessWidget {
                     title: 'create_account_btn'.tr(),
                     onTap: () {
                       if (formKey.currentState!.validate()) {
-                        print('==============');
-                        print(
-                          '=====$firstName===$lastName===$email=====$phoneNumber===$id',
-                        );
                         context.read<CreateAccountCubit>().createAccount(
                           firstName: firstName!,
                           lastName: lastName!,
@@ -198,7 +198,7 @@ class CreateAccountBody extends StatelessWidget {
                       }
                     },
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),

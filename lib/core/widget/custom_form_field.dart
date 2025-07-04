@@ -7,7 +7,7 @@ class CustomFormField extends StatelessWidget {
   final IconData icon;
   final bool isPassword;
   final bool obscure;
-  final Function()? toggleVisibility;
+  final Function()? pressOnEye;
   final String? Function(String?)? validator;
   final Function(String)? onChanged;
   final TextInputType? keyboardType;
@@ -18,7 +18,7 @@ class CustomFormField extends StatelessWidget {
     required this.icon,
     this.isPassword = false,
     this.obscure = false,
-    this.toggleVisibility,
+    this.pressOnEye,
     this.validator,
     this.onChanged,
     this.keyboardType,
@@ -49,17 +49,19 @@ class CustomFormField extends StatelessWidget {
                           obscure ? Icons.visibility_off : Icons.visibility,
                           color: KDarkBlue,
                         ),
-                        onPressed: toggleVisibility,
+                        onPressed: pressOnEye,
                       )
                       : null,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: KDarkBlue.withOpacity(0.2)),
+                borderSide: BorderSide(
+                  color: KDarkBlue.withAlpha((0.2 * 255).round()),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                  color: KDarkBlue.withOpacity(0.5),
+                  color: KDarkBlue.withAlpha((0.5 * 255).round()),
                   width: 1.2,
                 ),
               ),

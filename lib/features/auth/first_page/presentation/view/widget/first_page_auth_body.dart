@@ -1,26 +1,23 @@
 import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
-import 'package:medicore_app/core/widget/custom_divider.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/widget/auth_section.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/widget/drop_down.dart';
-import 'package:medicore_app/features/auth/first_page/presentation/view_model/change_lang_cubit/change_language_cubit.dart';
 
 class FirstPageAuthBody extends StatelessWidget {
   const FirstPageAuthBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final currentLocale = context.watch<ChangeLanguageCubit>().state.language;
     return Stack(
       children: [
         Positioned.fill(
           child: ImageFiltered(
             imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-            child: Image.asset(Assets.backgroundAuth, fit: BoxFit.fill),
+            child: Image.asset(Assets.imagesBackgroundAuth, fit: BoxFit.fill),
           ),
         ),
         Positioned(
@@ -34,7 +31,7 @@ class FirstPageAuthBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     'title of auth'.tr(),
                     textAlign: TextAlign.center,
@@ -45,9 +42,9 @@ class FirstPageAuthBody extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 60),
-                DropDown(),
+                const DropDown(),
                 const SizedBox(height: 70),
-                AuthSection(),
+                const AuthSection(),
                 // const SizedBox(height: 100),
                 // CustomDivider(title: 'or'.tr()),
                 // const SizedBox(height: 16),

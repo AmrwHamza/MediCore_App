@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
@@ -16,7 +17,7 @@ class AuthSection extends StatelessWidget {
         CustomButton(
           title: 'create account'.tr(),
           onTap: () {
-            Navigator.pushNamed(context, CreateAccount.routeName);
+            context.pushNamed(CreateAccount.routeName);
           },
         ),
         Row(
@@ -28,7 +29,7 @@ class AuthSection extends StatelessWidget {
             ).tr(),
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, LoginView.routeName);
+                context.pushNamed(LoginView.routeName);
               },
               child:
                   Text(
@@ -39,8 +40,8 @@ class AuthSection extends StatelessWidget {
           ],
         ),
         context.locale.languageCode == 'ar'
-            ? SizedBox(height: 10)
-            : SizedBox(height: 1),
+            ? const SizedBox(height: 10)
+            : const SizedBox(height: 1),
       ],
     );
   }

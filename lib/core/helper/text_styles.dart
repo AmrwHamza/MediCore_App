@@ -20,7 +20,7 @@ class TextStyles {
   static const TextStyle notes = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w300,
-    color: KGrey
+    color: KGrey,
   );
 
   static const TextStyle button = TextStyle(

@@ -1,34 +1,43 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/observer.dart';
+import 'package:medicore_app/core/helper/router.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
-import 'package:medicore_app/core/helper_functions/on_generate_route.dart';
-import 'package:medicore_app/features/auth/OTP/presentation/view_model/cubit/otp_cubit.dart';
-import 'package:medicore_app/features/auth/create_account/presentation/view/create_account.dart';
-import 'package:medicore_app/features/auth/create_account/presentation/view_model/create_account_cubit/create_account_cubit.dart';
-import 'package:medicore_app/features/auth/create_account/presentation/view_model/id_cubit/id_cubit.dart';
-import 'package:medicore_app/features/auth/login/presentation/view_model/login_cubit/login_cubit.dart';
-import 'package:medicore_app/features/auth/public_cubits/auth_cubit/auth_cubit.dart';
-import 'package:medicore_app/features/auth/first_page/presentation/view_model/change_lang_cubit/change_language_cubit.dart';
+import 'package:medicore_app/core/helper_function/get_it_service.dart';
+import 'package:medicore_app/core/helper_function/hive_service.dart';
+import 'package:medicore_app/core/theme/theme_provider.dart';
+import 'package:medicore_app/features/auth/logout/presentation/view_model/cubit/logout_cubit.dart';
+import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/children_info_cubit/children_info_cubit.dart';
+import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/children_info_ui_cubit/children_info_ui_cubit.dart';
+import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/patient_info_cubit/patient_info_cubit.dart';
+import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/patient_info_ui_cubit/patient_info_ui_cubit.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
-void main() async {
+
+void main() async {   
+  await initHive();
+  setup();
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final prefs = SharedPrefHelper();
   await prefs.init();
-
+  final themeProvider = ThemeProvider();
+  await themeProvider.init();
   Bloc.observer = const CounterObserver();
-
   runApp(
     EasyLocalization(
-      supportedLocales: [Locale('en'), Locale('ar')],
+      supportedLocales: [const Locale('en'), const Locale('ar')],
       path: 'assets/translations',
-      fallbackLocale: Locale('en'),
+      fallbackLocale: const Locale('en'),
       startLocale: Locale(prefs.languageCode),
-      child: MediCoreApp(prefs: prefs),
+      child: ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        child: MediCoreApp(prefs: prefs),
+      ),
     ),
   );
 }
@@ -38,46 +47,36 @@ class MediCoreApp extends StatelessWidget {
   const MediCoreApp({super.key, required this.prefs});
 
   @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context)=> AuthCubit()),
-            BlocProvider(create: (context)=> IdCubit()),
-            BlocProvider(create: (context)=> OtpCubit()),
-            BlocProvider(create: (context)=> LoginCubit()),
-            BlocProvider(create: (context)=> CreateAccountCubit()),
-            BlocProvider(create: (context)=> ChangeLanguageCubit(SharedPrefHelper())),
-          ],
-          child: MaterialApp(
-            theme: ThemeData(
-              fontFamily:
-                  context.locale.languageCode == 'ar'
-                      ? 'Tajawal'
-                      : 'RobotoSLab',
+  Widget build(BuildContext context) {        
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => PatientInfoCubit()),
+        BlocProvider(create: (context) => ChildrenInfoUiCubit()),
+        BlocProvider(create: (context) => getIt<PatientInfoUiCubit>()),
+        BlocProvider(create: (context) => ChildrenInfoCubit()),
+              BlocProvider(create: (context) => LogoutCubit()),
+
+      ],
+      child: Builder(
+        builder: (context) {
+          return MaterialApp.router(
+            themeMode: ThemeMode.system,
+            theme: getIt<ThemeProvider>().themeData.copyWith(
+              textTheme: Theme.of(context).textTheme.apply(
+                fontFamily:
+                    context.locale.languageCode == 'ar'
+                        ? 'Tajawal'
+                        : 'RobotoSlab',
+              ),
             ),
             locale: context.locale,
             supportedLocales: context.supportedLocales,
             localizationsDelegates: context.localizationDelegates,
             debugShowCheckedModeBanner: false,
-            onGenerateRoute: onGenerateRoute,
-            initialRoute: CreateAccount .routeName,
-          ),
-        );
-      },
+            routerConfig: router,
+          );
+        },
+      ),
     );
   }
-
-  Future<bool> checkIfLoggedInUser() async {
-  final String? userToken =
-      await SharedPrefHelper.getString(SharedPrefKeys.userToken);
-
-  if (userToken != null && userToken.isNotEmpty) {
-    print('user token:$userToken');
-  } else {}
-
-  return userToken != null && userToken.isNotEmpty;
-}
-
 }

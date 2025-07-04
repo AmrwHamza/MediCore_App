@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
+import 'package:medicore_app/core/utils/logger_helper.dart';
 import 'package:medicore_app/features/auth/create_account/data/repo/create_account_repo_imp.dart';
 import 'package:medicore_app/features/auth/create_account/domain/entities/user_entity.dart';
 
@@ -21,30 +23,37 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
   }) async {
     emit(CreateAccountLoading());
     try {
-      final result = await CreateAccountRepoImp().createAccount(
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        password,
-        confPassword,
-        id,
-      );
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      String? token = await messaging.getToken();
+      LoggerHelper.success('FCM Token:  $token');
+      final data = {
+        'first_name': firstName,
+        'last_name': lastName,
+        'email': email,
+        'phone': phoneNumber,
+        'password': password,
+        'password_confirmation': confPassword,
+        'fcm_token': token,
+        "enter_id": id,
+      };
+
+      final result = await CreateAccountRepoImp().createAccount(data);
       return result.fold(
         (failure) {
           emit(CreateAccountFailure(message: failure.message));
           print('${failure.message}=failure message======');
         },
         (data) {
-          emit(CreateAccountSuccess(user: data));
           saveUserInfo(
-            data.token,
-            data.user.email,
-            data.user.firstName,
-            data.user.lastName,
-            data.user.phone,
-            data.user.id,
+            token: data.token,
+            email: data.user.email,
+            firstName: data.user.firstName,
+            lastName: data.user.lastName,
+            phone: data.user.phone,
+            id: data.user.id,
+            expire: data.expiresAt,
           );
+          emit(CreateAccountSuccess(user: data));
         },
       );
     } on Exception catch (e) {
@@ -54,18 +63,20 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
   }
 }
 
-Future<void> saveUserInfo(
-  String token,
-  String firstName,
-  String lastName,
-  String email,
-  String phone,
-  int id,
-) async {
+Future<void> saveUserInfo({
+  required String token,
+  required String firstName,
+  required String lastName,
+  required String email,
+  required String phone,
+  required int id,
+  required String expire,
+}) async {
   await SharedPrefHelper.setData(SharedPrefKeys.userToken, token);
   await SharedPrefHelper.setData(SharedPrefKeys.email, email);
   await SharedPrefHelper.setData(SharedPrefKeys.firstName, firstName);
   await SharedPrefHelper.setData(SharedPrefKeys.lastName, lastName);
   await SharedPrefHelper.setData(SharedPrefKeys.phone, phone);
   await SharedPrefHelper.setData(SharedPrefKeys.id, id);
+  await SharedPrefHelper.setData(SharedPrefKeys.expireToken, expire);
 }

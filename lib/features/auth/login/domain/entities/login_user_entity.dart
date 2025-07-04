@@ -1,7 +1,13 @@
-class LoginUserEntity {
-  final String id;
-  final String name;
-  final String email;
+import 'package:medicore_app/features/auth/create_account/data/model/user_model.dart';
 
-  LoginUserEntity({required this.id, required this.name, required this.email});
+class LoginUserEntity {
+  final String token;
+  final UserModel user;
+  final String expiresAt;
+
+  LoginUserEntity({
+    required this.token,
+    required this.user,
+    required this.expiresAt,
+  });
 }

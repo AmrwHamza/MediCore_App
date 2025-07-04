@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/utils/logger_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefHelper {
   static final SharedPrefHelper _instance = SharedPrefHelper._internal();
@@ -46,8 +47,7 @@ class SharedPrefHelper {
     await _prefs?.clear();
   }
 
-
-   static getString(String key) async {
+  static getString(String key) async {
     try {
       debugPrint('SharedPrefHelper : getString with key : $key');
       final SharedPreferences sharedPreferences =
@@ -58,13 +58,13 @@ class SharedPrefHelper {
     }
   }
 
-
-    static setData(String key, value) async {
+  static setData(String key, value) async {
     try {
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       debugPrint(
-          "SharedPrefHelper : setData with key : $key and value : $value");
+        "SharedPrefHelper : setData with key : $key and value : $value",
+      );
       switch (value.runtimeType) {
         case String:
           await sharedPreferences.setString(key, value);
@@ -80,10 +80,21 @@ class SharedPrefHelper {
           break;
         default:
           return throw Exception(
-              "==||==Unsupported value type:==||== ${value.runtimeType}");
+            "==||==Unsupported value type:==||== ${value.runtimeType}",
+          );
       }
     } on Exception catch (e) {
       debugPrint('=================Error while setting data:======= $e');
+    }
+  }
+
+  static removeData(String key) async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.remove(key);
+    } on Exception catch (e) {
+      LoggerHelper.error(e.toString());
     }
   }
 }

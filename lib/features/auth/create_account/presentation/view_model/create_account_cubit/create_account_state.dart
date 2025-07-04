@@ -19,6 +19,7 @@ final class CreateAccountFailure extends CreateAccountState {
 
 final class CreateAccountSuccess extends CreateAccountState {
   final UserEntity user;
+  
 
   CreateAccountSuccess({required this.user});
 }

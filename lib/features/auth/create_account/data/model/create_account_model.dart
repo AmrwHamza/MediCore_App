@@ -5,12 +5,14 @@ class CreateAccountModel extends UserEntity {
   CreateAccountModel({
     required String token,
     required UserModel user,
-  }) : super(token: token,user: user);
+    required String expiresAt,
+  }) : super(token: token, user: user, expiresAt: expiresAt);
 
   factory CreateAccountModel.fromJson(Map<String, dynamic> json) {
     return CreateAccountModel(
-      token: json['access_token'],
-      user: json['user'],
+      token: json['token']['access_token'],
+      user: UserModel.fromJson(json['user']),
+      expiresAt: json['token']['expires_at'],
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class CustomTextFieldOTP extends StatelessWidget {
   const CustomTextFieldOTP({
@@ -17,10 +19,20 @@ class CustomTextFieldOTP extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: const [
-          // BoxShadow(spreadRadius: 5, color: Colors.white, blurRadius: 20)
+        boxShadow: [
+          BoxShadow(
+            color: Provider.of<ThemeProvider>(
+              context,
+            ).themeData.splashColor.withAlpha((255 * 0.5).round()),
+            // spreadRadius: 4,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
         ],
-        border: Border.all(width: 1.5, color: KDarkBlue),
+        border: Border.all(
+          width: 1.5,
+          color: KDarkBlue.withAlpha((0.5 * 255).round()),
+        ),
         borderRadius: BorderRadius.circular(10),
         color: KWhite,
       ),

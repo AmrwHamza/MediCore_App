@@ -4,8 +4,6 @@ import 'package:medicore_app/features/auth/login/domain/entities/login_user_enti
 
 abstract class LoginRepo {
   Future<Either<Failure, LoginUserEntity>> login({
-    required String email,
-    required String phoneNumber,
-    required String password,
+    required Map<String, dynamic> data,
   });
 }
