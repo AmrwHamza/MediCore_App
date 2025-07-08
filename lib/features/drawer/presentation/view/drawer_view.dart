@@ -15,14 +15,14 @@ import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
 import 'package:medicore_app/features/auth/logout/presentation/view_model/cubit/logout_cubit.dart';
 import 'package:medicore_app/features/drawer/presentation/view/widgets/custom_drawer_header.dart';
-import 'package:medicore_app/features/drawer/presentation/view_model/theme_cubit/theme_cubit.dart';
+import 'package:provider/provider.dart';
 
 class DrawerView extends StatelessWidget {
   const DrawerView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
 
     return Drawer(
       child: ListView(
@@ -31,37 +31,34 @@ class DrawerView extends StatelessWidget {
           const CustomDrawerHeader(),
 
           const SizedBox(height: 12),
-          MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (context) => getIt<ThemeCubit>()),
-              // BlocProvider(create: (context) => LogoutCubit()),
-            ],
-            child: BlocBuilder<ThemeCubit, ThemeMode>(
-              builder: (context, state) {
-                final pref = getIt<SharedPrefHelper>();
-                return SwitchListTile(
-                  activeColor: KPrimaryColor,
-                  secondary: Icon(
-                    pref.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                    color: Colors.blue[800],
+
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              final pref = getIt<SharedPrefHelper>();
+              return SwitchListTile(
+                activeColor: KPrimaryColor,
+                secondary: Icon(
+                  pref.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                  color: Colors.blue[800],
+                ),
+                title: Text(
+                  'Dark Mode'.tr(),
+                  style: TextStyles.public.copyWith(
+                    color: KDarkBlue,
+                    shadows: [
+                      BoxShadow(
+                        color: themeProvider.themeData.shadowColor,
+                        blurRadius: 200,
+                      ),
+                    ],
                   ),
-                  title: Text(
-                    'Dark Mode'.tr(),
-                    style: TextStyles.public.copyWith(
-                      color: KDarkBlue,
-                      shadows: [
-                        BoxShadow(color: theme.shadowColor, blurRadius: 200),
-                      ],
-                    ),
-                  ),
-                  value: pref.isDarkMode,
-                  onChanged: (_) {
-                    context.read<ThemeCubit>().changeTheme();
-                    getIt<ThemeProvider>().changeTheme();
-                  },
-                );
-              },
-            ),
+                ),
+                value: pref.isDarkMode,
+                onChanged: (_) {
+                  themeProvider.changeTheme();
+                },
+              );
+            },
           ),
 
           Theme(

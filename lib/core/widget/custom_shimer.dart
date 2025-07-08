@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -11,7 +11,7 @@ class CustomShimer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
     return Shimmer.fromColors(
       baseColor: Colors.grey.withAlpha((255 * 0.3).round()),
       highlightColor: theme.shadowColor,
@@ -27,7 +27,7 @@ class CustomShimer extends StatelessWidget {
           children: [
             Container(
               height: hieght ?? MediaQuery.of(context).size.height * 0.1,
-                    width: width ?? 100,
+              width: width ?? 100,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,

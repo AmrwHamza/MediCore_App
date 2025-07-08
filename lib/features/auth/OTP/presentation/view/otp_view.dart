@@ -11,19 +11,19 @@ class OTPView extends StatelessWidget {
   const OTPView({super.key, required this.isForgetPassword});
   static const routeName = '/otp';
 
-  final bool isForgetPassword ;
+  final bool isForgetPassword;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: getIt<ThemeProvider>().themeData.primaryColor,
+      backgroundColor: context.watch<ThemeProvider>().themeData.primaryColor,
       body: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => OtpCubit(getIt<OtpRepoImpl>())),
           BlocProvider(create: (context) => TimerCubit()),
         ],
 
-        child:  OTPViewBody(isForgetPassword: isForgetPassword,),
+        child: OTPViewBody(isForgetPassword: isForgetPassword),
       ),
     );
   }

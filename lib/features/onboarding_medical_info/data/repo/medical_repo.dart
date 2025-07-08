@@ -15,7 +15,7 @@ class MedicalRepo {
   ) async {
     final response = await getIt<Api>().postWithAuth(
       endPoint: 'pateintProfile',
-      data: data,
+      data: data, 
     );
     return response.fold(
       (failure) => Left(failure),

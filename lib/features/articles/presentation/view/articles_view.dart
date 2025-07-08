@@ -14,7 +14,8 @@ class ArticlesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: getIt<ThemeProvider>().themeData.scaffoldBackgroundColor,
+      backgroundColor:
+          context.watch<ThemeProvider>().themeData.scaffoldBackgroundColor,
       body: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => getIt<FavoriteCubit>()),

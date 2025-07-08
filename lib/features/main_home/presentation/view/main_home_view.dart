@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_app_bar.dart';
 import 'package:medicore_app/features/appointments/presentation/view/appointments_view.dart';
@@ -59,7 +58,8 @@ class MainHomeView extends StatelessWidget {
                   context.push(BookAppointmentView.routeName);
                 },
                 child: const Icon(Icons.add, size: 36, color: KPrimaryColor),
-                backgroundColor: getIt<ThemeProvider>().themeData.cardColor,
+                backgroundColor:
+                    context.watch<ThemeProvider>().themeData.cardColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
                   side: BorderSide(

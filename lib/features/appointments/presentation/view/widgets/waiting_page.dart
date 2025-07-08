@@ -45,6 +45,7 @@ class WaitingPage extends StatelessWidget {
             });
 
             return ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: scrollController,
               padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: combinedList.length,

@@ -5,7 +5,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
@@ -21,7 +20,7 @@ class PatientInfoViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(

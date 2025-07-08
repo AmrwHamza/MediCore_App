@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/book_appointment/presentation/view_model/book_cubit/book_appointment_cubit.dart';
@@ -15,7 +14,7 @@ class CalenderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
 
     return BlocConsumer<BookAppointmentCubit, BookAppointmentState>(
       listener: (context, state) {

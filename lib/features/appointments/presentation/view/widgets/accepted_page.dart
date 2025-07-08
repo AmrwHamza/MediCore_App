@@ -47,6 +47,7 @@ class AcceptedPage extends StatelessWidget {
 
             return ListView.builder(
               controller: scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: combinedList.length,
               itemBuilder: (context, index) {

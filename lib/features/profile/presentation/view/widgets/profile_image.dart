@@ -2,10 +2,10 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 
@@ -16,7 +16,7 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(

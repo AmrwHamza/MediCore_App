@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/helper_function/user_information.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
@@ -13,7 +13,7 @@ class CustomDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
 
     return SizedBox(
       height: MediaQuery.of(context).size.height / 4,
@@ -31,12 +31,12 @@ class CustomDrawerHeader extends StatelessWidget {
                 snapshot.hasError) {
               return Text(
                 'loading'.tr(),
-                style: TextStyles.H2.copyWith(color: Colors.white),
+                style: TextStyles.notes.copyWith(color: Colors.white),
               );
             } else {
               return Text(
                 snapshot.data!,
-                style: TextStyles.H2.copyWith(color: Colors.white),
+                style: TextStyles.notes.copyWith(color: Colors.white),
               );
             }
           },
@@ -55,7 +55,7 @@ class CustomDrawerHeader extends StatelessWidget {
                         snapshot.hasError) {
                       return Text(
                         'loading'.tr(),
-                        style: TextStyles.H2.copyWith(color: Colors.white),
+                        style: TextStyles.notes.copyWith(color: Colors.white),
                       );
                     } else {
                       return Text(
@@ -83,7 +83,7 @@ class CustomDrawerHeader extends StatelessWidget {
                           snapshot.hasError) {
                         return Text(
                           'loading'.tr(),
-                          style: TextStyles.H2.copyWith(color: Colors.white),
+                          style: TextStyles.notes.copyWith(color: Colors.white),
                         );
                       } else {
                         return Text(

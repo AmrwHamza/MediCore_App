@@ -13,7 +13,7 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: getIt<ThemeProvider>().themeData.primaryColor,
+      backgroundColor: context.watch<ThemeProvider>().themeData.primaryColor,
       body: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => LoginCubit()),

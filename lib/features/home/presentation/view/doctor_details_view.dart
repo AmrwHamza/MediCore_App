@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_app_bar.dart';
 import 'package:medicore_app/core/widget/custom_scroll_widget.dart';
@@ -22,7 +21,7 @@ class DoctorDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
     return BlocProvider(
       create: (context) => DoctorInfoCubit()..getDoctorInfo(doctor.doctorId),
       child: Scaffold(
@@ -154,7 +153,7 @@ class DoctorDetailsView extends StatelessWidget {
                           children: [
                             const Icon(Icons.email, color: KDarkBlue),
                             const SizedBox(width: 12),
-                            email
+                            email,
                           ],
                         ),
                       ),

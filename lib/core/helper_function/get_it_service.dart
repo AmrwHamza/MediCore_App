@@ -10,7 +10,6 @@ import 'package:medicore_app/features/auth/first_page/presentation/view_model/ch
 import 'package:medicore_app/features/auth/forget_password/data/repo/forget_password_repo.dart';
 import 'package:medicore_app/features/auth/public_cubits/auth_validate_cubit/auth_validate_cubit.dart';
 import 'package:medicore_app/features/book_appointment/data/repo/book_appointment_repo_impl.dart';
-import 'package:medicore_app/features/drawer/presentation/view_model/theme_cubit/theme_cubit.dart';
 import 'package:medicore_app/features/home/data/models/hive/hive_department_model.dart';
 import 'package:medicore_app/features/home/data/models/hive/hive_doctor_model.dart';
 import 'package:medicore_app/features/home/data/models/hive/hive_home_local_storge.dart';
@@ -21,7 +20,6 @@ final getIt = GetIt.instance;
 
 void setup() {
   getIt.registerLazySingleton<ThemeProvider>(() => ThemeProvider());
-  getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
   getIt.registerLazySingleton<AuthValidateCubit>(() => AuthValidateCubit());
   getIt.registerLazySingleton<PatientInfoUiCubit>(() => PatientInfoUiCubit());
   getIt.registerLazySingleton<SharedPrefHelper>(() => SharedPrefHelper());

@@ -4,7 +4,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/image_card.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/info_row.dart';
@@ -37,7 +36,7 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
     return Card(
       color:
           isDone ? Colors.grey.withAlpha((0.4 * 255).round()) : theme.cardColor,
@@ -60,11 +59,7 @@ class AppointmentCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-                ImageCard(
-                  isChild: isChild,
-                  imagePath: imagePath,
-                  isMale: isMale,
-                ),
+            ImageCard(isChild: isChild, imagePath: imagePath, isMale: isMale),
             const SizedBox(width: 16),
             Expanded(
               child: Column(

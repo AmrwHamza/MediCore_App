@@ -5,7 +5,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/core/widget/custom_snack_bar.dart';
@@ -22,7 +21,7 @@ class ChildrenInfoViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ChildrenInfoUiCubit, ChildrenInfoUiState>(
       builder: (context, state) {
-        final theme = getIt<ThemeProvider>().themeData;
+        final theme = context.watch<ThemeProvider>().themeData;
         final childUiCubit = context.read<ChildrenInfoUiCubit>();
         return SingleChildScrollView(
           padding: const EdgeInsets.all(20),

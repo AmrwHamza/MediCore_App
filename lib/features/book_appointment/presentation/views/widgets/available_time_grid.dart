@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 
 class AvailableTimesGrid extends StatelessWidget {
@@ -19,7 +19,7 @@ class AvailableTimesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
 
     final startTime = const TimeOfDay(hour: 9, minute: 0);
     final endTime = const TimeOfDay(hour: 16, minute: 0);
@@ -68,7 +68,9 @@ class AvailableTimesGrid extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: bgColor,
                     borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.black.withOpacity(0.2)),
+                    border: Border.all(
+                      color: Colors.black.withAlpha((0.2 * 255).round()),
+                    ),
                   ),
                   child: Center(
                     child: Text(
