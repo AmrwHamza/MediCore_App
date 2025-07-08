@@ -1,19 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 
 // ignore: must_be_immutable
 class CustomButton extends StatelessWidget {
   CustomButton({
     super.key,
     required this.title,
-    required this.onTap,
+    this.onTap,
     this.isVisible,
+    this.color,
   });
 
   final String title;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   bool? isVisible;
+  Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,27 +24,19 @@ class CustomButton extends StatelessWidget {
       maintainAnimation: true,
       maintainState: true,
       maintainSize: true,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Material(
-          color: KPrimaryColor,
+      child: Material(
+        color: color == null ? KPrimaryColor : color,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(12),
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(12), 
-            child: Container(
-              height: 50,
-              width: 190,
-              alignment: Alignment.center,
-              child: Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'RobotoSlab',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+          child: Container(
+            height: 50,
+            width: 190,
+            alignment: Alignment.center,
+            child: Text(
+              title,
+              style: TextStyles.button.copyWith(color: Colors.white),
             ),
           ),
         ),

@@ -1,6 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 
 class SecoundPage extends StatelessWidget {
@@ -12,24 +13,19 @@ class SecoundPage extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Spacer(),
+          const Spacer(),
           Image.asset(
-            Assets.logoWithoutBackground,
+            Assets.imagesLogoWithoutBackground,
             width: MediaQuery.of(context).size.width * 0.6,
           ),
 
-          Spacer(flex: 2),
+          const Spacer(flex: 2),
           Text(
-            'Your best way to protect your health and your children\'s health',
+            'secound page title in onBoarding',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: KPrimaryColor,
-              fontSize: 24,
-              fontFamily: 'RobotoSlab',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Spacer(flex: 5),
+            style: TextStyles.H1.copyWith(color: KPrimaryColor),
+          ).tr(),
+          const Spacer(flex: 5),
         ],
       ),
     );

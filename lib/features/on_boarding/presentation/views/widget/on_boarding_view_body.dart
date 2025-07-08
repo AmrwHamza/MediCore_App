@@ -1,7 +1,11 @@
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
+import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
 import 'package:medicore_app/features/on_boarding/presentation/views/widget/on_boarding_page_view.dart';
 
 class OnBoardingViewBody extends StatefulWidget {
@@ -46,15 +50,14 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Skip>>',
-                    style: TextStyle(
-                      color: KGrey,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  onPressed: () {
+                    context.go(FirstPageAuth.routeName);
+                  },
+                  child:
+                      Text(
+                        'skip',
+                        style: TextStyles.public.copyWith(color: KGrey),
+                      ).tr(),
                 ),
               ],
             ),
@@ -67,13 +70,15 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
               color: currentPage == 0 ? KGrey : KPrimaryColor,
             ),
           ),
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           CustomButton(
-            title: 'Next',
-            onTap: () {},
+            title: 'next'.tr(),
+            onTap: () {
+              context.go(FirstPageAuth.routeName);
+            },
             isVisible: currentPage == 0 ? false : true,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );
