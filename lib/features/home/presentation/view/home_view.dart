@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/home_view_body.dart';
 import 'package:medicore_app/features/home/presentation/view_model/department_cubit/department_cubit.dart';
@@ -13,7 +12,8 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: getIt<ThemeProvider>().themeData.scaffoldBackgroundColor,
+      backgroundColor:
+          context.watch<ThemeProvider>().themeData.scaffoldBackgroundColor,
       body: MultiBlocProvider(
         providers: [
           BlocProvider(

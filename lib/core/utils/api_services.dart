@@ -39,6 +39,7 @@ class Api {
       LoggerHelper.info('$endPoint');
       LoggerHelper.info('status code: ${response.statusCode}');
       LoggerHelper.info('status message: ${response.statusMessage}');
+      LoggerHelper.info('ee: ${response.data}');
 
       return Right(response.data);
     } on DioException catch (dioException) {
@@ -46,7 +47,7 @@ class Api {
       LoggerHelper.info('${dioException.toString()}');
 
       return Left(handleDioError(dioException));
-    } catch (e) {
+    } catch (e) {   
       LoggerHelper.info('===exception====');
       LoggerHelper.info('${e.toString()}');
 

@@ -26,7 +26,11 @@ const LinearGradient kAppBarGradient = LinearGradient(
   colors: [Color(0xFFFFFFFF), Color(0xFFF5F5F5), Color(0xFFEFEFEF)],
 );
 
+<<<<<<< HEAD
 const String base = "http://192.168.254.43:8000";
+=======
+const String base = "http://192.168.93.14:8000";
+>>>>>>> 0460c7a045a134deb69d9668ccbcef97954b45be
 const String baseurl =
     "$base"
     "/api/";

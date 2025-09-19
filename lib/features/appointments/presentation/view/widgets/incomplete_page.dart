@@ -13,6 +13,7 @@ class IncompletePage extends StatelessWidget {
         return Future.delayed(const Duration(seconds: 1));
       },
       child: ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
         itemCount: 10,
         itemBuilder: (context, index) {
           return Padding(

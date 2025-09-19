@@ -2,11 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view_model/change_lang_cubit/change_language_cubit.dart';
-import 'package:provider/provider.dart';
 
 class DropDown extends StatelessWidget {
   const DropDown({super.key});
@@ -31,7 +29,7 @@ class DropDown extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: getIt<ThemeProvider>().themeData.shadowColor,
+                color: context.watch<ThemeProvider>().themeData.shadowColor,
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -67,7 +65,6 @@ class DropDown extends StatelessWidget {
                     newLanguage,
                   );
                   context.setLocale(newLanguage);
-                  
                 }
               },
               selectedItemBuilder: (context) {

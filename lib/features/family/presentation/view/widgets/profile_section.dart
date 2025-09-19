@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 
 // ignore: must_be_immutable
@@ -38,7 +38,7 @@ class ProfileSection extends StatelessWidget {
           Text(
             name,
             style: TextStyles.H2.copyWith(
-              color: getIt<ThemeProvider>().themeData.canvasColor,
+              color: context.watch<ThemeProvider>().themeData.canvasColor,
             ),
           ),
         ],

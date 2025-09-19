@@ -4,17 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 import 'package:medicore_app/core/theme/theme.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/utils/logger_helper.dart';
-import 'package:medicore_app/features/auth/OTP/presentation/view/otp_view.dart';
-import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
 import 'package:medicore_app/features/main_home/presentation/view/main_home_view.dart';
 import 'package:medicore_app/features/on_boarding/presentation/views/on_boarding_view.dart';
-import 'package:medicore_app/features/onboarding_medical_info/presentation/view/patient_info_view.dart';
 import 'package:provider/provider.dart';
 
 class SplashViewBody extends StatefulWidget {
@@ -86,7 +82,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   @override
   Widget build(BuildContext context) {
-    final theme = getIt<ThemeProvider>().themeData;
+    final theme = context.watch<ThemeProvider>().themeData;
 
     return Scaffold(
       backgroundColor: theme.splashColor,

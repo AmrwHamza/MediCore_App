@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
@@ -25,7 +25,7 @@ class BackPageViewBody extends StatelessWidget {
           Text(
             'email_sent_title'.tr(),
             style: TextStyles.H1.copyWith(
-              color: getIt<ThemeProvider>().themeData.canvasColor,
+              color: context.watch<ThemeProvider>().themeData.canvasColor,
             ),
           ),
           const SizedBox(height: 12),

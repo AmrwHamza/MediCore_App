@@ -14,19 +14,18 @@ import 'package:medicore_app/features/onboarding_medical_info/presentation/view_
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/patient_info_cubit/patient_info_cubit.dart';
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/patient_info_ui_cubit/patient_info_ui_cubit.dart';
 import 'package:provider/provider.dart';
+
 import 'firebase_options.dart';
 
-
-void main() async {   
+void main() async {
   await initHive();
   setup();
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final prefs = SharedPrefHelper();
+  final prefs = getIt<SharedPrefHelper>();
   await prefs.init();
-  final themeProvider = ThemeProvider();
-  await themeProvider.init();
+  await getIt<ThemeProvider>().init();
   Bloc.observer = const CounterObserver();
   runApp(
     EasyLocalization(
@@ -35,7 +34,7 @@ void main() async {
       fallbackLocale: const Locale('en'),
       startLocale: Locale(prefs.languageCode),
       child: ChangeNotifierProvider(
-        create: (context) => ThemeProvider(),
+        create: (context) => getIt<ThemeProvider>(),
         child: MediCoreApp(prefs: prefs),
       ),
     ),
@@ -47,21 +46,21 @@ class MediCoreApp extends StatelessWidget {
   const MediCoreApp({super.key, required this.prefs});
 
   @override
-  Widget build(BuildContext context) {        
+  Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => PatientInfoCubit()),
         BlocProvider(create: (context) => ChildrenInfoUiCubit()),
         BlocProvider(create: (context) => getIt<PatientInfoUiCubit>()),
         BlocProvider(create: (context) => ChildrenInfoCubit()),
-              BlocProvider(create: (context) => LogoutCubit()),
-
+        BlocProvider(create: (context) => LogoutCubit()),
       ],
       child: Builder(
         builder: (context) {
+          final theme = context.watch<ThemeProvider>().themeData;
           return MaterialApp.router(
             themeMode: ThemeMode.system,
-            theme: getIt<ThemeProvider>().themeData.copyWith(
+            theme: theme.copyWith(
               textTheme: Theme.of(context).textTheme.apply(
                 fontFamily:
                     context.locale.languageCode == 'ar'

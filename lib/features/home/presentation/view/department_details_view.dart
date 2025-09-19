@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_app_bar.dart';
 import 'package:medicore_app/core/widget/custom_scroll_widget.dart';
@@ -30,7 +29,8 @@ class DepartmentDetailsView extends StatelessWidget {
               DepartmentDetailsCubit()..getDoctorsInDepartment(departmentId),
       child: Scaffold(
         appBar: CustomAppBar(title: department, isMainBar: false),
-        backgroundColor: getIt<ThemeProvider>().themeData.primaryColorLight,
+        backgroundColor:
+            context.watch<ThemeProvider>().themeData.primaryColorLight,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
           child: CustomScrollWidget(

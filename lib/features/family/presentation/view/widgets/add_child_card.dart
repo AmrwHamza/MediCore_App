@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,9 +18,7 @@ class AddChildCard extends StatelessWidget {
       return const Card(
         color: Colors.transparent,
         elevation: 0,
-        child: Center(
-          child: SpinKitPouringHourGlassRefined(color: KDarkBlue),
-        ),
+        child: Center(child: SpinKitPouringHourGlassRefined(color: KDarkBlue)),
       );
     }
 

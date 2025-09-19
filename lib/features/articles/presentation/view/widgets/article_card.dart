@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/articles/domain/entities/article_entity.dart';
 import 'package:medicore_app/features/articles/presentation/view/widgets/article_details_view.dart';
@@ -34,7 +33,7 @@ class ArticleCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Card(
-          color: getIt<ThemeProvider>().themeData.primaryColor,
+          color: context.watch<ThemeProvider>().themeData.primaryColor,
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

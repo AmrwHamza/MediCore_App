@@ -10,6 +10,7 @@ class ForgetPasswordRepo {
     final response = await getIt<Api>().post(
       endPoint: 'password/request',
       data: {'email': email},
+      
     );
     return response.fold((failure) => Left(failure), (json) => Right(json));
   }
