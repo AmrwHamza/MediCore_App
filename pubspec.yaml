@@ -47,7 +47,7 @@ dependencies:
   safe_network_image: ^1.0.1
   shared_preferences: ^2.5.3
   shimmer: ^3.0.0
-  table_calendar: ^3.2.0
+  table_calendar: 3.1.3
   timeline_tile: ^2.0.0
   vibration: ^3.1.3
 dependency_overrides:
