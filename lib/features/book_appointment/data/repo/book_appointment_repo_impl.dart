@@ -18,7 +18,7 @@ class BookAppointmentRepoImpl implements BookAppointmentRepo {
   }) async {
     final Response = await getIt<Api>().postWithAuth(
       endPoint: 'bookAppointment/$doctorId',
-      data: {'appointment_date': date, 'son_id': sonId},
+      data: {'appointment_date': date, 'son_id': sonId, 'payment_id': 40},
     );
     return Response.fold((failure) => Left(failure), (data) {
       final message = BookAppointmentModel.fromJson(data);

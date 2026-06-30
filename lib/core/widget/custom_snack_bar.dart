@@ -47,7 +47,7 @@ class CustomSnackbar {
     }
   }
 
-  static IconData _getIcon(SnackbarType type) {
+  static FaIconData _getIcon(SnackbarType type) {
     switch (type) {
       case SnackbarType.success:
         return FontAwesomeIcons.circleCheck;
@@ -63,7 +63,7 @@ class CustomSnackbar {
 
 class _SnackbarWidget extends StatefulWidget {
   final String message;
-  final IconData icon;
+  final FaIconData icon;
   final Duration duration;
   final VoidCallback onClose;
   final Alignment alignment;
@@ -177,7 +177,7 @@ class _SnackbarWidgetState extends State<_SnackbarWidget>
                       const SizedBox(width: 12),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Icon(
+                        child: FaIcon(
                           widget.icon,
                           color: widget.indicatorColor,
                           size: 24,

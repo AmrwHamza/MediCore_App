@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
+import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/book_appointment/presentation/view_model/book_cubit/book_appointment_cubit.dart';
 import 'package:medicore_app/features/book_appointment/presentation/view_model/doctor_cubit/doctor_book_appointment_cubit.dart';
@@ -15,6 +16,9 @@ class SelectSymptomsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+
     return BlocBuilder<SymptomAnalysisCubit, SymptomAnalysisState>(
       builder: (context, state) {
         final cubit = context.read<SymptomAnalysisCubit>();
@@ -23,73 +27,121 @@ class SelectSymptomsSection extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 8),
-            if (selectedSymptoms.isNotEmpty)
-              TextButton.icon(
-                onPressed: () => openBottomSheet(context),
-                icon: const Icon(Icons.edit, color: KPrimaryColor),
-                label: Text(
-                  'edit_symptoms'.tr(),
-                  style: TextStyles.notes.copyWith(
-                    color: KPrimaryColor,
-                    fontWeight: FontWeight.w500,
+            if (selectedSymptoms.isNotEmpty) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'selected_symptoms_title'.tr(),
+                    style: TextStyle(
+                      color: theme.disabledColor,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton.icon(
+                    onPressed: () => openBottomSheet(context),
+                    icon: const Icon(
+                      Icons.edit_rounded,
+                      color: KPrimaryColor,
+                      size: 16,
+                    ),
+                    label: Text(
+                      'edit_symptoms'.tr(),
+                      style: TextStyles.notes.copyWith(
+                        color: KPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color:
+                        isDark
+                            ? Colors.white12
+                            : theme.shadowColor.withAlpha(15),
                   ),
                 ),
-              ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
+                child: Wrap(
                   spacing: 8,
-                  runSpacing: 4,
+                  runSpacing: 8,
                   children:
                       selectedSymptoms.map((symptom) {
                         return Chip(
                           label: Text(
                             symptom,
                             style: TextStyles.notes.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
+                              color: isDark ? Colors.white : Colors.black87,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            side: const BorderSide(
-                              color: Colors.grey,
-                              style: BorderStyle.solid,
-                              width: 0.5,
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(
+                              color: KPrimaryColor.withAlpha(50),
                             ),
                           ),
-                          deleteIconColor: Colors.red,
-                          backgroundColor: Colors.blueGrey,
-                          deleteIcon: const Icon(Icons.close),
+                          deleteIconColor: Colors.redAccent,
+                          backgroundColor: KPrimaryColor.withAlpha(20),
+                          deleteIcon: const Icon(Icons.close_rounded, size: 14),
                           onDeleted: () => cubit.selectSymptom(symptom),
                         );
                       }).toList(),
                 ),
-                const SizedBox(height: 16),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: const WidgetStatePropertyAll(Colors.white),
-                    elevation: WidgetStateProperty.all(100),
-                  ),
-                  onPressed: () => openBottomSheet(context),
-                  child: Text(
-                    'select_symptoms'.tr(),
-                    style: TextStyles.notes.copyWith(
-                      color: KOrange,
-                      fontWeight: FontWeight.w500,
+              ),
+              const SizedBox(height: 16),
+            ] else ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () => openBottomSheet(context),
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: KPrimaryColor.withAlpha(100),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.add_circle_outline_rounded,
+                            color: KPrimaryColor,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'select_symptoms'.tr(),
+                            style: TextStyles.notes.copyWith(
+                              color: KPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
+                ],
+              ),
+              const SizedBox(height: 16),
+            ],
             BlocConsumer<SymptomAnalysisCubit, SymptomAnalysisState>(
               listener: (context, state) {
                 if (state is SymptomAnalysisFailure) {
@@ -115,15 +167,31 @@ class SelectSymptomsSection extends StatelessWidget {
               },
               builder: (context, state) {
                 if (state is SymptomAnalysisLoading) {
-                  return const SpinKitThreeInOut(color: KOrange);
+                  return const Center(
+                    child: SpinKitThreeInOut(color: KPrimaryColor, size: 30),
+                  );
                 }
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(KOrange),
-                        elevation: WidgetStateProperty.all(2),
+                        backgroundColor: WidgetStateProperty.all(KPrimaryColor),
+                        elevation: WidgetStateProperty.all(4),
+                        shadowColor: WidgetStateProperty.all(
+                          KPrimaryColor.withAlpha(100),
+                        ),
+                        padding: WidgetStateProperty.all(
+                          const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 14,
+                          ),
+                        ),
+                        shape: WidgetStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
                       ),
                       onPressed: () {
                         if (selectedSymptoms.isEmpty) {
@@ -143,6 +211,7 @@ class SelectSymptomsSection extends StatelessWidget {
                         style: TextStyles.button.copyWith(
                           color: Colors.white,
                           fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -161,9 +230,7 @@ class SelectSymptomsSection extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      backgroundColor: Colors.transparent,
       builder:
           (_) => BlocProvider.value(
             value: context.read<SymptomAnalysisCubit>(),

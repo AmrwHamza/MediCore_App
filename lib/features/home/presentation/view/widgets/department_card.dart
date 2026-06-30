@@ -18,32 +18,24 @@ class DepartmentCard extends StatelessWidget {
     required this.imageUrl,
     this.onTap,
     this.isSelected,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
-
-    // LoggerHelper.info(imageUrl!);
+    final isCardSelected = isSelected ?? false;
 
     return Container(
       width: MediaQuery.of(context).size.width / 4.1,
       margin: const EdgeInsets.only(right: 4),
       decoration: BoxDecoration(
-        color:
-            (isSelected != null)
-                ? isSelected!
-                    ? KPrimaryColor
-                    : theme.cardColor
-                : theme.cardColor,
+        color: isCardSelected ? KPrimaryColor : theme.cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color:
-                (isSelected != null)
-                    ? isSelected!
-                        ? KDarkBlue.withAlpha((0.2 * 255).round())
-                        : theme.shadowColor
+                isCardSelected
+                    ? KDarkBlue.withAlpha((0.2 * 255).round())
                     : theme.shadowColor,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -67,11 +59,7 @@ class DepartmentCard extends StatelessWidget {
                           child: Icon(
                             Icons.broken_image,
                             color:
-                                (isSelected != null)
-                                    ? isSelected!
-                                        ? KPrimaryColor
-                                        : Colors.white70
-                                    : Colors.white70,
+                                isCardSelected ? KPrimaryColor : Colors.white70,
                             size: 35,
                           ),
                         ),
@@ -84,12 +72,11 @@ class DepartmentCard extends StatelessWidget {
                 : const CircleAvatar(
                   backgroundColor: KDarkBlue,
                   radius: 25,
-                  child: Icon(
+                  child: FaIcon(
                     FontAwesomeIcons.hospitalUser,
                     color: Colors.white70,
                   ),
                 ),
-
             const SizedBox(height: 16),
             Center(
               child: Text(
@@ -98,12 +85,7 @@ class DepartmentCard extends StatelessWidget {
                 style: TextStyles.public.copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color:
-                      (isSelected != null)
-                          ? isSelected!
-                              ? Colors.white
-                              : KDarkBlue
-                          : KDarkBlue,
+                  color: isCardSelected ? Colors.white : KDarkBlue,
                 ),
               ),
             ),

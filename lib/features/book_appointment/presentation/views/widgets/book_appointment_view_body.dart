@@ -4,58 +4,77 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/constants.dart';
-import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/book_appointment/presentation/view_model/book_cubit/book_appointment_cubit.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/calender_section.dart';
+import 'package:medicore_app/features/book_appointment/presentation/views/widgets/custom_divider.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/department_section.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/doctor_section.dart';
+import 'package:medicore_app/features/book_appointment/presentation/views/widgets/section_header.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/select_symptoms_section.dart';
+
+import 'child_or_me_selector.dart';
 
 class BookAppointmentViewBody extends StatelessWidget {
   const BookAppointmentViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ThemeProvider>().themeData;
-
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'analyze_symptoms'.tr(),
-            style: TextStyles.H2.copyWith(color: theme.canvasColor),
+          SectionHeader(
+            title: 'select_patient'.tr(),
+            subtitle: 'choose_who_is_booking'.tr(),
+            icon: Icons.person_outline,
           ),
-          const SizedBox(height: 6),
-          Text('directing_symptoms'.tr(), style: TextStyles.notes),
-          const SizedBox(height: 6),
-          const SelectSymptomsSection(),
-          const SizedBox(height: 20),
-          const Divider(),
-          Text(
-            'select_department'.tr(),
-            style: TextStyles.H2.copyWith(color: theme.canvasColor),
-          ),
-          const SizedBox(height: 6),
-          const DepartmentSection(),
-          const SizedBox(height: 20),
-          const Divider(),
-          Text(
-            'select_doctor'.tr(),
-            style: TextStyles.H2.copyWith(color: theme.canvasColor),
-          ),
-          const SizedBox(height: 6),
-          const DoctorSection(),
-          const SizedBox(height: 20),
-          const Divider(),
+          const SizedBox(height: 12),
+          const ChildOrMeSelector(),
 
+          const CustomDivider(),
+
+          SectionHeader(
+            title: 'analyze_symptoms'.tr(),
+            subtitle: 'directing_symptoms'.tr(),
+            icon: Icons.analytics_outlined,
+          ),
+          const SizedBox(height: 12),
+          const SelectSymptomsSection(),
+
+          const CustomDivider(),
+
+          SectionHeader(
+            title: 'select_department'.tr(),
+            subtitle: 'choose_specialty_message'.tr(),
+            icon: Icons.local_hospital_outlined,
+          ),
+          const SizedBox(height: 12),
+          const DepartmentSection(),
+
+          const CustomDivider(),
+
+          SectionHeader(
+            title: 'select_doctor'.tr(),
+            subtitle: 'choose_your_doctor_message'.tr(),
+            icon: Icons.medication_outlined,
+          ),
+          const SizedBox(height: 12),
+          const DoctorSection(),
+
+          const CustomDivider(),
+
+          SectionHeader(
+            title: 'select_date_time'.tr(),
+            subtitle: 'choose_best_slot'.tr(),
+            icon: Icons.calendar_month_outlined,
+          ),
+          const SizedBox(height: 12),
           const CalenderSection(),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 32),
           Center(
             child: BlocConsumer<BookAppointmentCubit, BookAppointmentState>(
               listener: (context, state) {

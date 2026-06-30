@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 
-class AvailableTimesGrid extends StatelessWidget {
+class AvailableTimesGrid extends StatefulWidget {
   final DateTime selectedDate;
   final TimeOfDay? selectedTime;
   final Function(TimeOfDay) onTimeSelected;
@@ -18,67 +18,131 @@ class AvailableTimesGrid extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final theme = context.watch<ThemeProvider>().themeData;
+  State<AvailableTimesGrid> createState() => _AvailableTimesGridState();
+}
 
-    final startTime = const TimeOfDay(hour: 9, minute: 0);
-    final endTime = const TimeOfDay(hour: 16, minute: 0);
+class _AvailableTimesGridState extends State<AvailableTimesGrid> {
+  late final List<TimeOfDay> _timeSlots;
 
-    List<TimeOfDay> timeSlots = [];
+  @override
+  void initState() {
+    super.initState();
+    _timeSlots = _generateTimeSlots();
+  }
+
+  List<TimeOfDay> _generateTimeSlots() {
+    const startTime = TimeOfDay(hour: 9, minute: 0);
+    const endTime = TimeOfDay(hour: 16, minute: 0);
+    final List<TimeOfDay> slots = [];
     TimeOfDay current = startTime;
 
     while (_timeOfDayBefore(current, endTime)) {
-      timeSlots.add(current);
+      slots.add(current);
       current = _addMinutes(current, 30);
     }
+    return slots;
+  }
+
+  bool _timeOfDayBefore(TimeOfDay a, TimeOfDay b) {
+    return a.hour < b.hour || (a.hour == b.hour && a.minute < b.minute);
+  }
+
+  TimeOfDay _addMinutes(TimeOfDay time, int minutesToAdd) {
+    final totalMinutes = time.hour * 60 + time.minute + minutesToAdd;
+    return TimeOfDay(hour: totalMinutes ~/ 60, minute: totalMinutes % 60);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: timeSlots.length,
+        itemCount: _timeSlots.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          childAspectRatio: 2.5,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
+          childAspectRatio: 2.3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
         ),
         itemBuilder: (context, index) {
-          final time = timeSlots[index];
+          final time = _timeSlots[index];
           final isSelected =
-              selectedTime != null &&
-              time.hour == selectedTime!.hour &&
-              time.minute == selectedTime!.minute;
+              widget.selectedTime != null &&
+              time.hour == widget.selectedTime!.hour &&
+              time.minute == widget.selectedTime!.minute;
 
-          final timeText = time.format(context);
-          final textColor = isSelected ? Colors.white : theme.canvasColor;
-          final bgColor =
-              isSelected
-                  ? KPrimaryColor.withAlpha((0.8 * 255).round())
-                  : Colors.white;
-
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-              child: InkWell(
-                onTap: () => onTimeSelected(time),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: bgColor,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: Colors.black.withAlpha((0.2 * 255).round()),
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutCubic,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              gradient:
+                  isSelected
+                      ? LinearGradient(
+                        colors: [KPrimaryColor, KPrimaryColor.withAlpha(200)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
+                      : LinearGradient(
+                        colors:
+                            isDark
+                                ? [
+                                  Colors.white.withAlpha(20),
+                                  Colors.white.withAlpha(5),
+                                ]
+                                : [
+                                  Colors.white,
+                                  theme.scaffoldBackgroundColor.withAlpha(150),
+                                ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+              boxShadow: [
+                BoxShadow(
+                  color:
+                      isSelected
+                          ? KPrimaryColor.withAlpha(90)
+                          : theme.shadowColor.withAlpha(isDark ? 10 : 20),
+                  blurRadius: isSelected ? 12 : 6,
+                  offset: isSelected ? const Offset(0, 4) : const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: InkWell(
+                  onTap: () => widget.onTimeSelected(time),
+                  borderRadius: BorderRadius.circular(14),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color:
+                            isSelected
+                                ? Colors.white.withAlpha(100)
+                                : (isDark
+                                    ? Colors.white12
+                                    : theme.shadowColor.withAlpha(25)),
+                        width: isSelected ? 1.5 : 1,
+                      ),
                     ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      timeText,
-                      style: TextStyle(
-                        color: textColor,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
+                    child: Center(
+                      child: Text(
+                        time.format(context),
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : theme.canvasColor,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.w600,
+                          fontSize: 13,
+                          letterSpacing: 0.3,
+                        ),
                       ),
                     ),
                   ),
@@ -89,16 +153,5 @@ class AvailableTimesGrid extends StatelessWidget {
         },
       ),
     );
-  }
-
-  bool _timeOfDayBefore(TimeOfDay a, TimeOfDay b) {
-    return a.hour < b.hour || (a.hour == b.hour && a.minute < b.minute);
-  }
-
-  TimeOfDay _addMinutes(TimeOfDay time, int minutesToAdd) {
-    final totalMinutes = time.hour * 60 + time.minute + minutesToAdd;
-    final newHour = totalMinutes ~/ 60;
-    final newMinute = totalMinutes % 60;
-    return TimeOfDay(hour: newHour, minute: newMinute);
   }
 }

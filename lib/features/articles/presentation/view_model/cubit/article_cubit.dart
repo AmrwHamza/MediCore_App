@@ -6,7 +6,6 @@ import 'package:medicore_app/features/articles/domain/entities/article_entity.da
 import 'article_state.dart';
 
 class ArticleCubit extends Cubit<ArticleState> {
-
   int currentPage = 1;
   List<ArticleEntity> allArticles = [];
 
@@ -16,7 +15,9 @@ class ArticleCubit extends Cubit<ArticleState> {
     emit(ArticleLoading());
     try {
       currentPage = 1;
-      final response = await getIt<ArticleRepoImpl>().getArticles(page: currentPage);
+      final response = await getIt<ArticleRepoImpl>().getArticles(
+        page: currentPage,
+      );
       response.fold(
         (failure) {
           emit(ArticleError(failure.message));
@@ -33,6 +34,7 @@ class ArticleCubit extends Cubit<ArticleState> {
         },
       );
     } catch (e) {
+      print('💯💯💯💯💯ERROR= ${e.toString()}');
       emit(ArticleError(e.toString()));
     }
   }
@@ -44,7 +46,9 @@ class ArticleCubit extends Cubit<ArticleState> {
 
       try {
         currentPage++;
-        final response = await getIt<ArticleRepoImpl>().getArticles(page: currentPage);
+        final response = await getIt<ArticleRepoImpl>().getArticles(
+          page: currentPage,
+        );
         response.fold(
           (failure) {
             emit(ArticleError(failure.message));

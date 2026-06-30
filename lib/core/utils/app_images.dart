@@ -89,5 +89,8 @@ class Assets {
   /// Assets for imagesWelcomeDoctor
   /// assets/images/welcome_doctor.png
   static const String imagesWelcomeDoctor = "assets/images/welcome_doctor.png";
+
+  static const String mtnLogo = 'assets/images/mtn.png';
+  static const String syriatelLogo = 'assets/images/Syriatel.jpg'; 
 }
 

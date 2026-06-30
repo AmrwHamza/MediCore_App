@@ -28,6 +28,7 @@ class DoctorCardInHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
+    final isCardSelected = isSelected ?? false;
 
     return InkWell(
       onTap: onTap,
@@ -37,20 +38,13 @@ class DoctorCardInHome extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
-          color:
-              (isSelected != null)
-                  ? isSelected!
-                      ? KPrimaryColor
-                      : theme.cardColor
-                  : theme.cardColor,
+          color: isCardSelected ? KPrimaryColor : theme.cardColor,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
               color:
-                  (isSelected != null)
-                      ? isSelected!
-                          ? KDarkBlue.withAlpha((0.2 * 255).round())
-                          : theme.shadowColor
+                  isCardSelected
+                      ? KDarkBlue.withAlpha((0.2 * 255).round())
                       : theme.shadowColor,
               blurRadius: 6,
               offset: const Offset(0, 3),
@@ -66,7 +60,6 @@ class DoctorCardInHome extends StatelessWidget {
                       (context, url) => const CircularProgressIndicator(),
                   errorWidget:
                       (context, url, error) => const Icon(Icons.broken_image),
-                  color: KPrimaryColor,
                   imageUrl: '$base$imageUrl',
                   width: 60,
                   height: 60,
@@ -74,12 +67,11 @@ class DoctorCardInHome extends StatelessWidget {
                 )
                 : CircleAvatar(
                   backgroundColor:
-                      (isSelected == true) ? Colors.white70 : KPrimaryColor,
+                      isCardSelected ? Colors.white70 : KPrimaryColor,
                   radius: 25,
-                  child: Icon(
+                  child: FaIcon(
                     FontAwesomeIcons.userDoctor,
-                    color:
-                        (isSelected == true) ? KPrimaryColor : Colors.white70,
+                    color: isCardSelected ? KPrimaryColor : Colors.white70,
                   ),
                 ),
             const SizedBox(height: 10),
@@ -89,8 +81,7 @@ class DoctorCardInHome extends StatelessWidget {
               style: TextStyles.public.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color:
-                    (isSelected == true) ? Colors.white70 : theme.canvasColor,
+                color: isCardSelected ? Colors.white70 : theme.canvasColor,
               ),
             ),
             Text(

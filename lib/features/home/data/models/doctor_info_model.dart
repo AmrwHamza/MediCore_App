@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:medicore_app/features/home/domain/entities/doctor_info_entity/doctor_info_entity.dart';
 
 class DoctorInfoModel extends DoctorInfoEntity {
@@ -16,6 +17,7 @@ class DoctorInfoModel extends DoctorInfoEntity {
     final doctor = json['data']?['doctor'] ?? {};
     final user = doctor['user'] ?? {};
     final department = doctor['department'] ?? {};
+    final isArabic = Get.locale?.languageCode == 'ar';
 
     return DoctorInfoModel(
       doctorId: user['id'] ?? 0,
@@ -24,7 +26,8 @@ class DoctorInfoModel extends DoctorInfoEntity {
       email: user['email'] ?? '',
       phone: user['phone'] ?? '',
       imagePath: user['img_path'] ?? '',
-      department: department['name'] ?? '',
+      department:
+          isArabic ? department['name']['ar'] : department['name']['en'] ?? '',
       rate: doctor['average_rating'] ?? 0,
     );
   }

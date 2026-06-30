@@ -64,7 +64,7 @@ class DoctorCardInDepartment extends StatelessWidget {
                 : const CircleAvatar(
                   backgroundColor: KPrimaryColor,
                   radius: 25,
-                  child: Icon(
+                  child: FaIcon(
                     FontAwesomeIcons.userDoctor,
                     color: Colors.white70,
                   ),

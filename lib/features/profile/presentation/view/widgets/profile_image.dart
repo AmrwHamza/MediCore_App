@@ -28,7 +28,7 @@ class ProfileImage extends StatelessWidget {
               children: [
                 if (profileImageUrl != null)
                   ListTile(
-                    leading: Icon(
+                    leading: FaIcon(
                       FontAwesomeIcons.eye,
                       color: theme.splashColor,
                     ),
@@ -87,7 +87,7 @@ class ProfileImage extends StatelessWidget {
                     },
                   ),
                 ListTile(
-                  leading: Icon(
+                  leading: FaIcon(
                     FontAwesomeIcons.solidImages,
                     color: theme.splashColor,
                   ),
@@ -98,7 +98,7 @@ class ProfileImage extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(
+                  leading: FaIcon(
                     FontAwesomeIcons.camera,
                     color: theme.splashColor,
                   ),
@@ -109,7 +109,7 @@ class ProfileImage extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(
+                  leading: const FaIcon(
                     FontAwesomeIcons.trash,
                     color: Colors.red,
                   ),
@@ -171,7 +171,7 @@ class ProfileImage extends StatelessWidget {
             child: CircleAvatar(
               maxRadius: 15,
               backgroundColor: theme.cardColor,
-              child: Icon(
+              child: FaIcon(
                 FontAwesomeIcons.pen,
                 color: theme.splashColor,
                 size: 15,

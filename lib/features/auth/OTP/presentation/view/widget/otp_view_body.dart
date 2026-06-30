@@ -19,6 +19,8 @@ import 'package:medicore_app/features/auth/forget_password/presentation/view/bac
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view/patient_info_view.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import '../../../../../payment/presentation/views/payment_view.dart';
+
 class OTPViewBody extends StatelessWidget {
   const OTPViewBody({super.key, required this.isForgetPassword});
 
@@ -33,7 +35,7 @@ class OTPViewBody extends StatelessWidget {
         if (state is SendCodeSuccess) {
           isForgetPassword
               ? context.go(BackPageView.routeName)
-              : context.go(PatientInfoView.routeName);
+              : context.go(PaymentView.routeName);
         } else if (state is SendCodeFailure) {
           CustomSnackbar.show(
             context,

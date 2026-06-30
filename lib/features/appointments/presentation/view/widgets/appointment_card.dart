@@ -66,13 +66,13 @@ class AppointmentCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InfoRow(
-                    icon: Icons.person_outline_outlined,
+                    icon: FontAwesomeIcons.person,
                     text: patientName,
                     iconColor: theme.canvasColor,
                     textStyle: TextStyles.H2.copyWith(color: theme.canvasColor),
                   ),
                   InfoRow(
-                    icon: Icons.watch_later_outlined,
+                    icon: FontAwesomeIcons.clock,
                     text: status,
                     iconColor: _pickStatusColor(status),
                     textStyle: TextStyles.button.copyWith(
@@ -81,7 +81,7 @@ class AppointmentCard extends StatelessWidget {
                   ),
 
                   InfoRow(
-                    icon: Icons.calendar_today_outlined,
+                    icon: FontAwesomeIcons.calendar,
                     text: DateFormat('dd/MM/yyyy - hh:mm a').format(date),
                     iconColor: KPrimaryColor,
                     textStyle: TextStyles.public.copyWith(color: KPrimaryColor),
@@ -98,7 +98,7 @@ class AppointmentCard extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
+                      const FaIcon(
                         FontAwesomeIcons.noteSticky,
                         color: Colors.grey,
                         size: 16,

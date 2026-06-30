@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class InfoRow extends StatelessWidget {
   const InfoRow({
@@ -9,7 +10,7 @@ class InfoRow extends StatelessWidget {
     required this.textStyle,
   });
 
-  final IconData icon;
+  final FaIconData icon;
   final Color iconColor;
   final String text;
   final TextStyle textStyle;
@@ -19,7 +20,7 @@ class InfoRow extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: iconColor, size: 16),
+        FaIcon(icon, color: iconColor, size: 16),
         const SizedBox(width: 8),
         Expanded(
           child: Text(

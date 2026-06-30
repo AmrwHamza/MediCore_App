@@ -3,13 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:medicore_app/features/appointments/presentation/view/appointment_archive_view.dart';
 import 'package:medicore_app/features/appointments/presentation/view/appointment_details_view.dart';
 import 'package:medicore_app/features/appointments/presentation/view/appointments_view.dart';
+import 'package:medicore_app/features/articles/presentation/view/article_details_view.dart';
 import 'package:medicore_app/features/articles/presentation/view/articles_view.dart';
-import 'package:medicore_app/features/articles/presentation/view/widgets/article_details_view.dart';
 import 'package:medicore_app/features/auth/OTP/presentation/view/otp_view.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view/create_account.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
-import 'package:medicore_app/features/auth/forget_password/presentation/view/forget_password_view.dart';
 import 'package:medicore_app/features/auth/forget_password/presentation/view/back_page_view.dart';
+import 'package:medicore_app/features/auth/forget_password/presentation/view/forget_password_view.dart';
 import 'package:medicore_app/features/auth/login/presentation/view/login_view.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/book_appointment_view.dart';
 import 'package:medicore_app/features/family/presentation/view/child_details_view.dart';
@@ -25,6 +25,8 @@ import 'package:medicore_app/features/profile/presentation/view/change_password_
 import 'package:medicore_app/features/profile/presentation/view/edit_profile_view.dart';
 import 'package:medicore_app/features/profile/presentation/view/profile_view.dart';
 import 'package:medicore_app/features/splash/presentation/views/splash_view.dart';
+
+import '../../features/payment/presentation/views/payment_view.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: SplashView.routeName,
@@ -167,6 +169,11 @@ final GoRouter router = GoRouter(
       path: AppointmentArchiveView.routeName,
       name: AppointmentArchiveView.routeName,
       builder: (context, state) => const AppointmentArchiveView(),
+    ),
+    GoRoute(
+      path: PaymentView.routeName,
+      name: PaymentView.routeName,
+      builder: (context, state) => const PaymentView(),
     ),
 
     GoRoute(

@@ -1,10 +1,12 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 
 class QuickActionButton extends StatelessWidget {
-  final IconData icon;
+  final FaIconData icon;
   final String label;
   final VoidCallback onTap;
 
@@ -31,7 +33,7 @@ class QuickActionButton extends StatelessWidget {
               color: theme.splashColor,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: Colors.white, size: 24),
+            child: FaIcon(icon, color: Colors.white, size: 24),
           ),
           const SizedBox(height: 8),
           Text(

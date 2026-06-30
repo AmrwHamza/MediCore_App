@@ -19,8 +19,12 @@ class ArticleRepoImpl implements ArticleRepo {
       endPoint: 'getArticlesApp?page=$page',
     );
     return response.fold((failure) => Left(failure), (response) {
-      final List data = response.data['data']['data'];
-      _lastPage = response.data['data']['last_page'];
+      // print('✅✅RESPOSE BEFORE DECODE=${response.toString()}');
+      // final decoded = jsonDecode(response);
+      // print('✅✅RESPOSE AFTER DECODE=${response.toString()}');
+      final List data = response['data']['data'];
+      print('✅✅RESPOSE AFTER DECODE=${data.toString()}');
+      _lastPage = response['data']['last_page'];
 
       return Right(
         data.map((json) => ArticleModel.fromJson(json).toEntity()).toList(),

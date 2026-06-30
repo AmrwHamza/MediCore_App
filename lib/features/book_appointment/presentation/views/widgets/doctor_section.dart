@@ -4,16 +4,42 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
+import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/book_appointment/presentation/view_model/book_cubit/book_appointment_cubit.dart';
 import 'package:medicore_app/features/book_appointment/presentation/view_model/doctor_cubit/doctor_book_appointment_cubit.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/doctor_card_in_home.dart';
 
-class DoctorSection extends StatelessWidget {
+class DoctorSection extends StatefulWidget {
   const DoctorSection({super.key});
 
   @override
+  State<DoctorSection> createState() => _DoctorSectionState();
+}
+
+class _DoctorSectionState extends State<DoctorSection> {
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollToSelected(int index, int totalItems) {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final target = (maxScroll / (totalItems - 1)) * index;
+    _scrollController.animateTo(
+      target.clamp(0.0, maxScroll),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
+
     return BlocConsumer<DoctorBookAppointmentCubit, DoctorBookAppointmentState>(
       listener: (context, state) {
         if (state is GetDoctorsInDepartmentFailure) {
@@ -26,38 +52,80 @@ class DoctorSection extends StatelessWidget {
       },
       builder: (context, doctorState) {
         if (doctorState is DoctorsLoading) {
-          return const Center(child: SpinKitThreeBounce(color: KOrange));
+          return const Center(
+            child: SpinKitThreeBounce(color: KPrimaryColor, size: 30),
+          );
         } else if (doctorState is GetDoctorsInDepartmentSuccess) {
           final selectedDoctorId =
               context.watch<BookAppointmentCubit>().selectedDoctorId;
           final doctors = doctorState.doctors;
 
           if (doctors.isEmpty) {
-            return Center(child: Text('no_doctors_available'.tr()));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'no_doctors_available'.tr(),
+                  style: TextStyle(
+                    color: theme.disabledColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            );
           }
 
           return SizedBox(
-            height: MediaQuery.of(context).size.width / 2.1,
+            height: MediaQuery.of(context).size.width / 2.0,
             child: ListView.separated(
+              controller: _scrollController,
               scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               itemCount: doctors.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              separatorBuilder: (_, __) => const SizedBox(width: 14),
               itemBuilder: (context, index) {
                 final doctor = doctors[index];
+                final isSelected = selectedDoctorId == doctor.doctorId;
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: DoctorCardInHome(
-                    isSelected: selectedDoctorId == doctor.doctorId,
-                    name: 'dr'.tr() + ' ${doctor.user.firstName}',
-                    department: doctor.department?.name ?? '',
-                    rating: doctor.rate ?? 0.0,
-                    imageUrl: doctor.user.imagePath,
-                    onTap: () {
-                      context.read<BookAppointmentCubit>().setSelectedDoctorId(
-                        doctor.doctorId,
-                      );
-                    },
+                if (isSelected && _scrollController.hasClients) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _scrollToSelected(index, doctors.length);
+                  });
+                }
+
+                return AnimatedScale(
+                  scale: isSelected ? 1.03 : 1.0,
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeOutBack,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow:
+                          isSelected
+                              ? [
+                                BoxShadow(
+                                  color: KPrimaryColor.withAlpha(30),
+                                  blurRadius: 14,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ]
+                              : [],
+                    ),
+                    child: DoctorCardInHome(
+                      isSelected: isSelected,
+                      name: 'dr'.tr() + ' ${doctor.user.firstName}',
+                      department: doctor.department?.name ?? '',
+                      rating: doctor.rate ?? 0.0,
+                      imageUrl: doctor.user.imagePath,
+                      onTap: () {
+                        context
+                            .read<BookAppointmentCubit>()
+                            .setSelectedDoctorId(doctor.doctorId);
+                        _scrollToSelected(index, doctors.length);
+                      },
+                    ),
                   ),
                 );
               },
@@ -69,32 +137,33 @@ class DoctorSection extends StatelessWidget {
             children: [
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(KOrange),
-                  elevation: WidgetStateProperty.all(2),
+                  backgroundColor: WidgetStateProperty.all(KPrimaryColor),
+                  elevation: WidgetStateProperty.all(4),
+                  shadowColor: WidgetStateProperty.all(
+                    KPrimaryColor.withAlpha(100),
+                  ),
+                  padding: WidgetStateProperty.all(
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
                 ),
                 onPressed: () {
                   context.read<DoctorBookAppointmentCubit>().getAllDoctors();
                 },
                 child: Text(
                   'pick_doctor'.tr(),
-                  style: TextStyles.button.copyWith(color: Colors.white),
+                  style: TextStyles.button.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
           );
-          // Center(
-          //   child: SizedBox(
-          //     height: MediaQuery.of(context).size.width / 10,
-          //     width: MediaQuery.of(context).size.width / 3,
-          //     child: CustomButton(
-          //       title: 'pick_doctor'.tr(),
-          //       color: KPrimaryColor,
-          //       onTap: () {
-          //         context.read<DoctorBookAppointmentCubit>().getAllDoctors();
-          //       },
-          //     ),
-          //   ),
-          // );
         }
       },
     );

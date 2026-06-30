@@ -17,10 +17,24 @@ class ArticleModel extends ArticleEntity {
       doctorId: json['doctor_id'],
       title: json['title'],
       body: json['body'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(json['updated_at'] ?? '') ?? DateTime.now(),
       isFav: json['fav'],
     );
+  }
+
+  static final RegExp _imageRegex = RegExp(r'\[(.*?)\]');
+
+  List<String> get paragraphs {
+    return body
+        .split(_imageRegex)
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
+  }
+
+  List<String> get images {
+    return _imageRegex.allMatches(body).map((e) => e.group(1)!).toList();
   }
 
   ArticleEntity toEntity() {

@@ -10,6 +10,8 @@ import 'package:medicore_app/features/book_appointment/presentation/view_model/d
 import 'package:medicore_app/features/book_appointment/presentation/view_model/symptom_analysis_cubit/symptom_analysis_cubit.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/book_appointment_view_body.dart';
 
+import '../../../family/presentation/view_model/family_cubit/family_cubit.dart';
+
 class BookAppointmentView extends StatelessWidget {
   static const String routeName = '/book-appointment';
 
@@ -44,6 +46,7 @@ class BookAppointmentView extends StatelessWidget {
                 (context) =>
                     DepartmentBookAppointmentCubit()..getDepartments(context),
           ),
+          BlocProvider(create: (context) => FamilyCubit()),
         ],
 
         child: const BookAppointmentViewBody(),

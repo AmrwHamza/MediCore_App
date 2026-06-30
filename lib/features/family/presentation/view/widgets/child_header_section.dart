@@ -76,7 +76,7 @@ class ChildHeaderSection extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(
+                      const FaIcon(
                         FontAwesomeIcons.child,
                         color: Colors.white70,
                         size: 18,
@@ -93,7 +93,7 @@ class ChildHeaderSection extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(
+                      const FaIcon(
                         FontAwesomeIcons.notesMedical,
                         color: Colors.white70,
                         size: 18,

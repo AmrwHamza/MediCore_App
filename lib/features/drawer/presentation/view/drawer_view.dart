@@ -85,7 +85,7 @@ class DrawerView extends StatelessWidget {
                           ),
                         ),
                         onTap: () {},
-                        leading: const Icon(
+                        leading: const FaIcon(
                           FontAwesomeIcons.userDoctor,
                           color: KOrange,
                         ),
@@ -99,7 +99,7 @@ class DrawerView extends StatelessWidget {
                           ),
                         ),
                         onTap: () {},
-                        leading: const Icon(
+                        leading: const FaIcon(
                           FontAwesomeIcons.bookMedical,
                           color: KPurple,
                         ),

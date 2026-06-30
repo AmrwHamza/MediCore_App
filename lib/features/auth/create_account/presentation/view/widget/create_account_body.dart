@@ -159,7 +159,7 @@ class CreateAccountBody extends StatelessWidget {
                         children: [
                           Text('id_question'.tr()),
                           Switch(
-                            activeColor: KPrimaryColor,
+                            activeThumbColor: KPrimaryColor,
                             value: hasID,
                             onChanged: (value) {
                               context.read<IdCubit>().showQeustion(

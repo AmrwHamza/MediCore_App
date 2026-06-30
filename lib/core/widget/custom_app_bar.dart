@@ -47,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     onPressed: () {
                       context.push(NotificationView.routeName);
                     },
-                    icon: const Icon(FontAwesomeIcons.bell, color: KOrange),
+                    icon: const FaIcon(FontAwesomeIcons.bell, color: KOrange),
                   ),
                   const SizedBox(width: 5),
                 ]

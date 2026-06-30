@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,10 @@ import 'package:medicore_app/core/utils/logger_helper.dart';
 import 'package:medicore_app/features/main_home/presentation/view/main_home_view.dart';
 import 'package:medicore_app/features/on_boarding/presentation/views/on_boarding_view.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../../core/helper_function/get_it_service.dart';
+import '../../../../../core/helper_function/hive_service.dart';
+import '../../../../../firebase_options.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
@@ -50,23 +55,38 @@ class _SplashViewBodyState extends State<SplashViewBody>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
-
-    _startSplashSequence();
+    _initializeAppAndNavigate();
   }
 
-  Future<void> _startSplashSequence() async {
-    await Future.delayed(const Duration(milliseconds: 2300));
-    await _checkLogin();
+  Future<void> _initializeAppAndNavigate() async {
+    final stopwatch = Stopwatch()..start();
+
+    await Future.wait([
+      initHive(),
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+      Future.delayed(const Duration(milliseconds: 2300)),
+    ]);
+
+    setup();
+
+    stopwatch.stop();
+    LoggerHelper.success(
+      'Initialization took: ${stopwatch.elapsedMilliseconds} ms',
+    );
+
+    if (mounted) {
+      await _checkLogin();
+    }
   }
 
   Future<void> _checkLogin() async {
     final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
     final isLoggedIn = token != null && token.isNotEmpty;
-    // context.go(PatientInfoView.routeName);
 
     isLoggedIn
         ? LoggerHelper.success('user token: $token')
         : LoggerHelper.error('No Token');
+
     if (isLoggedIn) {
       context.go(MainHomeView.routeName);
     } else {
