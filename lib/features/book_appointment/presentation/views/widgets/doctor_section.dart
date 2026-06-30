@@ -65,7 +65,8 @@ class _DoctorSectionState extends State<DoctorSection> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  'no_doctors_available'.tr(),
+                  'no_doctors_in_dept'.tr(),
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: theme.disabledColor,
                     fontSize: 14,
@@ -77,7 +78,7 @@ class _DoctorSectionState extends State<DoctorSection> {
           }
 
           return SizedBox(
-            height: MediaQuery.of(context).size.width / 2.0,
+            height: MediaQuery.of(context).size.width / 1.8,
             child: ListView.separated(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
@@ -115,10 +116,7 @@ class _DoctorSectionState extends State<DoctorSection> {
                     ),
                     child: DoctorCardInHome(
                       isSelected: isSelected,
-                      name: 'dr'.tr() + ' ${doctor.user.firstName}',
-                      department: doctor.department?.name ?? '',
-                      rating: doctor.rate ?? 0.0,
-                      imageUrl: doctor.user.imagePath,
+                      doctor: doctor,
                       onTap: () {
                         context
                             .read<BookAppointmentCubit>()

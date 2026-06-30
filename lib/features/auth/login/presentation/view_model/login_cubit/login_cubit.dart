@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:medicore_app/constants.dart';
@@ -18,20 +19,28 @@ class LoginCubit extends Cubit<LoginState> {
     final data = {'email': email, 'password': password, 'fcm_token': token};
 
     final result = await LoginRepoImpl().login(data: data);
-    result.fold((failure) => emit(LoginFailure(message: failure.message)), (
-      data,
-    ) {
-      saveUserInfo(
-        data.token,
-        data.user.firstName,
-        data.user.lastName,
-        data.user.email,
-        data.user.phone,
-        data.user.id,
-        data.expiresAt,
-      );
-      emit(LoginSuccess(loginUserEntity: data));
-    });
+    result.fold(
+      (failure) {
+        if (failure.statusCode == 401) {
+          emit(
+            LoginFailure(message: 'chcek_your_email_or_password_message'.tr()),
+          );
+        }
+        emit(LoginFailure(message: failure.message));
+      },
+      (data) {
+        saveUserInfo(
+          data.token,
+          data.user.firstName,
+          data.user.lastName,
+          data.user.email,
+          data.user.phone,
+          data.user.id,
+          data.expiresAt,
+        );
+        emit(LoginSuccess(loginUserEntity: data));
+      },
+    );
   }
 }
 

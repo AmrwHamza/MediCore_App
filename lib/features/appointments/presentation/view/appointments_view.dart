@@ -9,7 +9,6 @@ import 'package:medicore_app/features/appointments/presentation/view/widgets/acc
 import 'package:medicore_app/features/appointments/presentation/view/widgets/incomplete_page.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/waiting_page.dart';
 import 'package:medicore_app/features/appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
-import 'package:provider/provider.dart';
 
 class AppointmentsView extends StatelessWidget {
   static const routeName = '/appointments';
@@ -17,38 +16,38 @@ class AppointmentsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: KOrange,
-          child: const Icon(Icons.archive, color: Colors.white),
-          onPressed: () {
-            context.pushNamed(AppointmentArchiveView.routeName);
-          },
-        ),
-        backgroundColor:
-            Provider.of<ThemeProvider>(
-              context,
-            ).themeData.scaffoldBackgroundColor,
-        appBar: TabBar(
-          labelColor: KPrimaryColor,
-          unselectedLabelColor: Colors.grey,
-          indicatorColor: KPrimaryColor,
-          tabs: [
-            Tab(text: 'waiting'.tr()),
-            Tab(text: 'accepted'.tr()),
-            Tab(text: 'incomplete'.tr()),
-          ],
-        ),
-        body: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => AppointmentsCubit()
-              ..getAppointments(),
+    final theme = context.watch<ThemeProvider>().themeData;
+
+    return BlocProvider(
+      create: (context) => AppointmentsCubit()..getAppointments(),
+      child: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: KOrange,
+            child: const Icon(Icons.archive, color: Colors.white),
+            onPressed: () {
+              context.pushNamed(AppointmentArchiveView.routeName);
+            },
+          ),
+          backgroundColor: theme.scaffoldBackgroundColor,
+          appBar: AppBar(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            title: TabBar(
+              labelColor: KPrimaryColor,
+              unselectedLabelColor: Colors.grey,
+              indicatorColor: KPrimaryColor,
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab(text: 'waiting'.tr()),
+                Tab(text: 'accepted'.tr()),
+                Tab(text: 'incomplete'.tr()),
+              ],
             ),
-          ],
-          child: const TabBarView(
+          ),
+          body: const TabBarView(
             children: [WaitingPage(), AcceptedPage(), IncompletePage()],
           ),
         ),

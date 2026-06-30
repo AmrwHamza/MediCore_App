@@ -101,8 +101,7 @@ class _DepartmentSectionState extends State<DepartmentSection> {
                               : [],
                     ),
                     child: DepartmentCard(
-                      title: department.departmentName,
-                      imageUrl: department.image,
+                      department: department,
                       isSelected: isSelected,
                       onTap: () {
                         final bookCubit = context.read<BookAppointmentCubit>();

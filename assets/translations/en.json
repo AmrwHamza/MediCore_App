@@ -78,6 +78,7 @@
   "waiting": "waiting Accept",
   "accepted": "Accepted",
   "incomplete": "incomplete Diagnosis",
+  "completed": "Completed",
   "rate": "Rate",
   "select_language": "Select Language",
   "welcome_card_desc": "We hope you're having a healthy day.",
@@ -130,7 +131,7 @@
   "analyze_symptoms": "Analyze Symptoms",
   "department_not_found": "Department \"{department}\" not found in system.",
   "birthdate": "Birthday: \"{birthdate}\"",
-  "age": "Age: \"{age}\"",
+  "age": "Age: {age}",
   "email_sent_title": "Check your email",
   "email_sent_description": "We've sent a link to reset your password. Please check your inbox.",
   "back_to_login": "Back to Login",
@@ -138,12 +139,17 @@
   "please_select_date_and_time": "Please select date and time",
 
   "payment_method": "Payment Method",
+  "add_payment_method": "Add Payment Method",
+  "add_payment_method_success": "Payment method was added successfuly",
+  "search_doctor_hint": "Search doctors here...",
   "choose_provider": "Choose Provider",
   "provider_subtitle": "Please select your preferred electronic payment network to proceed",
   "syriatel": "Syriatel Cash",
   "syriatel_cash_desc": "Fast payment via your Syriatel Cash account",
+  "no_payment": "No payment methods added yet. Please add one first.",
   "mtn": "Cash Mobile",
   "cash_mtn_desc": "Secure payment via your MTN Cash account",
+  "sham_cash_desc": "Fast payment via your Sham Cash account",
   "secure_checkout": "100% Secure Checkout",
   "checkout_encrypted_desc": "All your financial transaction data is fully encrypted and secured.",
   "payment_notice_text": "Please make sure that the electronic payment service is activated on your line and that you have sufficient balance before clicking confirm.",
@@ -160,5 +166,32 @@
   "choose_specialty_message": "Choose the right medical department to filter relevant doctors",
   "choose_your_doctor_message": "Select your treating physician based on ratings and experience",
   "select_date_time": "Select Date & Time",
-  "choose_best_slot": "Choose the most convenient day and time slot from available schedules"
+  "select_payment": "Select Payment Method",
+  "choose_payment": "Choose the right payment method to make your booking",
+  "choose_best_slot": "Choose the most convenient day and time slot from available schedules",
+
+  "see_all": "See All",
+  "retry": "Retry",
+
+  "contact_info": "Contact Information",
+  "no_doctors_in_dept": "No medical specialists available in this department right now.",
+
+  "waiting_note": "Please, be at the center a quarter of an hour before your appointment.",
+  "progress_note": "Waiting for a doctor's review with the required documents.",
+  "done_note": "Please Rate Your Experience.",
+  "no_appointments": "No appointments found under this section right now.",
+
+  "no_dector_in_department": "No doctors yet in this department",
+
+  "Syriatel_Cash_title": "Syriatel Cash",
+  "MTN_Cash_title": "MTN Cash",
+  "Sham_Cash_title": "Sham Cash",
+
+  "chcek_your_email_or_password_message": "Please check your email or password",
+
+  "payment_balance": "Balance: {}",
+  "phone_number": "Phone Number",
+
+  "add_profile_image_success" : "Profile image was added successfuly",
+  "delete_profile_image_success" : "Profile image was deleted successfuly"
 }

@@ -42,7 +42,7 @@ class FamilyViewBody extends StatelessWidget {
         }
       },
       child: CustomScrollWidget(
-        onRefresh: () {
+        onRefresh: () async {
           context.read<FamilyCubit>().getChilds();
           return Future.delayed(const Duration(seconds: 1));
         },
@@ -50,9 +50,12 @@ class FamilyViewBody extends StatelessWidget {
           builder: (context, state) {
             if (state is GetFamilyFailure) {
               return Center(
-                child: Text(
-                  state.error,
-                  style: TextStyles.H2.copyWith(color: Colors.red),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Text(
+                    state.error,
+                    style: TextStyles.H2.copyWith(color: Colors.red),
+                  ),
                 ),
               );
             }
@@ -60,29 +63,29 @@ class FamilyViewBody extends StatelessWidget {
             final isLoading = state is GetFamilyLoading;
             final children =
                 (state is GetFamilySuccess) ? state.children.childList : [];
-
-            final itemCount = isLoading ? 5 : children.length + 1;
+            final itemCount = isLoading ? 6 : children.length + 1;
 
             return GridView.builder(
               padding: const EdgeInsets.all(16),
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio: 0.5,
+                childAspectRatio: 0.75,
               ),
               itemCount: itemCount,
               itemBuilder: (context, index) {
-                final animationDelay = Duration(milliseconds: 100 * index);
+                final animationDelay = Duration(milliseconds: 80 * index);
 
                 if (index == 0) {
                   return const AddChildCard()
                       .animate()
-                      .fade(duration: 500.ms, delay: animationDelay)
+                      .fade(duration: 400.ms, delay: animationDelay)
                       .slideY(
-                        begin: 0.2,
-                        duration: 500.ms,
+                        begin: 0.1,
+                        duration: 400.ms,
                         curve: Curves.easeOut,
                       );
                 }
@@ -90,23 +93,19 @@ class FamilyViewBody extends StatelessWidget {
                 if (isLoading) {
                   return const CustomShimer()
                       .animate()
-                      .fade(duration: 500.ms, delay: animationDelay)
+                      .fade(duration: 400.ms, delay: animationDelay)
                       .slideY(
-                        begin: 0.2,
-                        duration: 500.ms,
+                        begin: 0.1,
+                        duration: 400.ms,
                         curve: Curves.easeOut,
                       );
                 }
 
                 final child = children[index - 1];
-                final childName = '${child.firstName} ${child.lastName}';
-                final isMale = child.gender == 'male';
-
+                
                 return ChildCard(
-                      childId: child.id,
-                      isMale: isMale,
-                      childName: childName,
-                      childAge: child.age,
+                      child: child,
+
                       onTap: () {
                         context.push(
                           ChildDetailsView.routeName,
@@ -115,10 +114,10 @@ class FamilyViewBody extends StatelessWidget {
                       },
                     )
                     .animate()
-                    .fade(duration: 500.ms, delay: animationDelay)
+                    .fade(duration: 400.ms, delay: animationDelay)
                     .slideY(
-                      begin: 0.2,
-                      duration: 500.ms,
+                      begin: 0.1,
+                      duration: 400.ms,
                       curve: Curves.easeOut,
                     );
               },

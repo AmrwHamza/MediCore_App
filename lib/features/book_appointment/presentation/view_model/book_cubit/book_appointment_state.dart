@@ -63,6 +63,14 @@ class DoctorSelected extends BookAppointmentState {
   List<Object?> get props => [doctorId];
 }
 
+class SonSelected extends BookAppointmentState {
+  final int? sonId;
+  SonSelected(this.sonId);
+
+  @override
+  List<Object?> get props => [sonId];
+}
+
 class CalendarVisibilityChanged extends BookAppointmentState {
  final bool visible;
  CalendarVisibilityChanged(this.visible);

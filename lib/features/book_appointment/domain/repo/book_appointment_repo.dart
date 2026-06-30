@@ -8,10 +8,11 @@ abstract class BookAppointmentRepo {
   Future<Either<Failure, BookAppointmentEntity>> bookAppointment({
     required String date,
     required int doctorId,
+    required int? paymentId,
     int? sonId,
   });
 
-  Future<Either<Failure,GetSymptomsModel>> getSymptoms({required String lang});
+  Future<Either<Failure, GetSymptomsModel>> getSymptoms({required String lang});
 
   Future<Either<Failure, AnalyseSymptomsEntity>> analyseSymptoms(
     List<String> selectedSymptoms,

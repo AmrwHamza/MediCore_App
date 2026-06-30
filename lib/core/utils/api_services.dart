@@ -18,7 +18,10 @@ class Api {
       receiveDataWhenStatusError: true,
       connectTimeout: const Duration(seconds: 60),
       receiveTimeout: const Duration(seconds: 60),
-      headers: {'ngrok-skip-browser-warning': 'true'},
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+        'Accept': 'application/json',
+      },
     );
 
     dio = Dio(options);
@@ -52,7 +55,7 @@ class Api {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
         return const Left(
-          ValidationFailure('====Token is missing or invalid===='),
+          ValidationFailure(message: '====Token is missing or invalid===='),
         );
       }
       final mergedQuery = {...?data, 'lang': lang};
@@ -98,7 +101,9 @@ class Api {
     try {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
-        return const Left(ValidationFailure('Token is missing or invalid'));
+        return const Left(
+          ValidationFailure(message: 'Token is missing or invalid'),
+        );
       }
 
       final mergedQuery = {...?queryParameters, 'lang': lang};
@@ -146,7 +151,7 @@ class Api {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
         return const Left(
-          ValidationFailure('====Token is missing or invalid===='),
+          ValidationFailure(message: '====Token is missing or invalid===='),
         );
       }
       final options = Options(headers: {'Authorization': 'Bearer $token'});
@@ -191,7 +196,7 @@ class Api {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
       if (token.isEmpty) {
         return const Left(
-          ValidationFailure('====Token is missing or invalid===='),
+          ValidationFailure(message: '====Token is missing or invalid===='),
         );
       }
       final options = Options(headers: {'Authorization': 'Bearer $token'});
@@ -210,25 +215,50 @@ class Api {
   }
 
   Failure handleDioError(DioException dioError) {
+    final statusCode = dioError.response?.statusCode;
     switch (dioError.type) {
       case DioExceptionType.connectionTimeout:
-        return const TimeoutFailure();
+        return TimeoutFailure(statusCode: statusCode);
       case DioExceptionType.receiveTimeout:
-        return const TimeoutFailure('Server response timeout');
+        return TimeoutFailure(
+          message: 'Server response timeout',
+          statusCode: statusCode,
+        );
       case DioExceptionType.sendTimeout:
-        return const TimeoutFailure('Request timeout');
+        return TimeoutFailure(
+          message: 'Request timeout',
+          statusCode: statusCode,
+        );
       case DioExceptionType.badResponse:
         final statusCode = dioError.response?.statusCode;
         final errorMessage = getErrorMessage(dioError.response?.data);
-        return ServerFailure('Error $statusCode,$errorMessage');
+        return ServerFailure(
+          message: 'Error $statusCode,$errorMessage',
+          statusCode: statusCode,
+        );
       case DioExceptionType.cancel:
-        return const UnknownFailure('Request was canceled');
+        return UnknownFailure(
+          message: 'Request was canceled',
+          statusCode: statusCode,
+        );
       case DioExceptionType.unknown:
-        return const UnknownFailure('no internet connection');
+        return UnknownFailure(
+          message: 'no internet connection',
+          statusCode: statusCode,
+        );
       case DioExceptionType.badCertificate:
-        return const ValidationFailure('bad Certificate');
+        return ValidationFailure(
+          message: 'bad Certificate',
+          statusCode: statusCode,
+        );
       case DioExceptionType.connectionError:
-        return const NetworkFailure('connection error');
+        return NetworkFailure(
+          message: 'connection error',
+          statusCode: statusCode,
+        );
+      case DioExceptionType.transformTimeout:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 

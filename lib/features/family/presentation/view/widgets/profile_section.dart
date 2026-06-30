@@ -1,44 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
+import 'package:medicore_app/core/utils/app_images.dart';
 
-// ignore: must_be_immutable
 class ProfileSection extends StatelessWidget {
-  ProfileSection({super.key, required this.name, this.imageUrl});
+  const ProfileSection({
+    super.key,
+    required this.name,
+    this.imageUrl,
+    this.isMale = true,
+  });
 
   final String name;
-  String? imageUrl;
+  final String? imageUrl;
+  final bool isMale;
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
           Container(
-            width: 100,
-            height: 100,
+            width: 80,
+            height: 80,
             decoration: BoxDecoration(
-              color: const Color(0xFFDCF5F9),
+              color: theme.cardColor,
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFB0E0E6), width: 2),
+              border: Border.all(
+                color: theme.colorScheme.primary.withAlpha(100),
+                width: 2,
+              ),
             ),
-            child: const Center(
-              //show image here later
-              child: SizedBox(),
-              // imageUrl != null
-              //     ? Image.asset(imageUrl!)
-              //     : SvgPicture.asset(
-              //       isMale ? Assets.imagesBoy : Assets.imagesGirl,
-              //     ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child:
+                  imageUrl != null && imageUrl!.isNotEmpty
+                      ? Image.network(imageUrl!, fit: BoxFit.cover)
+                      : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgPicture.asset(
+                          isMale ? Assets.imagesBoy : Assets.imagesGirl,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
             ),
           ),
-          const SizedBox(width: 20),
-          Text(
-            name,
-            style: TextStyles.H2.copyWith(
-              color: context.watch<ThemeProvider>().themeData.canvasColor,
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              name,
+              style: TextStyles.H2.copyWith(
+                color: theme.canvasColor,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

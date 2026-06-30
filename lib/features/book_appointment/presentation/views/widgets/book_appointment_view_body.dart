@@ -14,7 +14,9 @@ import 'package:medicore_app/features/book_appointment/presentation/views/widget
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/section_header.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/select_symptoms_section.dart';
 
+import '../../../../appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
 import 'child_or_me_selector.dart';
+import 'payment_section.dart';
 
 class BookAppointmentViewBody extends StatelessWidget {
   const BookAppointmentViewBody({super.key});
@@ -74,6 +76,15 @@ class BookAppointmentViewBody extends StatelessWidget {
           const SizedBox(height: 12),
           const CalenderSection(),
 
+          const CustomDivider(),
+          SectionHeader(
+            title: 'select_payment'.tr(),
+            subtitle: 'choose_payment'.tr(),
+            icon: Icons.attach_money,
+          ),
+          const SizedBox(height: 12),
+          const PaymentSection(),
+
           const SizedBox(height: 32),
           Center(
             child: BlocConsumer<BookAppointmentCubit, BookAppointmentState>(
@@ -111,7 +122,9 @@ class BookAppointmentViewBody extends StatelessWidget {
                       );
                       return;
                     }
-                    cubit.bookAppointment(doctorId: selectedDoctor);
+                    cubit.bookAppointment(doctorId: selectedDoctor).then((_) {
+                      context.read<AppointmentsCubit>().getAppointments();
+                    });
                   },
                 );
               },

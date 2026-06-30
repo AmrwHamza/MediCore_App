@@ -14,6 +14,8 @@ import 'package:medicore_app/features/onboarding_medical_info/presentation/view/
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/children_info_cubit/children_info_cubit.dart';
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/children_info_ui_cubit/children_info_ui_cubit.dart';
 
+import '../../../../data/mapper/child_mapper.dart';
+
 class ChildrenInfoViewBody extends StatelessWidget {
   const ChildrenInfoViewBody({super.key});
 
@@ -136,11 +138,10 @@ class ChildrenInfoViewBody extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final child = allChildren[index];
                             return ChildCard(
-                              child: child,
-                              childId: child.id,
-                              isMale: child.gender == 'male',
-                              childName: '${child.firstName} ${child.lastName}',
-                              childAge: child.age,
+                              child:
+                                  ChildMapper.fromChildEntityToGetGetChildEntity(
+                                    child,
+                                  ),
                             );
                           },
                         );

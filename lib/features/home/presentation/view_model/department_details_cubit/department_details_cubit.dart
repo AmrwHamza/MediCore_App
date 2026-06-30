@@ -14,9 +14,14 @@ class DepartmentDetailsCubit extends Cubit<DepartmentDetailsState> {
     final response = await getIt<HomeRepoImpl>().getDoctorsInDepartment(
       departmentId,
     );
-    response.fold(
-      (failure) => emit(DepartmentDetailsFailure(error: failure.message)),
-      (data) => emit(DepartmentDetailsSuccess(doctors: data)),
-    );
+    response.fold((failure) {
+       switch (failure.statusCode) {
+        case 400:
+          emit(DepartmentDetailsSuccess(doctors: []));
+          break;
+        default:
+          emit(DepartmentDetailsFailure(error: failure.message));
+      }
+    }, (data) => emit(DepartmentDetailsSuccess(doctors: data)));
   }
 }

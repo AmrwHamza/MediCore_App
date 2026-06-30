@@ -66,6 +66,8 @@ class Assets {
   /// assets/images/medi.jpg
   static const String imagesMedi = "assets/images/medi.jpg";
 
+  static const profile = "assets/images/profile.svg";
+
   /// Assets for imagesNeurology
   /// assets/images/neurology.svg
   static const String imagesNeurology = "assets/images/neurology.svg";
@@ -92,5 +94,6 @@ class Assets {
 
   static const String mtnLogo = 'assets/images/mtn.png';
   static const String syriatelLogo = 'assets/images/Syriatel.jpg'; 
+  static const String shamCashLogo = 'assets/images/sham_cash.jpg';
 }
 

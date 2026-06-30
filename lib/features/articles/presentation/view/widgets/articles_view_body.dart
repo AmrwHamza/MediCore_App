@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicore_app/core/widget/custom_scroll_widget.dart';
 import 'package:medicore_app/features/articles/presentation/view_model/cubit/article_cubit.dart';
 import 'package:medicore_app/features/articles/presentation/view_model/cubit/article_state.dart';
@@ -31,7 +32,7 @@ class _ArticlesViewBodyState extends State<ArticlesViewBody> {
         builder: (context, state) {
           if (state is ArticlePaginationLoaded) {
             return ListView.builder(
-              padding: const EdgeInsets.only(top: 8, bottom: 16),
+              padding: EdgeInsets.only(top: 8.h, bottom: 16.h),
               itemCount: state.articles.length,
               itemBuilder: (context, index) {
                 return ArticleCard(article: state.articles[index])
@@ -52,28 +53,36 @@ class _ArticlesViewBodyState extends State<ArticlesViewBody> {
             return Center(child: Text("Error: ${state.message}"));
           } else {
             return ListView.builder(
-              padding: const EdgeInsets.only(top: 8, bottom: 16),
+              padding: EdgeInsets.only(
+                top: 8.h,
+                bottom: 16.h,
+                right: 16.w,
+                left: 16.w,
+              ),
               itemCount: 6,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return const CustomShimer()
-                    .animate()
-                    .fadeIn(
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeOut,
-                    )
-                    .slideY(
-                      begin: 0.2,
-                      end: 0,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeOutCubic,
-                    )
-                    .shimmer(
-                      delay: Duration(milliseconds: index * 100),
-                      duration: const Duration(milliseconds: 1200),
-                      color: Colors.white24,
-                    );
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: const CustomShimer()
+                      .animate()
+                      .fadeIn(
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeOut,
+                      )
+                      .slideY(
+                        begin: 0.2,
+                        end: 0,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeOutCubic,
+                      )
+                      .shimmer(
+                        delay: Duration(milliseconds: index * 100),
+                        duration: const Duration(milliseconds: 1200),
+                        color: Colors.white24,
+                      ),
+                );
               },
             );
           }

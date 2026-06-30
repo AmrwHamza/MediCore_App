@@ -14,8 +14,6 @@ class WaitingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = ScrollController();
-
     return CustomScrollWidget(
       onRefresh: () async {
         context.read<AppointmentsCubit>().getAppointments();
@@ -26,7 +24,12 @@ class WaitingPage extends StatelessWidget {
           if (state is AppointmentsLoading) {
             return const LoadingShimerList();
           } else if (state is AppointmentsFailure) {
-            return Center(child: Text(state.error, style: TextStyles.notes));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(state.error, style: TextStyles.notes),
+              ),
+            );
           } else if (state is AppointmentsSuccess) {
             final combinedList = [
               ...state.waitingPatient.map((e) => {'data': e, 'isChild': false}),
@@ -35,6 +38,15 @@ class WaitingPage extends StatelessWidget {
                     innerList.map((e) => {'data': e, 'isChild': true}),
               ),
             ];
+
+            if (combinedList.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Text('no_appointments'.tr(), style: TextStyles.notes),
+                ),
+              );
+            }
 
             combinedList.sort((a, b) {
               final aDate =
@@ -45,20 +57,20 @@ class WaitingPage extends StatelessWidget {
             });
 
             return ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              controller: scrollController,
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               itemCount: combinedList.length,
               itemBuilder: (context, index) {
                 final item = combinedList[index];
                 final appointment = item['data'] as PatientAppointmentEntity;
                 final isChild = item['isChild'] as bool;
-                final slideDirection = index.isEven ? 0.3 : -0.3;
+                final slideDirection = index.isEven ? 0.15 : -0.15;
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
-                    vertical: 4,
+                    vertical: 6,
                   ),
                   child: AppointmentCard(
                         isDone: false,
@@ -73,20 +85,19 @@ class WaitingPage extends StatelessWidget {
                       )
                       .animate()
                       .fade(
-                        duration: 400.ms,
-                        delay: Duration(milliseconds: 100 * index),
+                        duration: 350.ms,
+                        delay: Duration(milliseconds: 50 * index),
                       )
                       .slideX(
                         begin: slideDirection,
-                        duration: 500.ms,
-                        curve: Curves.easeOutBack,
+                        duration: 400.ms,
+                        curve: Curves.easeOutCubic,
                       ),
                 );
               },
             );
-          } else {
-            return Center(child: Text('get_appointments_failure'.tr()));
           }
+          return const SizedBox.shrink();
         },
       ),
     );

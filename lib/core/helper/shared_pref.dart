@@ -29,6 +29,7 @@ class SharedPrefHelper {
   Future<void> setLanguageCode(String code) async {
     await _prefs?.setString(SharedPrefKeys.language, code);
   }
+  
 
   String get languageCode => _prefs?.getString(SharedPrefKeys.language) ?? 'en';
 

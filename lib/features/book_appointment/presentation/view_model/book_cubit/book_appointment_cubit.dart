@@ -13,6 +13,8 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
   TimeOfDay? selectedTime;
   int? selectedDoctorId;
   int? selectedDepartmentId;
+  int? selectSonId;
+  int? selectedPaymentId;
 
   void setSelectedDepartmentId(int id) {
     selectedDepartmentId = id;
@@ -24,8 +26,6 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
     selectedDoctorId = id;
     emit(DoctorSelected(id));
   }
-
-
 
   void setSelectedDate(DateTime date) {
     selectedDate = date;
@@ -39,7 +39,16 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
     }
   }
 
-  Future<void> bookAppointment({required int doctorId, int? sonId}) async {
+  void setSelectedSonId(int? id) {
+    selectSonId = id;
+    emit(SonSelected(id ?? 0));
+  }
+
+  void setSelectedPaymentId(int? id) {
+    selectedPaymentId = id;
+   }
+
+  Future<void> bookAppointment({required int doctorId}) async {
     if (selectedDate == null || selectedTime == null) {
       emit(BookAppointmentFailure(error: 'please_select_date_and_time'.tr()));
       return;
@@ -62,12 +71,15 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
     final response = await BookAppointmentRepoImpl().bookAppointment(
       date: formattedDateTime,
       doctorId: doctorId,
-      sonId: sonId,
+      sonId: selectSonId,
+      paymentId: selectedPaymentId,
     );
 
     response.fold(
       (failure) => emit(BookAppointmentFailure(error: failure.message)),
-      (data) => emit(BookAppointmentSuccess(message: data.message)),
+      (data){
+        emit(BookAppointmentSuccess(message: data.message));
+      } 
     );
   }
 }

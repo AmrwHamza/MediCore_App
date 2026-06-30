@@ -5,8 +5,8 @@ import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/family/presentation/view_model/family_cubit/family_cubit.dart';
 
-import '../../../../family/data/mapper/child_entity_mapper.dart';
 import '../../../../onboarding_medical_info/presentation/view/widgets/child_card.dart';
+import '../../view_model/book_cubit/book_appointment_cubit.dart';
 
 class ChildOrMeSelector extends StatefulWidget {
   const ChildOrMeSelector({super.key});
@@ -52,6 +52,13 @@ class _ChildOrMeSelectorState extends State<ChildOrMeSelector> {
                 isSelected: _selectedType == 'me',
                 theme: theme,
                 isDark: isDark,
+                onTap: () {
+                  setState(() {
+                    _selectedType = 'me';
+                    _selectedChildId = null;
+                  });
+                  context.read<BookAppointmentCubit>().setSelectedSonId(null);
+                },
               ),
             ),
             const SizedBox(width: 16),
@@ -63,6 +70,14 @@ class _ChildOrMeSelectorState extends State<ChildOrMeSelector> {
                 isSelected: _selectedType == 'child',
                 theme: theme,
                 isDark: isDark,
+                onTap: () {
+                  setState(() {
+                    _selectedType = 'child';
+                  });
+                  context.read<BookAppointmentCubit>().setSelectedSonId(
+                    _selectedChildId,
+                  );
+                },
               ),
             ),
           ],
@@ -108,14 +123,15 @@ class _ChildOrMeSelectorState extends State<ChildOrMeSelector> {
                       return Padding(
                         padding: const EdgeInsets.only(right: 12.0),
                         child: ChildCard(
-                          childId: child.id,
-                          isMale: isMale,
-                          childName: fullName,
-                          childAge: child.age,
-                          child: fromGetChildEntity(child),
+                          child: child,
                           isSelected: _selectedChildId == child.id,
                           onTap: () {
-                            setState(() => _selectedChildId = child.id);
+                            setState(() {
+                              _selectedChildId = child.id;
+                            });
+                            context
+                                .read<BookAppointmentCubit>()
+                                .setSelectedSonId(child.id);
                           },
                         ),
                       );
@@ -147,6 +163,7 @@ class _ChildOrMeSelectorState extends State<ChildOrMeSelector> {
     required bool isSelected,
     required ThemeData theme,
     required bool isDark,
+    required VoidCallback onTap,
   }) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
@@ -160,12 +177,7 @@ class _ChildOrMeSelectorState extends State<ChildOrMeSelector> {
                 : theme.cardColor,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
-          onTap: () {
-            setState(() {
-              _selectedType = id;
-              if (id == 'me') _selectedChildId = null;
-            });
-          },
+          onTap: onTap,
           borderRadius: BorderRadius.circular(16),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 16),

@@ -27,7 +27,7 @@ class HomeRepoImpl implements HomeRepo {
         return Right(departmentResponse.departments);
       });
     } catch (e) {
-      return Left(UnknownFailure('${e.toString()}'));
+      return Left(UnknownFailure(message: '${e.toString()}'));
     }
   }
 
@@ -38,7 +38,9 @@ class HomeRepoImpl implements HomeRepo {
           await getIt<HiveHomeLocalStorge>().getCachedDepartments();
       return Right(departments);
     } catch (e) {
-      return const Left(UnknownFailure("Faield to get cached departments "));
+      return const Left(
+        UnknownFailure(message: "Faield to get cached departments "),
+      );
     }
   }
 
@@ -72,9 +74,15 @@ class HomeRepoImpl implements HomeRepo {
     final response = await getIt<Api>().getWithAuth(
       endPoint: 'department/doctor/$departmentId',
     );
-    return response.fold((failure) => Left(failure), (data) async {
-      final doctorResponse = DoctorResponseModel.fromJson(data);
-      return Right(doctorResponse.doctors);
-    });
+    return response.fold(
+      (failure) {
+        return Left(failure);
+      },
+
+      (data) async {
+        final doctorResponse = DoctorResponseModel.fromJson(data);
+        return Right(doctorResponse.doctors);
+      },
+    );
   }
 }

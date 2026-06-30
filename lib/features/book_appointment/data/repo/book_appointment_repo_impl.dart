@@ -14,11 +14,16 @@ class BookAppointmentRepoImpl implements BookAppointmentRepo {
   Future<Either<Failure, BookAppointmentEntity>> bookAppointment({
     required String date,
     required int doctorId,
+    required int? paymentId,
     int? sonId,
   }) async {
     final Response = await getIt<Api>().postWithAuth(
       endPoint: 'bookAppointment/$doctorId',
-      data: {'appointment_date': date, 'son_id': sonId, 'payment_id': 40},
+      data: {
+        'appointment_date': date,
+        'son_id': sonId,
+        'payment_id': paymentId,
+      },
     );
     return Response.fold((failure) => Left(failure), (data) {
       final message = BookAppointmentModel.fromJson(data);

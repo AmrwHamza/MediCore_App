@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicore_app/constants.dart';
@@ -7,9 +8,7 @@ import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/image_card.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/info_row.dart';
-import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
 class AppointmentCard extends StatelessWidget {
   final bool isChild;
   final bool isDone;
@@ -17,11 +16,11 @@ class AppointmentCard extends StatelessWidget {
   final String patientName;
   final String doctorName;
   final String status;
-  bool? isMale;
+  final bool isMale;
   final DateTime date;
   final double? rating;
 
-  AppointmentCard({
+  const AppointmentCard({
     super.key,
     required this.isChild,
     required this.imagePath,
@@ -29,7 +28,7 @@ class AppointmentCard extends StatelessWidget {
     required this.status,
     required this.date,
     required this.doctorName,
-    this.isMale,
+    this.isMale = true,
     this.rating,
     required this.isDone,
   });
@@ -37,25 +36,27 @@ class AppointmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+
     return Card(
       color:
-          isDone ? Colors.grey.withAlpha((0.4 * 255).round()) : theme.cardColor,
+          isDone
+              ? (isDark ? Colors.white10 : Colors.grey.shade200)
+              : theme.cardColor,
+      elevation: isDone ? 0 : 3,
+      shadowColor: Colors.black.withValues(alpha: 0.04),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         side:
             isDone
                 ? BorderSide(
-                  color: Provider.of<ThemeProvider>(
-                    context,
-                  ).themeData.canvasColor.withAlpha((0.3 * 255).round()),
-                  width: 2,
+                  color: theme.dividerColor.withValues(alpha: 0.1),
+                  width: 1.5,
                 )
                 : BorderSide.none,
       ),
-
-      elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -68,83 +69,96 @@ class AppointmentCard extends StatelessWidget {
                   InfoRow(
                     icon: FontAwesomeIcons.person,
                     text: patientName,
-                    iconColor: theme.canvasColor,
-                    textStyle: TextStyles.H2.copyWith(color: theme.canvasColor),
+                    iconColor: isDark ? Colors.white70 : KBlack,
+                    textStyle: TextStyles.H2.copyWith(
+                      color: isDark ? Colors.white : KBlack,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  const SizedBox(height: 6),
                   InfoRow(
                     icon: FontAwesomeIcons.clock,
-                    text: status,
+                    text: status.tr(),
                     iconColor: _pickStatusColor(status),
                     textStyle: TextStyles.button.copyWith(
                       color: _pickStatusColor(status),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-
+                  const SizedBox(height: 6),
                   InfoRow(
                     icon: FontAwesomeIcons.calendar,
                     text: DateFormat('dd/MM/yyyy - hh:mm a').format(date),
                     iconColor: KPrimaryColor,
-                    textStyle: TextStyles.public.copyWith(color: KPrimaryColor),
+                    textStyle: TextStyles.public.copyWith(
+                      color: KPrimaryColor,
+                      fontSize: 12,
+                    ),
                   ),
-
+                  const SizedBox(height: 6),
                   InfoRow(
                     icon: FontAwesomeIcons.stethoscope,
                     text: doctorName,
                     iconColor: KDarkBlue,
-                    textStyle: TextStyles.public.copyWith(color: KDarkBlue),
+                    textStyle: TextStyles.public.copyWith(
+                      color: KDarkBlue,
+                      fontSize: 12,
+                    ),
                   ),
-
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 10),
+                  Divider(
+                    color: theme.dividerColor.withValues(alpha: 0.08),
+                    height: 1,
+                  ),
+                  const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const FaIcon(
-                        FontAwesomeIcons.noteSticky,
-                        color: Colors.grey,
-                        size: 16,
+                      Icon(
+                        Icons.sticky_note_2_rounded,
+                        color: Colors.grey.shade400,
+                        size: 18,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          _pickNote(status),
+                          _pickNote(status).tr(),
                           style: TextStyles.notes.copyWith(
-                            fontSize: 10,
-                            color: theme.canvasColor.withAlpha(
-                              (0.7 * 255).round(),
-                            ),
+                            fontSize: 11,
+                            color: isDark ? Colors.white60 : Colors.black54,
                           ),
-                          softWrap: true,
                         ),
                       ),
                     ],
                   ),
-                  if (status == 'Done') const SizedBox(height: 8),
-                  if (status == 'Done')
+                  if (status == 'Done') ...[
+                    const SizedBox(height: 12),
                     Row(
                       children: [
-                        rating != null
-                            ? RatingBarIndicator(
-                              rating: rating!,
-                              itemBuilder:
-                                  (context, _) => const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                              itemCount: 5,
-                              itemSize: 18.0,
-                              direction: Axis.horizontal,
-                            )
-                            : const SizedBox.shrink(),
-                        const SizedBox(width: 10),
+                        if (rating != null)
+                          RatingBarIndicator(
+                            rating: rating!,
+                            itemBuilder:
+                                (_, __) => const Icon(
+                                  Icons.star_rounded,
+                                  color: Colors.amber,
+                                ),
+                            itemCount: 5,
+                            itemSize: 18.0,
+                          ),
+                        const Spacer(),
                         InkWell(
                           onTap: () {},
+                          borderRadius: BorderRadius.circular(20),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
+                              horizontal: 14,
+                              vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.green,
+                              color: Colors.green.shade600,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -158,6 +172,7 @@ class AppointmentCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ],
                 ],
               ),
             ),
@@ -174,20 +189,20 @@ class AppointmentCard extends StatelessWidget {
       case "In Progressing":
         return KOrange;
       case 'Done':
-        return const Color.fromARGB(255, 244, 67, 54);
+        return Colors.green;
       default:
-        return KBlack;
+        return Colors.grey;
     }
   }
 
   String _pickNote(String status) {
     switch (status) {
       case 'Waiting':
-        return 'Please , be at the center a quarter of an hour before your appointment .';
+        return 'waiting_note';
       case "In Progressing":
-        return 'Waiting for a doctor\'s review with the required documents';
+        return 'progress_note';
       case 'Done':
-        return 'Please Rate Your Experience';
+        return 'done_note';
       default:
         return '';
     }

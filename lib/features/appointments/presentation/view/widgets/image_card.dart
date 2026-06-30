@@ -6,6 +6,10 @@ import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 
 class ImageCard extends StatelessWidget {
+  final bool isChild;
+  final String imagePath;
+  final bool isMale;
+
   const ImageCard({
     super.key,
     required this.isChild,
@@ -13,48 +17,69 @@ class ImageCard extends StatelessWidget {
     required this.isMale,
   });
 
-  final bool isChild;
-  final String imagePath;
-  final bool? isMale;
-
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 30,
-      backgroundColor: KDarkBlue.withAlpha((255 * 0.5).round()),
-      backgroundImage: isChild ? null : AssetImage(imagePath),
-      child:
-          isChild
-              ? Stack(
-                alignment: Alignment.center,
-                children: [
-                  CachedNetworkImage(
-                    color: Colors.amber,
-                    imageUrl:
-                        (imagePath.isEmpty)
-                            ? (isMale! ? Assets.imagesBoy : Assets.imagesGirl)
-                            : imagePath,
-                    width: 100,
-                    height: 100,
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: CircleAvatar(
-                      radius: 11,
-                      backgroundColor: KPurple,
-                      child: Text(
-                        'child'.tr(),
-                        style: TextStyles.notes.copyWith(
-                          color: Colors.white,
-                          fontSize: 8,
-                        ),
-                      ),
+    final bool isNetworkImage =
+        imagePath.startsWith('http') || imagePath.contains('/');
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: KPrimaryColor.withValues(alpha: 0.2),
+              width: 2,
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child:
+                isNetworkImage
+                    ? CachedNetworkImage(
+                      imageUrl: imagePath,
+                      fit: BoxFit.cover,
+                      placeholder:
+                          (_, __) => Container(color: Colors.grey.shade200),
+                      errorWidget:
+                          (_, __, ___) => Image.asset(
+                            isMale ? Assets.imagesBoy : Assets.imagesGirl,
+                            fit: BoxFit.cover,
+                          ),
+                    )
+                    : Image.asset(
+                      imagePath.isNotEmpty
+                          ? imagePath
+                          : (isMale ? Assets.imagesBoy : Assets.imagesGirl),
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                ],
-              )
-              : null,
+          ),
+        ),
+        if (isChild)
+          Positioned(
+            bottom: -4,
+            right: -4,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: KPurple,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white, width: 1.5),
+              ),
+              child: Text(
+                'child'.tr(),
+                style: TextStyles.notes.copyWith(
+                  color: Colors.white,
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

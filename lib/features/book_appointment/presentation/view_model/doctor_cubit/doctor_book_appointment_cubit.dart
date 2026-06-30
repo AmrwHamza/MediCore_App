@@ -23,9 +23,14 @@ class DoctorBookAppointmentCubit extends Cubit<DoctorBookAppointmentState> {
     final response = await getIt<HomeRepoImpl>().getDoctorsInDepartment(
       departmentId,
     );
-    response.fold(
-      (failure) => emit(GetDoctorsInDepartmentFailure(error: failure.message)),
-      (data) => emit(GetDoctorsInDepartmentSuccess(doctors: data)),
-    );
+    response.fold((failure) {
+      switch (failure.statusCode) {
+        case 400:
+          emit(GetDoctorsInDepartmentSuccess(doctors: []));
+          break;
+        default:
+          emit(GetDoctorsInDepartmentFailure(error: failure.message));
+      }
+    }, (data) => emit(GetDoctorsInDepartmentSuccess(doctors: data)));
   }
 }

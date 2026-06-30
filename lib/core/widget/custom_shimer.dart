@@ -4,47 +4,74 @@ import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CustomShimer extends StatelessWidget {
-  const CustomShimer({super.key, this.hieght, this.width});
+  const CustomShimer({super.key, this.height, this.width, this.radius});
 
-  final double? hieght;
+  final double? height;
   final double? width;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
+    final isDarkMode = theme.brightness == Brightness.dark;
+
+    final baseColor =
+        isDarkMode
+            ? Colors.grey.withValues(alpha: 0.15)
+            : Colors.grey.withValues(alpha: 0.25);
+
+    final highlightColor =
+        isDarkMode
+            ? theme.cardColor.withValues(alpha: 0.4)
+            : theme.shadowColor.withValues(alpha: 0.3);
+
+    final containerWidth = width ?? 120;
+    final containerHeight = height ?? 120;
+
+    final avatarSize = containerHeight * .45;
+    final titleWidth = containerWidth * .65;
+    final subTitleWidth = containerWidth * .4;
+
     return Shimmer.fromColors(
-      baseColor: Colors.grey.withAlpha((255 * 0.3).round()),
-      highlightColor: theme.shadowColor,
+      baseColor: baseColor,
+      highlightColor: highlightColor,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        padding: const EdgeInsets.all(16),
+        width: containerWidth,
+        height: containerHeight,
+        padding: EdgeInsets.all(containerWidth * .1),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: theme.cardColor,
+          borderRadius: BorderRadius.circular(radius ?? 16),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: hieght ?? MediaQuery.of(context).size.height * 0.1,
-              width: width ?? 100,
-              decoration: const BoxDecoration(
+              width: avatarSize,
+              height: avatarSize,
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white,
+                color: Colors.white.withValues(alpha: .6),
               ),
             ),
-            const SizedBox(width: 16),
-            // Flexible(
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Container(
-            //         height: hieght ?? MediaQuery.of(context).size.height * 0.1,
-            //         width: width ?? 100,
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            SizedBox(height: containerHeight * .08),
+            Container(
+              height: containerHeight * .08,
+              width: titleWidth,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: .6),
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            SizedBox(height: containerHeight * .05),
+            Container(
+              height: containerHeight * .06,
+              width: subTitleWidth,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: .6),
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
           ],
         ),
       ),

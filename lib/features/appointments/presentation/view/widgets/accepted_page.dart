@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/widget/custom_scroll_widget.dart';
 import 'package:medicore_app/features/appointments/domain/entities/patient_appointment_entity.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_card.dart';
@@ -14,9 +13,8 @@ class AcceptedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = ScrollController();
     return CustomScrollWidget(
-      onRefresh: () {
+      onRefresh: () async {
         context.read<AppointmentsCubit>().getAppointments();
         return Future.delayed(const Duration(seconds: 1));
       },
@@ -25,7 +23,12 @@ class AcceptedPage extends StatelessWidget {
           if (state is AppointmentsLoading) {
             return const LoadingShimerList();
           } else if (state is AppointmentsFailure) {
-            return Center(child: Text(state.error, style: TextStyles.notes));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(state.error, style: TextStyles.notes),
+              ),
+            );
           } else if (state is AppointmentsSuccess) {
             final combinedList = [
               ...state.acceptedPatient.map(
@@ -37,6 +40,15 @@ class AcceptedPage extends StatelessWidget {
               ),
             ];
 
+            if (combinedList.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Text('no_appointments'.tr(), style: TextStyles.notes),
+                ),
+              );
+            }
+
             combinedList.sort((a, b) {
               final aDate =
                   (a['data'] as PatientAppointmentEntity).appointmentDate;
@@ -46,9 +58,9 @@ class AcceptedPage extends StatelessWidget {
             });
 
             return ListView.builder(
-              controller: scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               itemCount: combinedList.length,
               itemBuilder: (context, index) {
                 final item = combinedList[index];
@@ -58,27 +70,23 @@ class AcceptedPage extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
-                    vertical: 4,
+                    vertical: 6,
                   ),
                   child: AppointmentCard(
-                    isDone: isChild,
+                    isDone: false,
                     isChild: isChild,
-                    imagePath: Assets.imagesMe,
-                    patientName: appointment.appointmentInfo.patientImage ?? '',
+                    imagePath: appointment.appointmentInfo.patientImage ?? '',
+                    patientName: appointment.appointmentInfo.patientName,
                     status: appointment.status,
                     date: appointment.appointmentDate,
                     doctorName: appointment.appointmentInfo.doctorName,
-                    isMale:
-                        appointment.appointmentInfo.gender == "male"
-                            ? true
-                            : false,
+                    isMale: appointment.appointmentInfo.gender == "male",
                   ),
                 );
               },
             );
-          } else {
-            return Center(child: Text('get_appointments_failure'.tr()));
           }
+          return const SizedBox.shrink();
         },
       ),
     );

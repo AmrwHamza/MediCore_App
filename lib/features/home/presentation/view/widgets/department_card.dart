@@ -6,90 +6,213 @@ import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 
-class DepartmentCard extends StatelessWidget {
-  final String title;
-  final String? imageUrl;
+class DepartmentCard extends StatefulWidget {
+  final dynamic department;
   final bool? isSelected;
   final void Function()? onTap;
 
   const DepartmentCard({
-    Key? key,
-    required this.title,
-    required this.imageUrl,
+    super.key,
+    required this.department,
     this.onTap,
     this.isSelected,
-  }) : super(key: key);
+  });
+
+  @override
+  State<DepartmentCard> createState() => _DepartmentCardState();
+}
+
+class _DepartmentCardState extends State<DepartmentCard> {
+  bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
-    final isCardSelected = isSelected ?? false;
+    final isDark = theme.brightness == Brightness.dark;
+    final isCardSelected = widget.isSelected ?? false;
 
-    return Container(
-      width: MediaQuery.of(context).size.width / 4.1,
-      margin: const EdgeInsets.only(right: 4),
-      decoration: BoxDecoration(
-        color: isCardSelected ? KPrimaryColor : theme.cardColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color:
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedScale(
+        scale: isCardSelected ? 1.05 : (_isHovered ? 1.02 : 1.0),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          width: 105,
+          decoration: BoxDecoration(
+            gradient:
                 isCardSelected
-                    ? KDarkBlue.withAlpha((0.2 * 255).round())
-                    : theme.shadowColor,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+                    ? LinearGradient(
+                      colors: [
+                        KPrimaryColor,
+                        KPrimaryColor.withValues(alpha: 0.85),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    )
+                    : LinearGradient(
+                      colors:
+                          isDark
+                              ? [KCardDark, KCardDark.withValues(alpha: 0.7)]
+                              : [
+                                Colors.white,
+                                Colors.grey.withValues(alpha: 0.05),
+                              ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color:
+                  isCardSelected
+                      ? Colors.white.withValues(alpha: 0.3)
+                      : (isDark
+                          ? Colors.white.withValues(alpha: 0.08)
+                          : KPrimaryColor.withValues(alpha: 0.1)),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color:
+                    isCardSelected
+                        ? KPrimaryColor.withValues(alpha: 0.4)
+                        : (isDark
+                            ? Colors.black.withValues(alpha: 0.3)
+                            : KPrimaryColor.withValues(alpha: 0.08)),
+                blurRadius: isCardSelected ? 20 : 12,
+                spreadRadius: isCardSelected ? 1 : 0,
+                offset:
+                    isCardSelected ? const Offset(0, 8) : const Offset(0, 4),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: InkWell(
-        highlightColor: KPrimaryColor,
-        onTap: onTap,
-        child: Column(
-          children: [
-            (imageUrl != null && imageUrl!.isNotEmpty)
-                ? Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: CachedNetworkImage(
-                    placeholder:
-                        (context, url) => const CircularProgressIndicator(),
-                    errorWidget:
-                        (context, url, error) => CircleAvatar(
-                          backgroundColor: KDarkBlue,
-                          child: Icon(
-                            Icons.broken_image,
-                            color:
-                                isCardSelected ? KPrimaryColor : Colors.white70,
-                            size: 35,
-                          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: widget.onTap,
+                borderRadius: BorderRadius.circular(24),
+                splashColor:
+                    isCardSelected
+                        ? Colors.white.withValues(alpha: 0.2)
+                        : KPrimaryColor.withValues(alpha: 0.15),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient:
+                              isCardSelected
+                                  ? LinearGradient(
+                                    colors: [
+                                      Colors.white.withValues(alpha: 0.3),
+                                      Colors.white.withValues(alpha: 0.1),
+                                    ],
+                                  )
+                                  : LinearGradient(
+                                    colors:
+                                        isDark
+                                            ? [KAppBarDark, KCardDark]
+                                            : [
+                                              KPrimaryColor.withValues(
+                                                alpha: 0.05,
+                                              ),
+                                              KPrimaryColor.withValues(
+                                                alpha: 0.15,
+                                              ),
+                                            ],
+                                  ),
+                          boxShadow: [
+                            if (isCardSelected)
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                          ],
                         ),
-                    imageUrl: '$base$imageUrl',
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(28),
+                          child:
+                              (widget.department.image != null &&
+                                      widget.department.image.isNotEmpty)
+                                  ? CachedNetworkImage(
+                                    imageUrl: '$base${widget.department.image}',
+                                    fit: BoxFit.cover,
+                                    placeholder:
+                                        (context, url) => Center(
+                                          child: SizedBox(
+                                            width: 22,
+                                            height: 22,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2.5,
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                    isCardSelected
+                                                        ? Colors.white
+                                                        : KPrimaryColor,
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                    errorWidget:
+                                        (context, url, error) => Center(
+                                          child: FaIcon(
+                                            FontAwesomeIcons.hospitalUser,
+                                            color:
+                                                isCardSelected
+                                                    ? Colors.white
+                                                    : KPrimaryColor,
+                                            size: 22,
+                                          ),
+                                        ),
+                                  )
+                                  : Center(
+                                    child: FaIcon(
+                                      FontAwesomeIcons.hospitalUser,
+                                      color:
+                                          isCardSelected
+                                              ? Colors.white
+                                              : KPrimaryColor,
+                                      size: 22,
+                                    ),
+                                  ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        widget.department.departmentName,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyles.public.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.3,
+                          color:
+                              isCardSelected
+                                  ? Colors.white
+                                  : (isDark
+                                      ? Colors.white.withValues(alpha: 0.95)
+                                      : KBlack),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-                : const CircleAvatar(
-                  backgroundColor: KDarkBlue,
-                  radius: 25,
-                  child: FaIcon(
-                    FontAwesomeIcons.hospitalUser,
-                    color: Colors.white70,
-                  ),
-                ),
-            const SizedBox(height: 16),
-            Center(
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyles.public.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: isCardSelected ? Colors.white : KDarkBlue,
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

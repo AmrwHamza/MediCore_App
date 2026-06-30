@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicore_app/core/helper/observer.dart';
 import 'package:medicore_app/core/helper/router.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
@@ -12,6 +13,8 @@ import 'package:medicore_app/features/onboarding_medical_info/presentation/view_
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/patient_info_cubit/patient_info_cubit.dart';
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/patient_info_ui_cubit/patient_info_ui_cubit.dart';
 import 'package:provider/provider.dart';
+
+import 'features/appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,17 +30,22 @@ void main() async {
   Bloc.observer = const CounterObserver();
 
   runApp(
-    EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('ar')],
-      path: 'assets/translations',
-      fallbackLocale: const Locale('en'),
-      startLocale: Locale(prefs.languageCode),
-      child: ChangeNotifierProvider(
-        create: (context) => themeProvider,
+  EasyLocalization(
+    supportedLocales: const [Locale('en'), Locale('ar')],
+    path: 'assets/translations',
+    fallbackLocale: const Locale('en'),
+    startLocale: Locale(prefs.languageCode),
+    child: ChangeNotifierProvider(
+      create: (context) => themeProvider,
+      child: ScreenUtilInit(
+        designSize: const Size(390, 844),
+        minTextAdapt: true,
+        splitScreenMode: true,
         child: MediCoreApp(prefs: prefs),
       ),
     ),
-  );
+  ),
+);
 }
 
 class MediCoreApp extends StatelessWidget {
@@ -53,6 +61,8 @@ class MediCoreApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<PatientInfoUiCubit>()),
         BlocProvider(create: (context) => ChildrenInfoCubit()),
         BlocProvider(create: (context) => LogoutCubit()),
+        BlocProvider(create: (context) => AppointmentsCubit()),
+
       ],
       child: Builder(
         builder: (context) {

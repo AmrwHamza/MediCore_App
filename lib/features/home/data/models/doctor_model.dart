@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:medicore_app/features/home/domain/entities/doctor_department_entity.dart';
 import 'package:medicore_app/features/home/domain/entities/doctor_entity.dart';
 import 'package:medicore_app/features/home/domain/entities/doctor_response_entity.dart';
@@ -51,12 +50,12 @@ class DoctorDepartmentModel extends DoctorDepartmentEntity {
   });
 
   factory DoctorDepartmentModel.fromJson(Map<String, dynamic> json) {
-     final langCode = Intl.getCurrentLocale(); 
-     final nameMap = json['name'];
-     return DoctorDepartmentModel(
+    // final langCode = Intl.getCurrentLocale();
+    final nameMap = json['name'];
+    return DoctorDepartmentModel(
       departmentId: json['id'],
-      name: nameMap[langCode] ?? nameMap['en'], 
-      image: json['image'],
+      name: nameMap,
+      image: json['image'] != null ? json['image'] : '',
     );
   }
 }

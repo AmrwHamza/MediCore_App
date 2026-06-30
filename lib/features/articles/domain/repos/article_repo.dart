@@ -5,7 +5,7 @@ import 'package:medicore_app/features/articles/domain/entities/article_entity.da
 abstract class ArticleRepo {
   Future<Either<Failure, List<ArticleEntity>>> getArticles({int page = 1});
   Future<bool> hasMore(int currentPage);
-  Future<Either<Failure,ArticleEntity>> addArticleFav(int articleId);
-  Future<Either<Failure,String>> deleteArticleFav(int articleId);
+  Future<Either<Failure,void>> addArticleFav(int articleId);
+  Future<Either<Failure,void>> deleteArticleFav(int articleId);
 
 }

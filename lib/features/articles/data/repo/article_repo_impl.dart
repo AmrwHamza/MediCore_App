@@ -19,9 +19,6 @@ class ArticleRepoImpl implements ArticleRepo {
       endPoint: 'getArticlesApp?page=$page',
     );
     return response.fold((failure) => Left(failure), (response) {
-      // print('✅✅RESPOSE BEFORE DECODE=${response.toString()}');
-      // final decoded = jsonDecode(response);
-      // print('✅✅RESPOSE AFTER DECODE=${response.toString()}');
       final List data = response['data']['data'];
       print('✅✅RESPOSE AFTER DECODE=${data.toString()}');
       _lastPage = response['data']['last_page'];
@@ -38,20 +35,20 @@ class ArticleRepoImpl implements ArticleRepo {
   }
 
   @override
-  Future<Either<Failure, ArticleEntity>> addArticleFav(int articleId) async {
+  Future<Either<Failure, void>> addArticleFav(int articleId) async {
     final response = await getIt<Api>().postWithAuth(
       endPoint: 'addArticleFav/$articleId',
       data: null,
     );
     return response.fold((failure) => Left(failure), (json) {
-      final data = ArticleModel.fromJson(json);
-      return Right(data);
+      // final data = ArticleModel.fromJson(json['data']);
+      return const Right(null);
     });
   }
 
   @override
-  Future<Either<Failure, String>> deleteArticleFav(int articleId) async {
-    final response = await getIt<Api>().postWithAuth(
+  Future<Either<Failure, void>> deleteArticleFav(int articleId) async {
+    final response = await getIt<Api>().deleteWithAuth(
       endPoint: 'deleteArticleFav/$articleId',
       data: null,
     );

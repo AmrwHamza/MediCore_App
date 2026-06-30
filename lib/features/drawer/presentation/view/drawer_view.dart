@@ -17,6 +17,8 @@ import 'package:medicore_app/features/auth/logout/presentation/view_model/cubit/
 import 'package:medicore_app/features/drawer/presentation/view/widgets/custom_drawer_header.dart';
 import 'package:provider/provider.dart';
 
+import '../../../payment/presentation/views/payment_view.dart';
+
 class DrawerView extends StatelessWidget {
   const DrawerView({super.key});
 
@@ -36,7 +38,7 @@ class DrawerView extends StatelessWidget {
             builder: (context, themeProvider, child) {
               final pref = getIt<SharedPrefHelper>();
               return SwitchListTile(
-                activeColor: KPrimaryColor,
+                activeThumbColor: KPrimaryColor,
                 secondary: Icon(
                   pref.isDarkMode ? Icons.dark_mode : Icons.light_mode,
                   color: Colors.blue[800],
@@ -172,6 +174,15 @@ class DrawerView extends StatelessWidget {
           ListTile(
             title: Text('Archive'.tr()),
             leading: const Icon(Icons.archive, color: KOrange),
+          ),
+          ListTile(
+            title: Text('add_payment_method'.tr()),
+            leading: const Icon(Icons.credit_card, color: KPurple),
+            onTap:
+                () => context.push(
+                  PaymentView.routeName,
+                  extra: {'isInSplashs': false},
+                ),
           ),
           BlocConsumer<LogoutCubit, LogoutState>(
             listener: (context, state) async {

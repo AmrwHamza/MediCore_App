@@ -11,9 +11,9 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
     return Scaffold(
-      backgroundColor:
-          context.watch<ThemeProvider>().themeData.scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: MultiBlocProvider(
         providers: [
           BlocProvider(

@@ -5,7 +5,7 @@ class ArticleEntity {
   final String body;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final bool isFav;
+  bool isFav;
 
   ArticleEntity({
     required this.id,

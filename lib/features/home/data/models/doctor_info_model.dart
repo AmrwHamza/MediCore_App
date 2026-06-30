@@ -26,8 +26,7 @@ class DoctorInfoModel extends DoctorInfoEntity {
       email: user['email'] ?? '',
       phone: user['phone'] ?? '',
       imagePath: user['img_path'] ?? '',
-      department:
-          isArabic ? department['name']['ar'] : department['name']['en'] ?? '',
+      department: department ?? '',
       rate: doctor['average_rating'] ?? 0,
     );
   }

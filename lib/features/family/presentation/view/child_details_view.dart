@@ -12,16 +12,12 @@ import 'package:timeline_tile/timeline_tile.dart';
 class ChildDetailsView extends StatelessWidget {
   static const routeName = '/childDetails';
 
-  ChildDetailsView({Key? key, required this.child}) : super(key: key);
+  ChildDetailsView({super.key, required this.child});
 
   final GetChildEntity child;
 
   final items = [
     {'date': '01/01/2025', 'doctor': 'Dr. Amr Hamza'},
-    {'date': '16/05/2025', 'doctor': 'Dr. Amr Hamza'},
-    {'date': '16/05/2025', 'doctor': 'Dr. Amr Hamza'},
-    {'date': '16/05/2025', 'doctor': 'Dr. Amr Hamza'},
-    {'date': '16/05/2025', 'doctor': 'Dr. Amr Hamza'},
     {'date': '16/05/2025', 'doctor': 'Dr. Amr Hamza'},
     {'date': '16/05/2025', 'doctor': 'Dr. Amr Hamza'},
     {'date': '16/05/2025', 'doctor': 'Dr. Amr Hamza'},
@@ -33,7 +29,7 @@ class ChildDetailsView extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: '${child.firstName}' + 'profile_title'.tr(),
+        title: '${child.firstName} ${_getProfileTitleSuffix()}',
         isMainBar: false,
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -42,6 +38,7 @@ class ChildDetailsView extends StatelessWidget {
           ChildHeaderSection(child: child),
           Expanded(
             child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index];
@@ -53,16 +50,16 @@ class ChildDetailsView extends StatelessWidget {
                   isFirst: isFirst,
                   isLast: isLast,
                   indicatorStyle: const IndicatorStyle(
-                    width: 12,
+                    width: 14,
                     color: KPurple,
-                    padding: EdgeInsets.all(6),
+                    padding: EdgeInsets.all(4),
                   ),
                   beforeLineStyle: LineStyle(
-                    color: theme.splashColor,
-                    thickness: 3,
+                    color: theme.dividerColor,
+                    thickness: 2,
                   ),
                   endChild: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
@@ -70,36 +67,38 @@ class ChildDetailsView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: theme.canvasColor.withAlpha(
-                            (255 * 0.2).round(),
+                            (255 * 0.1).round(),
                           ),
                         ),
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             item['date'] ?? '',
                             style: TextStyles.public.copyWith(
                               color: theme.canvasColor,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
                           Row(
                             children: [
                               Icon(
                                 Icons.medical_services,
-                                size: 18,
-                                color: theme.splashColor,
+                                size: 16,
+                                color: theme.colorScheme.primary,
                               ),
-                              const SizedBox(width: 8),
-                              Flexible(
+                              const SizedBox(width: 6),
+                              Expanded(
                                 child: Text(
                                   item['doctor'] ?? '',
                                   style: TextStyles.public.copyWith(
-                                    color: theme.canvasColor,
-                                    fontSize: 13,
+                                    color: theme.canvasColor.withAlpha(200),
+                                    fontSize: 12,
                                   ),
-                                  softWrap: true,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
@@ -108,7 +107,6 @@ class ChildDetailsView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  startChild: const SizedBox.shrink(),
                 );
               },
             ),
@@ -116,5 +114,13 @@ class ChildDetailsView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  static String _getProfileTitleSuffix() {
+    try {
+      return 'profile_title'.tr();
+    } catch (_) {
+      return " Profile";
+    }
   }
 }

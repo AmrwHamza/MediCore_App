@@ -17,8 +17,7 @@ class LightBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: MediaQuery.of(context).size.height / 5,
-      // width: MediaQuery.of(context).size.width / 3,
+
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
       decoration: BoxDecoration(
         border: BoxBorder.all(color: color!.withAlpha((0.7 * 255).round())),
