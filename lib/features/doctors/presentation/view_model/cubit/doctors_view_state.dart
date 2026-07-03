@@ -1,30 +1,20 @@
 part of 'doctors_view_cubit.dart';
 
-sealed class DoctorsViewState extends Equatable {
-  const DoctorsViewState();
-
-  @override
-  List<Object> get props => [];
-}
-
-final class DoctorsViewInitial extends DoctorsViewState {}
-
-final class DoctorsViewLoading extends DoctorsViewState {}
-
-final class DoctorsViewFailure extends DoctorsViewState {
-  final String error;
-
-  const DoctorsViewFailure({required this.error});
-
-  @override
-  List<Object> get props => [error];
-}
-
-final class DoctorsViewSuccess extends DoctorsViewState {
-  final List<DoctorEntity> doctors;
-
-  const DoctorsViewSuccess({required this.doctors});
-
-  @override
-  List<Object> get props => [doctors];
+@freezed
+class DoctorsViewState with _$DoctorsViewState {
+  const factory DoctorsViewState.initial() = _Initial;
+  const factory DoctorsViewState.getDoctorsLoading() = _GetDoctorsLoading;
+  const factory DoctorsViewState.searchDoctorsLoading() = _SearchDoctorsLoading;
+  const factory DoctorsViewState.getDoctorsFailure({
+    required String errorMessage,
+  }) = _GetDoctorsFailure;
+  const factory DoctorsViewState.searchDoctorsFailure({
+    required String errorMessage,
+  }) = _SearchDoctorsFailure;
+  const factory DoctorsViewState.getDoctorsSuccess({
+    required List<DoctorEntity> doctors,
+  }) = _GetDoctorsSuccess;
+  const factory DoctorsViewState.searchDoctorsSuccess({
+    required List<DoctorEntity> doctors,
+  }) = _SearchDoctorsSuccess;
 }

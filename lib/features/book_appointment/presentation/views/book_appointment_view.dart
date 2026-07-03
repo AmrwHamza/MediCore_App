@@ -10,6 +10,7 @@ import 'package:medicore_app/features/book_appointment/presentation/view_model/d
 import 'package:medicore_app/features/book_appointment/presentation/view_model/symptom_analysis_cubit/symptom_analysis_cubit.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/book_appointment_view_body.dart';
 
+import '../../../appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
 import '../../../family/presentation/view_model/family_cubit/family_cubit.dart';
 import '../view_model/payment_cubit/payment_book_appointment_cubit.dart';
 
@@ -41,7 +42,6 @@ class BookAppointmentView extends StatelessWidget {
           ),
           BlocProvider(create: (context) => BookAppointmentCubit()),
           BlocProvider(create: (context) => DoctorBookAppointmentCubit()),
-
           BlocProvider(
             create:
                 (context) =>
@@ -53,6 +53,7 @@ class BookAppointmentView extends StatelessWidget {
                     PaymentBookAppointmentCubit()..fetchPaymentMethods(),
           ),
           BlocProvider(create: (context) => FamilyCubit()),
+          // BlocProvider(create: (context) => AppointmentsCubit())
         ],
 
         child: const BookAppointmentViewBody(),

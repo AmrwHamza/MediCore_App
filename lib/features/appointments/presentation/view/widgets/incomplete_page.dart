@@ -1,96 +1,144 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/widget/custom_scroll_widget.dart';
-import 'package:medicore_app/features/appointments/domain/entities/patient_appointment_entity.dart';
-import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_card.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/loading_shimer_list.dart';
 import 'package:medicore_app/features/appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
+
+import '../../../../../constants.dart';
+import '../../../../../core/theme/theme_provider.dart';
+import '../../../data/models/appointment_types.dart';
+import '../../../domain/entities/privew_entity.dart';
+import '../../view_model/priviews_cubit/priviews_cubit.dart';
+import '../appointment_details_view.dart';
+import 'empty_appointment_state.dart';
+import 'privew_card.dart';
 
 class IncompletePage extends StatelessWidget {
   const IncompletePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollWidget(
+    final theme = context.watch<ThemeProvider>().themeData;
+    return RefreshIndicator.adaptive(
+      color: KPrimaryColor,
+      backgroundColor: theme.cardColor,
       onRefresh: () async {
-        context.read<AppointmentsCubit>().getAppointments();
-        return Future.delayed(const Duration(seconds: 1));
+        await context.read<PriviewsCubit>().getPriviews();
       },
-      child: BlocBuilder<AppointmentsCubit, AppointmentsState>(
+      notificationPredicate: (notification) => notification.depth == 0,
+      child: BlocBuilder<PriviewsCubit, PriviewsState>(
         builder: (context, state) {
-          if (state is AppointmentsLoading) {
+          if (state is PriviewsLoading) {
             return const LoadingShimerList();
-          } else if (state is AppointmentsFailure) {
-            return Center(child: Text(state.error, style: TextStyles.notes));
-          } else if (state is AppointmentsSuccess) {
+          }
+
+          if (state is PriviewsFailure) {
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.all(24.w),
+                child: Text(
+                  state.error,
+                  style: TextStyles.notes,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+
+          if (state is PriviewsSuccess) {
             final allAppointments = [
-              ...state.acceptedPatient.map(
-                (e) => {'data': e, 'isChild': false},
+              // ...state.completePreviews.map(
+              //   (e) => {
+              //     'data': e,
+              //     'isChild': false,
+              //     'status': AppointmentTypes.complete,
+              //   },
+              // ),
+              ...state.partlyPreviews.map(
+                (e) => {
+                  'data': e,
+                  'isChild': false,
+                  'status': AppointmentTypes.incomplete,
+                },
               ),
-              ...state.waitingPatient.map((e) => {'data': e, 'isChild': false}),
-              ...state.acceptedSon.expand(
-                (list) => list.map((e) => {'data': e, 'isChild': true}),
-              ),
-              ...state.waitingSon.expand(
-                (list) => list.map((e) => {'data': e, 'isChild': true}),
+              // ...state.completeSons.map(
+              //   (e) => {
+              //     'data': e,
+              //     'isChild': true,
+              //     'status': AppointmentTypes.complete,
+              //   },
+              // ),
+              ...state.partlyPreviewsSons.map(
+                (e) => {
+                  'data': e,
+                  'isChild': true,
+                  'status': AppointmentTypes.incomplete,
+                },
               ),
             ];
 
             final incompleteList =
                 allAppointments.where((item) {
-                  final appointment = item['data'] as PatientAppointmentEntity;
-                  return appointment.status == 'Done' ||
-                      appointment.status == 'Incomplete';
+                  final status = item['status'] as AppointmentTypes;
+                  return status == AppointmentTypes.incomplete;
                 }).toList();
 
-            if (incompleteList.isEmpty) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Text('no_appointments'.tr(), style: TextStyles.notes),
-                ),
-              );
-            }
-
             incompleteList.sort((a, b) {
-              final aDate =
-                  (a['data'] as PatientAppointmentEntity).appointmentDate;
-              final bDate =
-                  (b['data'] as PatientAppointmentEntity).appointmentDate;
+              final aDate = (a['data'] as PrivewEntity).date;
+              final bDate = (b['data'] as PrivewEntity).date;
               return bDate.compareTo(aDate);
             });
 
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              itemCount: incompleteList.length,
-              itemBuilder: (context, index) {
-                final item = incompleteList[index];
-                final appointment = item['data'] as PatientAppointmentEntity;
-                final isChild = item['isChild'] as bool;
+            return RefreshIndicator.adaptive(
+              color: KPrimaryColor,
+              backgroundColor: theme.cardColor,
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 6,
-                  ),
-                  child: AppointmentCard(
-                    isDone: true,
-                    isChild: isChild,
-                    imagePath: appointment.appointmentInfo.patientImage ?? '',
-                    patientName: appointment.appointmentInfo.patientName,
-                    status: appointment.status,
-                    date: appointment.appointmentDate,
-                    doctorName: appointment.appointmentInfo.doctorName,
-                    isMale: appointment.appointmentInfo.gender == "male",
-                  ),
-                );
+              onRefresh: () async {
+                await context.read<AppointmentsCubit>().getAppointments();
               },
+              child:
+                  incompleteList.isEmpty
+                      ? const EmptyAppointmentState()
+                      : ListView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        itemCount: incompleteList.length,
+                        itemBuilder: (context, index) {
+                          final item = incompleteList[index];
+                          final appointment = item['data'] as PrivewEntity;
+                          final isChild = item['isChild'] as bool;
+                          final status = item['status'] as AppointmentTypes;
+
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 20.w,
+                              vertical: 8.h,
+                            ),
+                            child: PreviewCard(
+                              canDelete: false,
+                              appointmentId: appointment.id,
+                              onTap: () {
+                                context.push(
+                                  AppointmentDetailsView.routeName,
+                                  extra: appointment,
+                                );
+                              },
+                              isChild: isChild,
+                              imagePath: appointment.imgPath,
+                              patientName: appointment.patientName,
+                              status: status,
+                              date: DateTime.parse(appointment.date),
+                              doctorName: appointment.doctorName,
+                              isMale: appointment.gender == 'male',
+                            ),
+                          );
+                        },
+                      ),
             );
           }
+
           return const SizedBox.shrink();
         },
       ),

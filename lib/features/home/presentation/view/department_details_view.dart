@@ -7,8 +7,8 @@ import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_app_bar.dart';
 import 'package:medicore_app/core/widget/custom_scroll_widget.dart';
-import 'package:medicore_app/core/widget/custom_shimer.dart';
 import 'package:medicore_app/features/home/presentation/view/doctor_details_view.dart';
+import 'package:medicore_app/features/home/presentation/view/widgets/department_details_loading_list.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/doctor_card_in_department.dart';
 import 'package:medicore_app/features/home/presentation/view_model/department_details_cubit/department_details_cubit.dart';
 
@@ -63,7 +63,7 @@ class DepartmentDetailsView extends StatelessWidget {
                         if (state.doctors.isEmpty) {
                           return Center(
                             child: LottieState(
-                              asset: AppLottie.emptyState,
+                              asset: AppLottie.emptySearchState,
                               message: 'no_doctors_in_dept'.tr(),
                               height: 150.h,
                             ),
@@ -104,27 +104,6 @@ class DepartmentDetailsView extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-class DepartmentDetailsLoadingList extends StatelessWidget {
-  const DepartmentDetailsLoadingList();
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      itemCount: 6,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder:
-          (_, __) => const CustomShimer(
-            height: 96,
-            width: double.infinity,
-            radius: 20,
-          ),
     );
   }
 }

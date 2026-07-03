@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:medicore_app/core/utils/errors/failure.dart';
 
 import '../../../../core/helper_function/get_it_service.dart';
@@ -10,19 +11,20 @@ import '../../domain/repos/drawer_repo.dart';
 class DrawerRepoImpl implements DrawerRepo {
   @override
   Future<Either<Failure, String>> addProfileImage({required File image}) async {
+    final formData = FormData.fromMap({
+      'image': await MultipartFile.fromFile(
+        image.path,
+        filename: image.path.split('/').last,
+      ),
+    });
+
     final response = await getIt<Api>().postWithAuth(
       endPoint: 'uploadImagesForPatientProfile',
-      data: {'image': image},
+      data: formData,
+      isMultipart: true,
     );
 
-    return response.fold(
-      (failure) {
-        return Left(failure);
-      },
-      (data) {
-        return Right(data['data']);
-      },
-    );
+    return response.fold(Left.new, (data) => Right(data['data']));
   }
 
   @override

@@ -17,6 +17,7 @@ final class GetDepartmentFailure extends DepartmentBookAppointmentState {
   final String error;
 
   GetDepartmentFailure({required this.error});
+  
 }
 
 final class GetDepartmentsSuccess extends DepartmentBookAppointmentState {

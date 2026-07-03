@@ -46,6 +46,9 @@ class Assets {
   /// assets/images/Icons/pill.svg
   static const String imagesIconsPill = "assets/images/Icons/pill.svg";
 
+  static const String doc = 'assets/images/doc.png';
+  static const String lines = 'assets/images/lines.svg';
+
   /// Assets for imagesIconsStethoscope
   /// assets/images/Icons/stethoscope.svg
   static const String imagesIconsStethoscope = "assets/images/Icons/stethoscope.svg";

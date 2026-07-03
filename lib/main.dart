@@ -15,6 +15,7 @@ import 'package:medicore_app/features/onboarding_medical_info/presentation/view_
 import 'package:provider/provider.dart';
 
 import 'features/appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
+import 'features/drawer/presentation/view_model/cubit/profile_image_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +63,9 @@ class MediCoreApp extends StatelessWidget {
         BlocProvider(create: (context) => ChildrenInfoCubit()),
         BlocProvider(create: (context) => LogoutCubit()),
         BlocProvider(create: (context) => AppointmentsCubit()),
-
+        BlocProvider(
+      create: (_) => ProfileImageCubit()..getProfileImage(),
+    ),
       ],
       child: Builder(
         builder: (context) {

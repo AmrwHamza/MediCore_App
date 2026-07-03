@@ -107,26 +107,66 @@ class _SplashViewBodyState extends State<SplashViewBody>
     return Scaffold(
       backgroundColor: theme.splashColor,
       body: Center(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Opacity(
-              opacity: _fadeAnimation.value,
-              child: Transform(
-                alignment: Alignment.center,
-                transform:
-                    Matrix4.identity()
-                      ..scale(_scaleAnimation.value)
-                      ..rotateZ(_rotationAnimation.value),
-                child: SvgPicture.asset(
-                  theme == lightMode
-                      ? Assets.imagesStethoscopeLightMode
-                      : Assets.imagesStethoscopeDarkMode,
-                  width: 180,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            FadeTransition(
+              opacity: _fadeAnimation,
+              child: ShaderMask(
+                shaderCallback: (bounds) {
+                  return const LinearGradient(
+                    begin: Alignment.center,
+                    end: Alignment.topCenter,
+                    colors: [Colors.white, Colors.transparent],
+                    stops: [0.0, 1.0],
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.dstIn,
+                child: ShaderMask(
+                  shaderCallback: (bounds) {
+                    return const LinearGradient(
+                      begin: Alignment.center,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.white, Colors.transparent],
+                      stops: [0.0, 1.0],
+                    ).createShader(bounds);
+                  },
+                  blendMode: BlendMode.dstIn,
+                  child: SvgPicture.asset(
+                    Assets.lines,
+                    width: MediaQuery.sizeOf(context).width * 0.85,
+                    fit: BoxFit.contain,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
               ),
-            );
-          },
+            ),
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform:
+                        Matrix4.identity()
+                          ..scale(_scaleAnimation.value)
+                          ..rotateZ(_rotationAnimation.value),
+                    child: child,
+                  ),
+                );
+              },
+              child: SvgPicture.asset(
+                theme == lightMode
+                    ? Assets.imagesStethoscopeLightMode
+                    : Assets.imagesStethoscopeDarkMode,
+                width: 180,
+              ),
+            ),
+          ],
         ),
       ),
     );

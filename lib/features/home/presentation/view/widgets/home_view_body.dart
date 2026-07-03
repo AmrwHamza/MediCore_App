@@ -11,6 +11,7 @@ import 'package:medicore_app/features/home/presentation/view/widgets/welcome_car
 import 'package:medicore_app/features/home/presentation/view_model/department_cubit/department_cubit.dart';
 import 'package:medicore_app/features/home/presentation/view_model/doctors_cubit/doctors_cubit.dart';
 
+import '../../../../departments/presentation/views/departments_view.dart';
 import '../../../../doctors/presentation/views/doctors_view.dart';
 import 'home_error_state.dart';
 import 'home_sections_header.dart';
@@ -43,7 +44,9 @@ class HomeViewBody extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: HomeSectionsHeader(
                 titleKey: "departments",
-                onSeeAllPressed: () {},
+                onSeeAllPressed: () {
+                  context.push(DepartmentsView.routeName);
+                },
               ),
             ),
             const SizedBox(height: 16),

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/articles/presentation/view/widgets/articles_view_body.dart';
 import 'package:medicore_app/features/articles/presentation/view_model/cubit/article_cubit.dart';
-import 'package:medicore_app/features/articles/presentation/view_model/fav_cubit/favorite_cubit.dart';
 
 class ArticlesView extends StatelessWidget {
   static const routeName = '/articles';
@@ -16,10 +15,7 @@ class ArticlesView extends StatelessWidget {
       backgroundColor:
           context.watch<ThemeProvider>().themeData.scaffoldBackgroundColor,
       body: MultiBlocProvider(
-        providers: [
-           
-          BlocProvider(create: (context) => ArticleCubit()),
-        ],
+        providers: [BlocProvider(create: (context) => ArticleCubit())],
         child: const ArticlesViewBody(),
       ),
     );

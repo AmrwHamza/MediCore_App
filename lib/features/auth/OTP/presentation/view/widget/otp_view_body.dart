@@ -16,7 +16,6 @@ import 'package:medicore_app/features/auth/OTP/presentation/view/widget/otp_row_
 import 'package:medicore_app/features/auth/OTP/presentation/view_model/otp_cubit/otp_cubit.dart';
 import 'package:medicore_app/features/auth/OTP/presentation/view_model/timer_cubit/timer_cubit.dart';
 import 'package:medicore_app/features/auth/forget_password/presentation/view/back_page_view.dart';
-import 'package:medicore_app/features/onboarding_medical_info/presentation/view/patient_info_view.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../../../payment/presentation/views/payment_view.dart';

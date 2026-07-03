@@ -17,6 +17,7 @@ import 'package:medicore_app/features/auth/logout/presentation/view_model/cubit/
 import 'package:medicore_app/features/drawer/presentation/view/widgets/custom_drawer_header.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/utils/app_lottie.dart';
 import '../../../payment/presentation/views/payment_view.dart';
 
 class DrawerView extends StatelessWidget {
@@ -213,11 +214,12 @@ class DrawerView extends StatelessWidget {
                 leading: const Icon(Icons.logout, color: KDarkBlue),
                 onTap: () async {
                   final logout = await showConfirmationDialog(
+                    lottie: AppLottie.logout,
                     context: context,
-                    title: 'LogOut',
-                    content: 'Do you want to LogOut',
-                    confirmText: 'Yes',
-                    cancelText: 'No',
+                    title: 'Logout'.tr(),
+                    content: 'logout_q'.tr(),
+                    confirmText: 'confirmationYes'.tr(),
+                    cancelText: 'no'.tr(),
                   );
                   LoggerHelper.success(logout.toString());
                   if (logout == true) {

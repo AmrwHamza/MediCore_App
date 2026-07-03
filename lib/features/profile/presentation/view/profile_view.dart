@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/profile/presentation/view/widgets/profile_view_body.dart';
 
+import '../view_model/profile_header_info_cubit/profile_header_info_cubit.dart';
+
 class ProfileView extends StatelessWidget {
   static const routeName = '/profile';
   const ProfileView({super.key});
@@ -10,14 +12,21 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
-    return Scaffold(
-      appBar: AppBar(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ProfileHeaderInfoCubit()..getProfileHeaderInfo(),
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: theme.splashColor,
+          foregroundColor: Colors.white,
+        ),
         backgroundColor: theme.splashColor,
-        foregroundColor: Colors.white,
-      ),
-      backgroundColor: theme.splashColor,
 
-      body: const ProfileViewBody(),
+        body: const ProfileViewBody(),
+      ),
     );
   }
 }

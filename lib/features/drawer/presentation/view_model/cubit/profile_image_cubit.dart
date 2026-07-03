@@ -16,42 +16,53 @@ class ProfileImageCubit extends Cubit<ProfileImageState> {
   static const String _cacheBoxName = 'profile_image_box';
   static const String _cacheKey = 'cached_image_path';
 
-  Future<void> getProfileImage({bool forceRefresh = false}) async {
-    final box = await Hive.openBox(_cacheBoxName);
-    final cachedPath = box.get(_cacheKey) as String?;
+  String? profileImagePath;
 
-    if (cachedPath != null && !forceRefresh) {
-      if (cachedPath.isEmpty) {
+  bool get hasImage =>
+      profileImagePath != null && profileImagePath!.isNotEmpty;
+
+  Future<void> getProfileImage({bool forceRefresh = false}) async {
+  final box = await Hive.openBox(_cacheBoxName);
+
+  final cachedPath = box.get(_cacheKey) as String?;
+
+  if (cachedPath != null && !forceRefresh) {
+    profileImagePath = cachedPath;
+
+    if (cachedPath.isEmpty) {
+      emit(ProfileImageEmpty());
+    } else {
+      emit(GetProfileImageSuccess(profileImagePath: cachedPath));
+    }
+    return;
+  }
+
+  emit(ProfileImageLoading());
+
+  final response = await getIt<DrawerRepoImpl>().getProfileImage();
+
+  response.fold(
+    (failure) {
+      if (failure.statusCode == 400) {
+        profileImagePath = null;
         emit(ProfileImageEmpty());
       } else {
-        emit(GetProfileImageSuccess(profileImagePath: cachedPath));
+        emit(ProfileImageFailure(errorMessage: failure.message));
       }
-      return;
-    }
+    },
+    (data) async {
+      profileImagePath = data;
 
-    emit(ProfileImageLoading());
+      await box.put(_cacheKey, data ?? '');
 
-    final response = await getIt<DrawerRepoImpl>().getProfileImage();
-
-    response.fold(
-      (failure) {
-        if (failure.statusCode == 400) {
-          emit(ProfileImageEmpty());
-        } else {
-          emit(ProfileImageFailure(errorMessage: failure.message));
-        }
-      },
-      (data) async {
-        if (data == null || data.isEmpty) {
-          await box.put(_cacheKey, '');
-          emit(ProfileImageEmpty());
-        } else {
-          await box.put(_cacheKey, data);
-          emit(GetProfileImageSuccess(profileImagePath: data));
-        }
-      },
-    );
-  }
+      if (data == null || data.isEmpty) {
+        emit(ProfileImageEmpty());
+      } else {
+        emit(GetProfileImageSuccess(profileImagePath: data));
+      }
+    },
+  );
+}
 
   Future<void> addProfileImage({required File image}) async {
     emit(ProfileImageLoading());
@@ -65,6 +76,7 @@ class ProfileImageCubit extends Cubit<ProfileImageState> {
         emit(ProfileImageFailure(errorMessage: failure.message));
       },
       (data) async {
+        profileImagePath = data;
         final box = await Hive.openBox(_cacheBoxName);
         await box.put(_cacheKey, data);
         emit(
@@ -87,6 +99,7 @@ class ProfileImageCubit extends Cubit<ProfileImageState> {
         emit(ProfileImageFailure(errorMessage: failure.message));
       },
       (data) async {
+        profileImagePath = null;
         final box = await Hive.openBox(_cacheBoxName);
         await box.put(_cacheKey, '');
         emit(

@@ -1,5 +1,7 @@
 import 'package:medicore_app/features/appointments/domain/entities/patient_appointment_info_entity.dart';
 
+import '../../data/models/appointment_types.dart';
+
 class PatientAppointmentEntity {
   final int id;
   final int patientId;
@@ -7,10 +9,11 @@ class PatientAppointmentEntity {
   final int departmentId;
   final DateTime appointmentDate;
   final String appointmentStatus;
-  final String status;
+  final AppointmentTypes status;
   final DateTime createdAt;
   final DateTime updatedAt;
   final PatientAppointmentInfoEntity appointmentInfo;
+  final bool isChild;
 
   PatientAppointmentEntity({
     required this.id,
@@ -23,5 +26,6 @@ class PatientAppointmentEntity {
     required this.createdAt,
     required this.updatedAt,
     required this.appointmentInfo,
+    required this.isChild,
   });
 }

@@ -1,6 +1,8 @@
 import 'package:medicore_app/features/appointments/data/models/patient_appointment_info_model.dart';
 import 'package:medicore_app/features/appointments/domain/entities/patient_appointment_entity.dart';
 
+import 'appointment_types.dart';
+
 class PatientAppointmentModel extends PatientAppointmentEntity {
   PatientAppointmentModel({
     required super.id,
@@ -13,9 +15,13 @@ class PatientAppointmentModel extends PatientAppointmentEntity {
     required super.createdAt,
     required super.updatedAt,
     required super.appointmentInfo,
+    required super.isChild,
   });
 
-  factory PatientAppointmentModel.fromJson(Map<String, dynamic> json) {
+  factory PatientAppointmentModel.fromJson(
+    Map<String, dynamic> json, {
+    required bool isChild,
+  }) {
     return PatientAppointmentModel(
       id: json['id'],
       patientId: json['patient_id'],
@@ -23,12 +29,13 @@ class PatientAppointmentModel extends PatientAppointmentEntity {
       departmentId: json['department_id'],
       appointmentDate: DateTime.parse(json['apointment_date']),
       appointmentStatus: json['apoitment_status'],
-      status: json['status'],
+      status: fromStringToAppointmentTypes(json['status']),
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
       appointmentInfo: PatientAppointmentInfoModel.fromJson(
         json['appointment_info'],
       ),
+      isChild: isChild,
     );
   }
 }

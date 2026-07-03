@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
@@ -48,28 +47,31 @@ class Api {
   }
 
   Future<Either<Failure, Map<String, dynamic>>> postWithAuth({
-    required endPoint,
-    required data,
+    required String endPoint,
+    required dynamic data,
+    bool isMultipart = false,
   }) async {
     try {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
+
       if (token.isEmpty) {
         return const Left(
           ValidationFailure(message: '====Token is missing or invalid===='),
         );
       }
-      final mergedQuery = {...?data, 'lang': lang};
+
       final options = Options(headers: {'Authorization': 'Bearer $token'});
 
       final response = await dio.post(
-        '$endPoint',
-        data: mergedQuery,
+        endPoint,
+        data: isMultipart ? data : {...?data, 'lang': lang},
         options: options,
       );
+
       return Right(response.data);
-    } on DioException catch (dioException) {
-      return Left(handleDioError(dioException));
-    } catch (e) {
+    } on DioException catch (e) {
+      return Left(handleDioError(e));
+    } catch (_) {
       return const Left(UnknownFailure());
     }
   }
@@ -257,7 +259,6 @@ class Api {
           statusCode: statusCode,
         );
       case DioExceptionType.transformTimeout:
-        // TODO: Handle this case.
         throw UnimplementedError();
     }
   }
@@ -283,20 +284,6 @@ class Api {
     }
     if (data is List) return data.join(', ');
     return 'Unknown error occurred';
-  }
-
-  static String _formatJson(dynamic data) {
-    try {
-      if (data == null) return 'Empty';
-      final encoder = const JsonEncoder.withIndent('  ');
-      if (data is String) {
-        final decoded = json.decode(data);
-        return encoder.convert(decoded);
-      }
-      return encoder.convert(data);
-    } catch (_) {
-      return data.toString();
-    }
   }
 
   final dioLoggerInterceptor = InterceptorsWrapper(

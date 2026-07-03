@@ -10,7 +10,7 @@ class PatientAppointmentInfoModel extends PatientAppointmentInfoEntity {
   factory PatientAppointmentInfoModel.fromJson(Map<String, dynamic> json) {
     return PatientAppointmentInfoModel(
       patientName: json['patientName'],
-      patientImage: json['patientImage'],
+      patientImage: json['imgPath'],
       doctorName: json['doctorName'],
       gender: json['gender'],
     );

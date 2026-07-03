@@ -101,6 +101,7 @@ class BookAppointmentViewBody extends StatelessWidget {
                     message: state.message,
                     type: SnackbarType.success,
                   );
+
                   context.pop();
                 }
               },
@@ -122,9 +123,7 @@ class BookAppointmentViewBody extends StatelessWidget {
                       );
                       return;
                     }
-                    cubit.bookAppointment(doctorId: selectedDoctor).then((_) {
-                      context.read<AppointmentsCubit>().getAppointments();
-                    });
+                    cubit.bookAppointment(doctorId: selectedDoctor);
                   },
                 );
               },

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
@@ -19,9 +20,6 @@ class ImageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isNetworkImage =
-        imagePath.startsWith('http') || imagePath.contains('/');
-
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -38,22 +36,28 @@ class ImageCard extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child:
-                isNetworkImage
+                (!isChild)
                     ? CachedNetworkImage(
-                      imageUrl: imagePath,
+                      imageUrl: '$base${imagePath}',
                       fit: BoxFit.cover,
                       placeholder:
                           (_, __) => Container(color: Colors.grey.shade200),
                       errorWidget:
-                          (_, __, ___) => Image.asset(
-                            isMale ? Assets.imagesBoy : Assets.imagesGirl,
+                          (_, __, ___) => SvgPicture.asset(
+                            Assets.profile,
                             fit: BoxFit.cover,
+                            width: 40,
+                            height: 40,
+                            colorFilter: const ColorFilter.mode(
+                              KPrimaryColor,
+                              BlendMode.color,
+                            ),
                           ),
                     )
-                    : Image.asset(
-                      imagePath.isNotEmpty
-                          ? imagePath
-                          : (isMale ? Assets.imagesBoy : Assets.imagesGirl),
+                    : SvgPicture.asset(
+                      isMale ? Assets.imagesBoy : Assets.imagesGirl,
+                      width: 40,
+                      height: 40,
                       fit: BoxFit.cover,
                     ),
           ),

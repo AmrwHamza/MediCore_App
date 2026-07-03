@@ -19,14 +19,13 @@ class PaymentCubit extends Cubit<PaymentState> {
     emit(state.copyWith(phoneNumber: phone));
   }
 
-  Future<void> confirmPayment() async {
-    if (state.selectedMethod == null || state.phoneNumber.trim().isEmpty)
-      return;
+  Future<void> confirmPayment({required String phoneNumber}) async {
+    if (state.selectedMethod == null || phoneNumber.trim().isEmpty) return;
 
     emit(state.copyWith(status: PaymentStatus.loading));
 
     final result = await _paymentRepo.addPaymentMethods(
-      phoneNumber: state.phoneNumber,
+      phoneNumber: phoneNumber,
       paymentMethod: state.selectedMethod!,
     );
 

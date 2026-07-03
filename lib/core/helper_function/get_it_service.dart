@@ -16,6 +16,8 @@ import 'package:medicore_app/features/home/data/models/hive/hive_home_local_stor
 import 'package:medicore_app/features/home/data/repos/home_repo_impl.dart';
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view_model/patient_info_ui_cubit/patient_info_ui_cubit.dart';
 
+import '../../features/appointments/data/repo/appointments_repo_impl.dart';
+import '../../features/departments/data/repos/departments_view_repo_impl.dart';
 import '../../features/doctors/data/repos/doctors_view_repo_impl.dart';
 import '../../features/drawer/data/repo/drawer_repo_impl.dart';
 import '../../features/payment/data/repos/payment_repo_impl.dart';
@@ -50,8 +52,11 @@ void setup() {
   );
 
   getIt.registerLazySingleton<DoctorsViewRepoImpl>(() => DoctorsViewRepoImpl());
+  getIt.registerLazySingleton<AppointmentsRepoImpl>(() => AppointmentsRepoImpl());
 
   getIt.registerLazySingleton<PaymentRepoImpl>(() => PaymentRepoImpl());
   getIt.registerLazySingleton<DrawerRepoImpl>(() => DrawerRepoImpl());
-
+  getIt.registerLazySingleton<DepartmentsViewRepoImpl>(
+    () => DepartmentsViewRepoImpl(),
+  );
 }

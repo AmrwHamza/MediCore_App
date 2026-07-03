@@ -26,6 +26,7 @@ import 'package:medicore_app/features/profile/presentation/view/edit_profile_vie
 import 'package:medicore_app/features/profile/presentation/view/profile_view.dart';
 import 'package:medicore_app/features/splash/presentation/views/splash_view.dart';
 
+import '../../features/appointments/domain/entities/privew_entity.dart';
 import '../../features/departments/presentation/views/departments_view.dart';
 import '../../features/doctors/presentation/views/doctors_view.dart';
 import '../../features/payment/presentation/views/payment_view.dart';
@@ -121,7 +122,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppointmentDetailsView.routeName,
       name: AppointmentDetailsView.routeName,
-      builder: (context, state) => const AppointmentDetailsView(),
+      builder: (context, state) {
+        return AppointmentDetailsView(
+          privewEntity: state.extra as PrivewEntity,
+        );
+      },
     ),
 
     GoRoute(
@@ -178,7 +183,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>?;
 
-        return PaymentView(isInSplash: args?['isInSplashs']);
+        return PaymentView(isInSplash: args?['isInSplashs'] ?? true);
       },
     ),
 

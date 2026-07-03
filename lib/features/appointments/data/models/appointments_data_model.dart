@@ -14,11 +14,11 @@ class AppointmentsDataModel extends AppointmentsDataEntity {
     return AppointmentsDataModel(
       acceptedPatient:
           (json['accepted_patient'] as List)
-              .map((e) => PatientAppointmentModel.fromJson(e))
+              .map((e) => PatientAppointmentModel.fromJson(e,isChild:false))
               .toList(),
       waitingPatient:
           (json['waiting_patient'] as List)
-              .map((e) => PatientAppointmentModel.fromJson(e))
+              .map((e) => PatientAppointmentModel.fromJson(e,isChild:false))
               .toList(),
       acceptedSons:
           (json['accepted_sons'] as List)
@@ -26,7 +26,7 @@ class AppointmentsDataModel extends AppointmentsDataEntity {
                 (e) =>
                     (e as List)
                         .map<PatientAppointmentModel>(
-                          (item) => PatientAppointmentModel.fromJson(item),
+                          (item) => PatientAppointmentModel.fromJson(item,isChild:true),
                         )
                         .toList(),
               )
@@ -38,7 +38,7 @@ class AppointmentsDataModel extends AppointmentsDataEntity {
                 (e) =>
                     (e as List)
                         .map<PatientAppointmentModel>(
-                          (item) => PatientAppointmentModel.fromJson(item),
+                          (item) => PatientAppointmentModel.fromJson(item,isChild:true),
                         )
                         .toList(),
               )

@@ -103,6 +103,7 @@
   "get_department_failure": "فشل في تحميل الأقسام، يرجى المحاولة مرة أخرى",
   "get_doctors_failure": "فشل في تحميل الأطباء، يرجى المحاولة مرة أخرى",
   "Logout": "تسجيل الخروج",
+  "logout_q": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
   "Archive": "الأرشيف",
   "get_appointments_failure": "فشل تحميل المواعيد، يرجى تحديث الصفحة أو المحاولة لاحقًا.",
   "appointment_title": "تفاصيل الموعد",
@@ -138,8 +139,18 @@
   "directing_symptoms": "إذا كنت تعاني من أي أعراض، أدخلها وسنوجهك إلى القسم المناسب:",
   "please_select_date_and_time": "يرجى اختيار التاريخ والوقت",
   "search_doctor_hint": "ابحث عن اطباء هنا...",
+  "search_department_hint": "ابحث عن أقسام هنا...",
+  "no_departments_found": "لا توجد أقسام متاحة حالياً.",
+  "no_doctors_found": "لا يوجد أطباء متاحين حالياً.",
+  "no_departments": "لا توجد أقسام متاحة حالياً.",
+  "delete_appointment_success": "تم حذف الموعد بنجاح",
   "no_payment": "لا توجد طرق دفع مضافة حالياً. يرجى إضافتها من قائمة الدفع أولاً.",
-
+"delete_dialog_title": "حذف العنصر",
+"needs_complete":"بحاجة للإكمال",
+  "delete_dialog_description": "هل أنت متأكد من أنك تريد حذف هذا الموعد؟ لا يمكن التراجع عن هذا الإجراء.",
+  "delete_dialog_cancel": "إلغاء",
+  "appointment_archive" : "أرشيف المواعيد",
+  "delete_dialog_confirm": "حذف",
   "payment_method": "طريقة الدفع",
   "add_payment_method": "إضافة طريقة دفع",
   "add_payment_method_success": "تمت إضافة طريقة الدفع بنجاح",
@@ -177,6 +188,8 @@
 
   "waiting_note": "الرجاء التواجد في المركز قبل ربع ساعة من موعدك المحدد.",
   "progress_note": "بانتظار مراجعة الطبيب وتدقيق المستندات المطلوبة.",
+  "incomplete_note": "الموعد غير مكتمل ، يرجى رفع المستندات المطلوبة لإنجاز الموعد.",
+
   "done_note": "يرجى تقييم تجربتك الطبية معنا.",
   "no_appointments": "لا توجد مواعيد مدرجة ضمن هذا القسم حالياً.",
 
@@ -192,5 +205,26 @@
   "phone_number": "رقم الهاتف",
 
   "add_profile_image_success": "تم اضافة صورة الملف الشخصي بنجاح",
-  "delete_profile_image_success": "تم حذف صورة الملف الشخصي بنجاح"
+  "delete_profile_image_success": "تم حذف صورة الملف الشخصي بنجاح",
+  "no": "لا",
+
+  "show_image": "عرض الصورة",
+  "dismiss": "إغلاق",
+  "pick_image_gallery": "اختيار صورة من المعرض",
+  "pick_image_camera": "التقاط صورة بالكاميرا",
+  "delete_image": "حذف الصورة",
+  "delete_image_confirmation": "هل أنت متأكد من حذف هذه الصورة؟",
+  "cancel": "إلغاء",
+  "delete": "حذف",
+  "edit_image": "تعديل الصورة",
+
+  "appointment_details_patient_info": "معلومات المريض",
+  "appointment_details_preview_number": "رقم المعاينة",
+  "appointment_details_international_patient_id": "رقم المريض الدولي",
+  "appointment_details_preview_date": "تاريخ المعاينة",
+  "appointment_details_medical_diagnosis": "التشخيص الطبي",
+  "appointment_details_doctor_notes": "ملاحظات الطبيب الاستشارية",
+  "appointment_details_prescription_and_meds": "الوصفة الطبية والأدوية",
+  "appointment_details_no_meds_recorded": "لا توجد أدوية مسجلة لهذه المعاينة.",
+  "appointment_details_preview_fees": "رسوم المعاينة:"
 }

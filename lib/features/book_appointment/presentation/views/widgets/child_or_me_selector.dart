@@ -115,10 +115,6 @@ class _ChildOrMeSelectorState extends State<ChildOrMeSelector> {
                     itemCount: state.children.childList.length,
                     itemBuilder: (context, index) {
                       final child = state.children.childList[index];
-                      final fullName = '${child.firstName} ${child.lastName}';
-                      final isMale =
-                          child.gender.toLowerCase() == 'male' ||
-                          child.gender == 'ذكر';
 
                       return Padding(
                         padding: const EdgeInsets.only(right: 12.0),

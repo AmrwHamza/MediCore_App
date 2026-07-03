@@ -1,196 +1,316 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
-import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/appointment_card_info.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/appointment_row_info.dart';
+import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/doctor_details_section.dart';
+
+import '../../../../data/models/appointment_types.dart';
+import '../../../../domain/entities/privew_entity.dart';
+import '../image_card.dart';
+import 'medical_background_painter.dart';
+import 'medication_item.dart';
 
 class AppointmentDetailsViewBody extends StatelessWidget {
-  const AppointmentDetailsViewBody({super.key});
+  const AppointmentDetailsViewBody({super.key, required this.privewEntity});
+
+  final PrivewEntity privewEntity;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Patient Information Card
-          AppointmentCardInfo(
-            title: 'Patient information',
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '',
-                  // appointment.patientName,
-                  style: TextStyles.public.copyWith(fontSize: 20),
-                ),
-                const SizedBox(height: 16),
-                const AppointmentRowInfo(
-                  label: 'File number',
-                  value: '',
-                  //  appointment.fileNumber,
-                ),
-                const SizedBox(height: 8),
-                const AppointmentRowInfo(label: 'Birth date', value: ''),
-                const SizedBox(height: 8),
-                const AppointmentRowInfo(
-                  label: 'Report date',
-                  value: '',
-                  //  appointment.reportDate,
-                ),
-              ],
-            ),
-          ),
+    final parsedDate = DateTime.tryParse(privewEntity.date) ?? DateTime.now();
+    final localeCode = context.locale.languageCode;
+    final formattedDate = DateFormat(
+      'yyyy/MM/dd hh:mm a',
+      localeCode,
+    ).format(parsedDate);
 
-          const SizedBox(height: 16),
-
-          // Diagnosis Card
-          AppointmentCardInfo(
-            title: 'Diagnosis',
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '',
-                  // appointment.diagnosis,
-                  style: TextStyles.public.copyWith(fontSize: 20),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  '',
-                  // appointment.diagnosisDescription,
-                  style: TextStyles.notes,
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Prescribed Medication Card
-          AppointmentCardInfo(
-            title: 'Prescribed medication',
-            child: Column(
-              children:
-              // appointment.medications.map((medication) {
-              //   return
-              [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: Row(
-                    children: [
-                      // Medicine Icon
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF4ECDC4),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: CustomPaint(painter: MedicalBackgroundPainter()),
+        ),
+        SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppointmentCardInfo(
+                title: 'appointment_details_patient_info'.tr(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        ImageCard(
+                          isChild: privewEntity.isChild,
+                          imagePath: privewEntity.imgPath,
+                          isMale: privewEntity.gender == 'male',
                         ),
-                        child: Image.asset(
-                          Assets.imagesIconsPill,
-                          width: 24,
-                          height: 24,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      // Medicine Name
-                      const Expanded(
-                        child: Text(
-                          '',
-                          // medication.name,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                privewEntity.patientName,
+                                style: TextStyles.public.copyWith(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              SizedBox(height: 4.h),
+                              if (privewEntity.diagnoseisType != 0)
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w,
+                                    vertical: 2.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: KOrange.withValues(alpha: 0.08),
+                                    borderRadius: BorderRadius.circular(4.r),
+                                  ),
+                                  child: Text(
+                                    privewEntity.diagnoseisType.toString(),
+                                    style: TextStyle(
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: KOrange,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
+                      ],
+                    ),
+                    SizedBox(height: 16.h),
+                    Divider(
+                      color: Colors.grey.withValues(alpha: 0.08),
+                      height: 1.h,
+                    ),
+                    SizedBox(height: 12.h),
+                    AppointmentRowInfo(
+                      icon: Icons.fingerprint_rounded,
+                      label: 'appointment_details_preview_number'.tr(),
+                      value: '#${privewEntity.id}',
+                    ),
+                    SizedBox(height: 10.h),
+                    AppointmentRowInfo(
+                      icon: Icons.badge_outlined,
+                      label:
+                          'appointment_details_international_patient_id'.tr(),
+                      value: '${privewEntity.patientId}',
+                    ),
+                    SizedBox(height: 10.h),
+                    AppointmentRowInfo(
+                      icon: Icons.today_rounded,
+                      label: 'appointment_details_preview_date'.tr(),
+                      value: formattedDate,
+                    ),
+                  ],
+                ),
+              ),
+              if (privewEntity.diagnoseis.isNotEmpty) ...[
+                SizedBox(height: 16.h),
+                AppointmentCardInfo(
+                  title: 'appointment_details_medical_diagnosis'.tr(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        privewEntity.diagnoseis,
+                        style: TextStyles.public.copyWith(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
                       ),
+                      if (privewEntity.notes.isNotEmpty) ...[
+                        SizedBox(height: 16.h),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.r),
+                            gradient: LinearGradient(
+                              colors: [
+                                KPrimaryColor.withValues(alpha: 0.06),
+                                KPrimaryColor.withValues(alpha: 0.01),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            border: Border.all(
+                              color: KPrimaryColor.withValues(alpha: 0.12),
+                              width: 1.w,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: KPrimaryColor.withValues(alpha: 0.02),
+                                blurRadius: 10.r,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16.r),
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  right: -20.w,
+                                  top: -20.h,
+                                  child: CircleAvatar(
+                                    radius: 40.r,
+                                    backgroundColor: KPrimaryColor.withValues(
+                                      alpha: 0.04,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 12.w,
+                                  bottom: 12.h,
+                                  child: Icon(
+                                    Icons.format_quote_rounded,
+                                    size: 48.r,
+                                    color: KPrimaryColor.withValues(
+                                      alpha: 0.05,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(16.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(6.r),
+                                            decoration: BoxDecoration(
+                                              color: KPrimaryColor.withValues(
+                                                alpha: 0.1,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                            ),
+                                            child: Icon(
+                                              Icons.gavel_rounded,
+                                              size: 16.r,
+                                              color: KPrimaryColor,
+                                            ),
+                                          ),
+                                          SizedBox(width: 10.w),
+                                          Text(
+                                            'appointment_details_doctor_notes'
+                                                .tr(),
+                                            style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: KDarkBlue,
+                                              letterSpacing: 0.3,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 12.h),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 4.w,
+                                        ),
+                                        child: Text(
+                                          privewEntity.notes,
+                                          style: TextStyles.notes.copyWith(
+                                            fontSize: 13.sp,
+                                            color: Colors.black87,
+                                            height: 1.5,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
               ],
-              // }).toList(),
-            ),
-          ),
-
-          const SizedBox(height: 32),
-
-          // Doctor Name
-          const Center(
-            child: Text(
-              '',
-              // appointment.doctorName,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF5A7A7C),
+              SizedBox(height: 16.h),
+              AppointmentCardInfo(
+                title: 'appointment_details_prescription_and_meds'.tr(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (privewEntity.medicine.isEmpty)
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
+                        child: Text(
+                          'appointment_details_no_meds_recorded'.tr(),
+                          style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+                        ),
+                      )
+                    else
+                      ...privewEntity.medicine
+                          .split(',')
+                          .map(
+                            (med) => MedicationItem(medicationName: med.trim()),
+                          ),
+                  ],
+                ),
               ),
-            ),
+              SizedBox(height: 16.h),
+              DoctorDetailsSection(privewEntity: privewEntity),
+              SizedBox(height: 24.h),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8.r),
+                    decoration: BoxDecoration(
+                      color: pickStatusColor(
+                        privewEntity.status,
+                      ).withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.info_outline_rounded,
+                      color: pickStatusColor(privewEntity.status),
+                      size: 18.r,
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 4.h),
+                      child: Text(
+                        pickNote(
+                          fromStringToAppointmentTypes(privewEntity.status),
+                        ).tr(),
+                        style: TextStyles.notes.copyWith(
+                          fontSize: 14.sp,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w400,
+                          height: 1.4,
+                        ),
+                        maxLines: null,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-
-          const SizedBox(height: 24),
-
-          RatingBarIndicator(
-            rating: 4,
-            itemBuilder:
-                (context, _) => const Icon(Icons.star, color: Colors.amber),
-            itemCount: 5,
-            itemSize: 20.0,
-            direction: Axis.horizontal,
-          ),
-
-          // Rating Section
-          // Center(
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       // Stars
-          //       Row(
-          //         children: List.generate(5, (index) {
-          //           return Icon(
-          //             index < appointment.rating
-          //                 ? Icons.star
-          //                 : Icons.star_border,
-          //             color:
-          //                 index < appointment.rating
-          //                     ? Colors.amber
-          //                     : Colors.grey[300],
-          //             size: 32,
-          //           );
-          //         }),
-          //       ),
-          //       const SizedBox(width: 16),
-          //       // Rate Button
-          //       ElevatedButton(
-          //         onPressed: () {
-          //           // Handle rating action
-          //         },
-          //         style: ElevatedButton.styleFrom(
-          //           backgroundColor: const Color(0xFF4CAF50),
-          //           foregroundColor: Colors.white,
-          //           padding: const EdgeInsets.symmetric(
-          //             horizontal: 24,
-          //             vertical: 12,
-          //           ),
-          //           shape: RoundedRectangleBorder(
-          //             borderRadius: BorderRadius.circular(20),
-          //           ),
-          //         ),
-          //         child: const Text(
-          //           'Rate',
-          //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          const SizedBox(height: 32),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
