@@ -1,4 +1,3 @@
-import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 
 Future<String> getUserEmail() async {
@@ -16,5 +15,3 @@ Future<String> getUserPhone() async {
   final userPhone = await SharedPrefHelper.getString(SharedPrefKeys.phone);
   return userPhone;
 }
-
-

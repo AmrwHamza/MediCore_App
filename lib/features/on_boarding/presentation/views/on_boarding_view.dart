@@ -13,7 +13,7 @@ class OnBoardingView extends StatelessWidget {
     return Scaffold(
       backgroundColor:
           context.watch<ThemeProvider>().themeData.scaffoldBackgroundColor,
-      body: const SafeArea(child: OnBoardingViewBody()),
+      body: const OnBoardingViewBody(),
     );
   }
 }

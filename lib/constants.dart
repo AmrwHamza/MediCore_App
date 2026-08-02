@@ -141,15 +141,3 @@ const String baseurl =
     "$base"
     "/api/";
 const String baseurlImg = '$base/storage/project';
-
-class SharedPrefKeys {
-  static const String userToken = 'userToken';
-  static const String firstName = 'firstname';
-  static const String lastName = 'lastname';
-  static const String email = 'email';
-  static const String phone = 'phone';
-  static const String expireToken = 'expireToken';
-  static const String id = 'id';
-  static const String isDarkTheme = 'isDarkTheme';
-  static const String language = 'language';
-}

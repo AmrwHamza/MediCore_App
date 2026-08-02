@@ -11,6 +11,9 @@ class CustomFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final Function(String)? onChanged;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
+  final bool enabled;
+  final String? hintText;
 
   const CustomFormField({
     super.key,
@@ -22,6 +25,9 @@ class CustomFormField extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.keyboardType,
+    this.controller,
+    this.enabled = true,
+    this.hintText,
   });
 
   @override
@@ -34,11 +40,16 @@ class CustomFormField extends StatelessWidget {
           Text(label, style: TextStyles.notes),
           const SizedBox(height: 6),
           TextFormField(
+            enabled: enabled,
+            controller: controller,
             obscureText: obscure,
             onChanged: onChanged,
+
             keyboardType: keyboardType,
             validator: validator,
             decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: TextStyles.notes.copyWith(color: Colors.grey),
               filled: true,
               fillColor: KWhite,
               prefixIcon: Icon(icon, color: KDarkBlue),

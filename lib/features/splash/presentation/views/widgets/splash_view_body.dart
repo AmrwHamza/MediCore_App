@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 import 'package:medicore_app/core/theme/theme.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
@@ -14,6 +13,7 @@ import 'package:medicore_app/features/main_home/presentation/view/main_home_view
 import 'package:medicore_app/features/on_boarding/presentation/views/on_boarding_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/helper/cache_images.dart';
 import '../../../../../core/helper_function/get_it_service.dart';
 import '../../../../../core/helper_function/hive_service.dart';
 import '../../../../../firebase_options.dart';
@@ -82,11 +82,9 @@ class _SplashViewBodyState extends State<SplashViewBody>
   Future<void> _checkLogin() async {
     final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
     final isLoggedIn = token != null && token.isNotEmpty;
-
     isLoggedIn
         ? LoggerHelper.success('user token: $token')
         : LoggerHelper.error('No Token');
-
     if (isLoggedIn) {
       context.go(MainHomeView.routeName);
     } else {
@@ -98,6 +96,12 @@ class _SplashViewBodyState extends State<SplashViewBody>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ImageCacheHelper.cacheAppImages(context);
   }
 
   @override

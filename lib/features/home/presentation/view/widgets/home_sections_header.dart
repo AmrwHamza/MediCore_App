@@ -23,30 +23,72 @@ class HomeSectionsHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          titleKey.tr(),
-          style: TextStyles.H2.copyWith(
-            color: isDark ? Colors.white : KBlack,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.3,
-          ),
-        ),
-        TextButton(
-          onPressed: onSeeAllPressed,
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            backgroundColor: isDark ? KCardDark : KBackgroundLight,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+        Row(
+          children: [
+            Container(
+              width: 4,
+              height: 18,
+              decoration: BoxDecoration(
+                color: KPrimaryColor,
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: [
+                  BoxShadow(
+                    color: KPrimaryColor.withValues(alpha: 0.4),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
             ),
-          ),
-          child: Text(
-            "see_all".tr(),
-            style: TextStyles.button.copyWith(
-              color: KPrimaryColor,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
+            const SizedBox(width: 10),
+            Text(
+              titleKey.tr(),
+              style: TextStyles.H2.copyWith(
+                color: isDark ? Colors.white : KBlack,
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+                letterSpacing: -0.5,
+              ),
+            ),
+          ],
+        ),
+        InkWell(
+          onTap: onSeeAllPressed,
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color:
+                  isDark
+                      ? Colors.white.withValues(alpha: 0.05)
+                      : KPrimaryColor.withValues(alpha: 0.06),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color:
+                    isDark
+                        ? Colors.white.withValues(alpha: 0.08)
+                        : KPrimaryColor.withValues(alpha: 0.1),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "see_all".tr(),
+                  style: TextStyles.button.copyWith(
+                    color: KPrimaryColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 10,
+                  color: KPrimaryColor,
+                ),
+              ],
             ),
           ),
         ),

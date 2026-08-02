@@ -1,22 +1,24 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
+
+import '../../../../../core/utils/app_images.dart';
 
 class DoctorCardInHome extends StatefulWidget {
   final dynamic doctor;
   final bool? isSelected;
   final void Function()? onTap;
+  final int index;
 
   const DoctorCardInHome({
     super.key,
     required this.doctor,
     this.onTap,
     this.isSelected,
+    required this.index,
   });
 
   @override
@@ -26,11 +28,15 @@ class DoctorCardInHome extends StatefulWidget {
 class _DoctorCardInHomeState extends State<DoctorCardInHome> {
   bool _isHovered = false;
 
+  static const List<String> doctorsImages = Assets.doctorsImages;
+
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
     final isDark = theme.brightness == Brightness.dark;
     final isCardSelected = widget.isSelected ?? false;
+
+    final localAssetImage = doctorsImages[widget.index % doctorsImages.length];
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -136,59 +142,44 @@ class _DoctorCardInHomeState extends State<DoctorCardInHome> {
                                 shape: BoxShape.circle,
                                 color: isDark ? KCardDark : Colors.white,
                               ),
-                              padding: const EdgeInsets.all(2),
+                              padding: const EdgeInsets.all(1),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(37),
-                                child:
-                                    (widget.doctor.user.imagePath != null &&
-                                            widget
-                                                .doctor
-                                                .user
-                                                .imagePath
-                                                .isNotEmpty)
-                                        ? CachedNetworkImage(
-                                          imageUrl:
-                                              '$base${widget.doctor.user.imagePath}',
-                                          fit: BoxFit.cover,
-                                          placeholder:
-                                              (context, url) => const Center(
-                                                child: SizedBox(
-                                                  width: 24,
-                                                  height: 24,
-                                                  child: CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                          Color
-                                                        >(KPrimaryColor),
-                                                  ),
-                                                ),
-                                              ),
-                                          errorWidget:
-                                              (context, url, error) => Center(
-                                                child: FaIcon(
-                                                  FontAwesomeIcons.userDoctor,
-                                                  color:
-                                                      isCardSelected
-                                                          ? KPrimaryColor
-                                                          : KGrey,
-                                                  size: 26,
-                                                ),
-                                              ),
-                                        )
-                                        : Center(
-                                          child: FaIcon(
-                                            FontAwesomeIcons.userDoctor,
-                                            color:
-                                                isCardSelected
-                                                    ? KPrimaryColor
-                                                    : KGrey,
-                                            size: 26,
-                                          ),
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [KCyan, KPrimaryLight],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
                                         ),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Opacity(
+                                        opacity: 0.5,
+                                        child: Image.asset(
+                                          'assets/images/Logo_without_background.png',
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned.fill(
+                                      child: Image.asset(
+                                        localAssetImage,
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.topCenter,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
+                          // نقطة الحالة النشطة (Online Indicator)
                           Container(
                             width: 15,
                             height: 15,

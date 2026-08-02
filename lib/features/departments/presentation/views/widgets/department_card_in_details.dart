@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicore_app/constants.dart';
@@ -14,6 +13,12 @@ class DepartmentCardInDetails extends StatelessWidget {
     required this.department,
     this.onTap,
   });
+
+  String _getAssetImage(int id) {
+    final index = (id - 1) % 15;
+    final imageNumber = index + 1;
+    return 'assets/departments_image/D$imageNumber.jpg';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,25 +43,59 @@ class DepartmentCardInDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-              child: CachedNetworkImage(
-                imageUrl: department.image,
-                height: 160.h,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                placeholder:
-                    (context, url) => Container(
-                      color: isDark ? Colors.grey[800] : Colors.grey[200],
-                      child: const Center(
-                        child: CircularProgressIndicator(color: KPrimaryColor),
+            Container(
+              height: 160.h,
+              width: double.infinity,
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.asset(
+                        _getAssetImage(department.id),
+                        fit: BoxFit.cover,
+                        color: KPrimaryDark.withValues(alpha: 0.25),
+                        colorBlendMode: BlendMode.multiply,
+                        errorBuilder:
+                            (context, error, stackTrace) => Container(
+                              color:
+                                  isDark ? Colors.grey[800] : Colors.grey[200],
+                              child: const Icon(
+                                Icons.broken_image,
+                                color: Colors.grey,
+                              ),
+                            ),
                       ),
                     ),
-                errorWidget:
-                    (context, url, error) => Container(
-                      color: isDark ? Colors.grey[800] : Colors.grey[200],
-                      child: const Icon(Icons.broken_image, color: Colors.grey),
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.4),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
+                    Positioned(
+                      top: 12,
+                      left: 12,
+                      child: Opacity(
+                        opacity: 0.7,
+                        child: Image.asset(
+                          'assets/images/Logo_without_background.png',
+                          width: 36,
+                          height: 36,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -69,6 +108,7 @@ class DepartmentCardInDetails extends StatelessWidget {
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: 18.sp,
+                      color: theme.canvasColor,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

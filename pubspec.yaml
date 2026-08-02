@@ -69,6 +69,8 @@ flutter:
     - assets/images/
     - assets/translations/
     - assets/lottie/
+    - assets/departments_image/
+    - assets/doctors_images/
 
   fonts:
     - family: RobotoSlab

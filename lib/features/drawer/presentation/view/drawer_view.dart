@@ -63,7 +63,6 @@ class DrawerView extends StatelessWidget {
               );
             },
           ),
-
           Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.grey.withAlpha((255 * 0.2).round()),
@@ -82,10 +81,7 @@ class DrawerView extends StatelessWidget {
                       ListTile(
                         title: Text(
                           'Doctors'.tr(),
-                          style: TextStyles.public.copyWith(
-                            color: KDarkBlue,
-                            fontSize: 14,
-                          ),
+                          style: TextStyles.public.copyWith(color: KDarkBlue),
                         ),
                         onTap: () {},
                         leading: const FaIcon(
@@ -173,11 +169,17 @@ class DrawerView extends StatelessWidget {
             hoverColor: KPrimaryColor.withAlpha((0.1 * 255).round()),
           ),
           ListTile(
-            title: Text('Archive'.tr()),
+            title: Text(
+              'Archive'.tr(),
+              style: TextStyles.public.copyWith(color: KDarkBlue, fontSize: 14),
+            ),
             leading: const Icon(Icons.archive, color: KOrange),
           ),
           ListTile(
-            title: Text('add_payment_method'.tr()),
+            title: Text(
+              'add_payment_method'.tr(),
+              style: TextStyles.public.copyWith(color: KDarkBlue, fontSize: 14),
+            ),
             leading: const Icon(Icons.credit_card, color: KPurple),
             onTap:
                 () => context.push(
@@ -210,7 +212,13 @@ class DrawerView extends StatelessWidget {
                 );
               }
               return ListTile(
-                title: Text('Logout'.tr()),
+                title: Text(
+                  'Logout'.tr(),
+                  style: TextStyles.public.copyWith(
+                    color: KDarkBlue,
+                    fontSize: 14,
+                  ),
+                ),
                 leading: const Icon(Icons.logout, color: KDarkBlue),
                 onTap: () async {
                   final logout = await showConfirmationDialog(

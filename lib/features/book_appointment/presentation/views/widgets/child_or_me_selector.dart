@@ -118,17 +118,21 @@ class _ChildOrMeSelectorState extends State<ChildOrMeSelector> {
 
                       return Padding(
                         padding: const EdgeInsets.only(right: 12.0),
-                        child: ChildCard(
-                          child: child,
-                          isSelected: _selectedChildId == child.id,
-                          onTap: () {
-                            setState(() {
-                              _selectedChildId = child.id;
-                            });
-                            context
-                                .read<BookAppointmentCubit>()
-                                .setSelectedSonId(child.id);
-                          },
+                        child: SizedBox(
+                          width: 140,
+                          child: ChildCard(
+                            child: child,
+                            isSelected: _selectedChildId == child.id,
+                            showDeleteButton: false,
+                            onTap: () {
+                              setState(() {
+                                _selectedChildId = child.id;
+                              });
+                              context
+                                  .read<BookAppointmentCubit>()
+                                  .setSelectedSonId(child.id);
+                            },
+                          ),
                         ),
                       );
                     },

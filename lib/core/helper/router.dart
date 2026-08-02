@@ -30,6 +30,7 @@ import '../../features/appointments/domain/entities/privew_entity.dart';
 import '../../features/departments/presentation/views/departments_view.dart';
 import '../../features/doctors/presentation/views/doctors_view.dart';
 import '../../features/payment/presentation/views/payment_view.dart';
+import '../../features/profile/presentation/view/patient_profile_view.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: SplashView.routeName,
@@ -112,7 +113,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: EditProfileView.routeName,
       name: EditProfileView.routeName,
-      builder: (context, state) => EditProfileView(),
+      builder: (context, state) => const EditProfileView(),
     ),
     GoRoute(
       path: ChangePasswordView.routeName,
@@ -153,7 +154,10 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) {
         final args = state.extra as Map<String, dynamic>? ?? {};
         return _slideTransition(
-          child: DoctorDetailsView(doctor: args['doctor']),
+          child: DoctorDetailsView(
+            doctor: args['doctor'],
+            assetImage: args['image'],
+          ),
         );
       },
     ),
@@ -161,6 +165,11 @@ final GoRouter router = GoRouter(
       path: ForgetPasswordView.routeName,
       name: ForgetPasswordView.routeName,
       builder: (context, state) => const ForgetPasswordView(),
+    ),
+    GoRoute(
+      path: PatientProfileView.routeName,
+      name: PatientProfileView.routeName,
+      builder: (context, state) => const PatientProfileView(),
     ),
     GoRoute(
       path: BookAppointmentView.routeName,

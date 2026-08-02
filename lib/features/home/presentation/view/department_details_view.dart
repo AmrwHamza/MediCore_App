@@ -7,11 +7,12 @@ import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_app_bar.dart';
 import 'package:medicore_app/core/widget/custom_scroll_widget.dart';
+import 'package:medicore_app/features/doctors/presentation/views/widgets/doctor_card.dart';
 import 'package:medicore_app/features/home/presentation/view/doctor_details_view.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/department_details_loading_list.dart';
-import 'package:medicore_app/features/home/presentation/view/widgets/doctor_card_in_department.dart';
 import 'package:medicore_app/features/home/presentation/view_model/department_details_cubit/department_details_cubit.dart';
 
+import '../../../../core/utils/app_images.dart';
 import '../../../../core/utils/app_lottie.dart';
 import '../../../../core/widget/lottie_state.dart';
 
@@ -72,18 +73,27 @@ class DepartmentDetailsView extends StatelessWidget {
                         return ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 16,
+                          ),
                           itemCount: state.doctors.length,
                           itemBuilder: (context, index) {
                             final doctor = state.doctors[index];
-                            return DoctorCardInDepartment(
-                              doctor: doctor,
-                              onTap: () {
-                                context.push(
-                                  DoctorDetailsView.routeName,
-                                  extra: {'doctor': doctor},
-                                );
-                              },
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: DoctorCard(
+                                doctor: doctor,
+                                onTap: () {
+                                  context.push(
+                                    DoctorDetailsView.routeName,
+                                    extra: {
+                                      'doctor': doctor,
+                                      'image': Assets.doctorsImages[index],
+                                    },
+                                  );
+                                },
+                              ),
                             );
                           },
                         );

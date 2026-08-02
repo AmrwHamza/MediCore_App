@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medicore_app/core/widget/custom_scroll_widget.dart';
 import 'package:medicore_app/features/articles/presentation/view_model/cubit/article_cubit.dart';
 import 'package:medicore_app/features/articles/presentation/view_model/cubit/article_state.dart';
 
+import '../../../../../core/theme/theme_provider.dart';
 import '../../../../../core/widget/custom_shimer.dart';
 import '../widgets/article_card.dart';
 
@@ -25,7 +25,10 @@ class _ArticlesViewBodyState extends State<ArticlesViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollWidget(
+    final theme = context.watch<ThemeProvider>().themeData;
+    return RefreshIndicator.adaptive(
+      color: theme.splashColor,
+      backgroundColor: theme.cardColor,
       onRefresh:
           () async => context.read<ArticleCubit>().fetchInitialArticles(),
       child: BlocBuilder<ArticleCubit, ArticleState>(

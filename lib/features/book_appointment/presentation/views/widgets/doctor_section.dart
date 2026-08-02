@@ -115,6 +115,7 @@ class _DoctorSectionState extends State<DoctorSection> {
                               : [],
                     ),
                     child: DoctorCardInHome(
+                      index: index,
                       isSelected: isSelected,
                       doctor: doctor,
                       onTap: () {

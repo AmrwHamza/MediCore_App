@@ -90,7 +90,7 @@ class ChildrenInfoViewBody extends StatelessWidget {
                             final child =
                                 await showDialog<Map<String, dynamic>>(
                                   context: context,
-                                  builder: (_) => AddChildDialog(),
+                                  builder: (_) => const AddChildDialog(),
                                 );
                             if (child != null) {
                               context.read<ChildrenInfoCubit>().addChild(child);

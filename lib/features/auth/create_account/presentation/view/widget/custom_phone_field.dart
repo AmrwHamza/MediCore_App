@@ -9,6 +9,7 @@ class CustomPhoneField extends StatelessWidget {
   final void Function(String fullNumber) onChanged;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
+  final bool enabled ;
 
   const CustomPhoneField({
     super.key,
@@ -16,6 +17,7 @@ class CustomPhoneField extends StatelessWidget {
     required this.onChanged,
     required this.validator,
     this.controller,
+    this.enabled = true,
   });
 
   @override
@@ -28,6 +30,7 @@ class CustomPhoneField extends StatelessWidget {
           Text(label, style: TextStyles.notes),
           const SizedBox(height: 6),
           IntlPhoneField(
+            enabled: enabled,
             controller: controller,
             initialCountryCode: 'SY',
             disableLengthCheck: true,

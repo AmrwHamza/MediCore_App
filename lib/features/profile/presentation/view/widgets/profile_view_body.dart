@@ -10,6 +10,8 @@ import 'package:medicore_app/features/profile/presentation/view/edit_profile_vie
 import 'package:medicore_app/features/profile/presentation/view/widgets/profile_header.dart';
 import 'package:medicore_app/features/profile/presentation/view/widgets/settings_list_item.dart';
 
+import '../patient_profile_view.dart';
+
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({super.key});
 
@@ -40,6 +42,13 @@ class ProfileViewBody extends StatelessWidget {
                     icon: FontAwesomeIcons.userPen,
                     onTap: () {
                       context.pushNamed(EditProfileView.routeName);
+                    },
+                  ),
+                  SettingsListItem(
+                    title: 'Edit Patient Profile'.tr(),
+                    icon: FontAwesomeIcons.pumpMedical,
+                    onTap: () {
+                      context.pushNamed(PatientProfileView.routeName);
                     },
                   ),
                   SettingsListItem(

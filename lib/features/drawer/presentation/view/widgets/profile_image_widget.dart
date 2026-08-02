@@ -62,13 +62,16 @@ class ProfileImageWidget extends StatelessWidget {
                 return CircleAvatar(
                   radius: radius,
                   backgroundColor: theme.cardColor,
-                  child: SvgPicture.asset(
-                    Assets.profile,
-                    width: radius * 2,
-                    height: radius * 2,
-                    colorFilter: const ColorFilter.mode(
-                      KPrimaryColor,
-                      BlendMode.color,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(radius),
+                    child: SvgPicture.asset(
+                      Assets.profile,
+                      width: radius * 2,
+                      height: radius * 2,
+                      colorFilter: const ColorFilter.mode(
+                        KPrimaryColor,
+                        BlendMode.color,
+                      ),
                     ),
                   ),
                 );

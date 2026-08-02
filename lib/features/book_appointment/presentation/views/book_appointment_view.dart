@@ -53,7 +53,7 @@ class BookAppointmentView extends StatelessWidget {
                     PaymentBookAppointmentCubit()..fetchPaymentMethods(),
           ),
           BlocProvider(create: (context) => FamilyCubit()),
-          // BlocProvider(create: (context) => AppointmentsCubit())
+          BlocProvider(create: (context) => AppointmentsCubit())
         ],
 
         child: const BookAppointmentViewBody(),

@@ -21,6 +21,7 @@ import '../../features/departments/data/repos/departments_view_repo_impl.dart';
 import '../../features/doctors/data/repos/doctors_view_repo_impl.dart';
 import '../../features/drawer/data/repo/drawer_repo_impl.dart';
 import '../../features/payment/data/repos/payment_repo_impl.dart';
+import '../../features/profile/data/repos/edit_profile_repo_impl.dart';
 
 final getIt = GetIt.instance;
 
@@ -52,11 +53,14 @@ void setup() {
   );
 
   getIt.registerLazySingleton<DoctorsViewRepoImpl>(() => DoctorsViewRepoImpl());
-  getIt.registerLazySingleton<AppointmentsRepoImpl>(() => AppointmentsRepoImpl());
+  getIt.registerLazySingleton<AppointmentsRepoImpl>(
+    () => AppointmentsRepoImpl(),
+  );
 
   getIt.registerLazySingleton<PaymentRepoImpl>(() => PaymentRepoImpl());
   getIt.registerLazySingleton<DrawerRepoImpl>(() => DrawerRepoImpl());
   getIt.registerLazySingleton<DepartmentsViewRepoImpl>(
     () => DepartmentsViewRepoImpl(),
   );
+  getIt.registerLazySingleton<EditProfileRepoImpl>(() => EditProfileRepoImpl());
 }

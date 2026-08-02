@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_single_quotes
 class Assets {
   Assets._();
-  
+
   /// Assets for imagesBackgroundAuth
   /// assets/images/Background_Auth.jpg
-  static const String imagesBackgroundAuth = "assets/images/Background_Auth.jpg";
+  static const String imagesBackgroundAuth =
+      "assets/images/Background_Auth.jpg";
 
   /// Assets for imagesBoy
   /// assets/images/boy.svg
@@ -51,7 +52,8 @@ class Assets {
 
   /// Assets for imagesIconsStethoscope
   /// assets/images/Icons/stethoscope.svg
-  static const String imagesIconsStethoscope = "assets/images/Icons/stethoscope.svg";
+  static const String imagesIconsStethoscope =
+      "assets/images/Icons/stethoscope.svg";
 
   /// Assets for imagesJoints
   /// assets/images/joints.svg
@@ -59,7 +61,8 @@ class Assets {
 
   /// Assets for imagesLogoWithoutBackground
   /// assets/images/Logo_without_background.png
-  static const String imagesLogoWithoutBackground = "assets/images/Logo_without_background.png";
+  static const String imagesLogoWithoutBackground =
+      "assets/images/Logo_without_background.png";
 
   /// Assets for imagesMe
   /// assets/images/me.jpg
@@ -85,18 +88,55 @@ class Assets {
 
   /// Assets for imagesStethoscopeDarkMode
   /// assets/images/stethoscope_dark_mode.svg
-  static const String imagesStethoscopeDarkMode = "assets/images/stethoscope_dark_mode.svg";
+  static const String imagesStethoscopeDarkMode =
+      "assets/images/stethoscope_dark_mode.svg";
 
   /// Assets for imagesStethoscopeLightMode
   /// assets/images/stethoscope_light_mode.svg
-  static const String imagesStethoscopeLightMode = "assets/images/stethoscope_light_mode.svg";
+  static const String imagesStethoscopeLightMode =
+      "assets/images/stethoscope_light_mode.svg";
 
   /// Assets for imagesWelcomeDoctor
   /// assets/images/welcome_doctor.png
   static const String imagesWelcomeDoctor = "assets/images/welcome_doctor.png";
 
   static const String mtnLogo = 'assets/images/mtn.png';
-  static const String syriatelLogo = 'assets/images/Syriatel.jpg'; 
+  static const String syriatelLogo = 'assets/images/Syriatel.jpg';
   static const String shamCashLogo = 'assets/images/sham_cash.jpg';
-}
 
+  static const List<String> departmentsImages = [
+    'assets/departments_image/D1.jpg',
+    'assets/departments_image/D2.jpg',
+    'assets/departments_image/D3.jpg',
+    'assets/departments_image/D4.jpg',
+    'assets/departments_image/D5.jpg',
+    'assets/departments_image/D6.jpg',
+    'assets/departments_image/D7.jpg',
+    'assets/departments_image/D8.jpg',
+    'assets/departments_image/D9.jpg',
+    'assets/departments_image/D10.jpg',
+    'assets/departments_image/D11.jpg',
+    'assets/departments_image/D12.jpg',
+    'assets/departments_image/D13.jpg',
+    'assets/departments_image/D14.jpg',
+    'assets/departments_image/D15.jpg',
+  ];
+
+  static const List<String> doctorsImages = [
+    'assets/doctors_images/do1.png',
+    'assets/doctors_images/do2.png',
+    'assets/doctors_images/do3.png',
+    'assets/doctors_images/do4.png',
+    'assets/doctors_images/do5.png',
+    'assets/doctors_images/do6.png',
+    'assets/doctors_images/do7.png',
+    'assets/doctors_images/do8.png',
+    'assets/doctors_images/do9.png',
+    'assets/doctors_images/do10.png',
+    'assets/doctors_images/do11.png',
+    'assets/doctors_images/do12.png',
+    'assets/doctors_images/do13.png',
+    'assets/doctors_images/do14.png',
+    'assets/doctors_images/do15.png',
+  ];
+}

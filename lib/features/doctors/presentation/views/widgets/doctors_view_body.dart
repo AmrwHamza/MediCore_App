@@ -13,6 +13,8 @@ import 'package:medicore_app/features/doctors/presentation/views/widgets/doctor_
 import 'package:medicore_app/features/doctors/presentation/views/widgets/search_header_delegate.dart';
 import 'package:medicore_app/features/home/presentation/view/doctor_details_view.dart';
 
+import '../../../../../core/utils/app_images.dart';
+
 class DoctorsViewBody extends StatelessWidget {
   const DoctorsViewBody({super.key});
 
@@ -137,11 +139,12 @@ class DoctorsViewBody extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: DoctorCard(
+          
             doctor: doctor,
             onTap: () {
               context.push(
                 DoctorDetailsView.routeName,
-                extra: {'doctor': doctor},
+                extra: {'doctor': doctor, 'image': Assets.doctorsImages[index]},
               );
             },
           ),

@@ -14,6 +14,9 @@ import 'package:medicore_app/features/home/presentation/view/home_view.dart';
 import 'package:medicore_app/features/main_home/presentation/view_model/nav_cubit/bottom_nav_cubit.dart';
 import 'package:provider/provider.dart';
 
+import '../../../appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
+import '../../../appointments/presentation/view_model/priviews_cubit/priviews_cubit.dart';
+
 class MainHomeView extends StatelessWidget {
   static const routeName = '/mainHome';
   MainHomeView({super.key});
@@ -36,8 +39,12 @@ class MainHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BottomNavCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => BottomNavCubit()),
+        BlocProvider(create: (context) => PriviewsCubit()..getPriviews()),
+      ],
+
       child: BlocBuilder<BottomNavCubit, int>(
         builder: (context, selectedIndex) {
           return Scaffold(
@@ -54,8 +61,16 @@ class MainHomeView extends StatelessWidget {
               child: FloatingActionButton(
                 heroTag: 'add appointment',
                 isExtended: true,
-                onPressed: () {
-                  context.push(BookAppointmentView.routeName);
+                onPressed: () async {
+                  final appointmentsCubit = context.read<AppointmentsCubit>();
+                  context.push(BookAppointmentView.routeName).then((
+                    value,
+                  ) async {
+                    if (value == true) {
+                      print('✅ تم الحجز بنجاح.. جاري تحديث المواعيد');
+                      await appointmentsCubit.getAppointments();
+                    }
+                  });
                 },
                 child: const Icon(Icons.add, size: 36, color: KPrimaryColor),
                 backgroundColor:
@@ -86,10 +101,7 @@ class MainHomeView extends StatelessWidget {
                     unselectedLabelStyle: const TextStyle(fontSize: 10),
                     elevation: 8,
                     backgroundColor: Colors.transparent,
-                    selectedItemColor:
-                        Provider.of<ThemeProvider>(
-                          context,
-                        ).themeData.primaryColor,
+                    selectedItemColor: Colors.white,
                     unselectedItemColor: Colors.grey,
                     currentIndex: selectedIndex,
                     onTap: (index) {

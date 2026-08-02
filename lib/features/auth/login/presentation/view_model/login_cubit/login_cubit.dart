@@ -2,10 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 import 'package:medicore_app/features/auth/login/data/repo/login_repo_impl.dart';
 import 'package:medicore_app/features/auth/login/domain/entities/login_user_entity.dart';
+
+import '../../../../../../core/helper_function/get_it_service.dart';
 
 part 'login_state.dart';
 
@@ -60,4 +61,10 @@ Future<void> saveUserInfo(
   await SharedPrefHelper.setData(SharedPrefKeys.phone, phone);
   await SharedPrefHelper.setData(SharedPrefKeys.id, id);
   await SharedPrefHelper.setData(SharedPrefKeys.expireToken, expiresAt);
+  await getIt<SharedPrefHelper>().setProfileInfo(
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phone: phone,
+  );
 }

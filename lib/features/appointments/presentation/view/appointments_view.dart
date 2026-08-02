@@ -25,8 +25,8 @@ class AppointmentsView extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AppointmentsCubit>(
-          create: (_) => AppointmentsCubit()..getAppointments(),
+        BlocProvider.value(
+          value: context.read<AppointmentsCubit>()..getAppointments(),
         ),
         BlocProvider(create: (context) => PriviewsCubit()..getPriviews()),
         BlocProvider(create: (context) => DeleteAppointmentCubit()),
@@ -92,8 +92,14 @@ class AppointmentsView extends StatelessWidget {
               ),
             ),
           ),
-          body: const TabBarView(
-            children: [WaitingPage(), AcceptedPage(), IncompletePage()],
+          body: RefreshIndicator.adaptive(
+            onRefresh: () async {
+              await context.read<AppointmentsCubit>().getAppointments();
+              await context.read<PriviewsCubit>().getPriviews();
+            },
+            child: const TabBarView(
+              children: [WaitingPage(), AcceptedPage(), IncompletePage()],
+            ),
           ),
         ),
       ),

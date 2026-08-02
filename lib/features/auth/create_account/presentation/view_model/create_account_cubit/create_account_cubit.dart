@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
 import 'package:medicore_app/core/utils/logger_helper.dart';
 import 'package:medicore_app/features/auth/create_account/data/repo/create_account_repo_imp.dart';
 import 'package:medicore_app/features/auth/create_account/domain/entities/user_entity.dart';
+
+import '../../../../../../core/helper_function/get_it_service.dart';
 
 part 'create_account_state.dart';
 
@@ -79,4 +80,10 @@ Future<void> saveUserInfo({
   await SharedPrefHelper.setData(SharedPrefKeys.phone, phone);
   await SharedPrefHelper.setData(SharedPrefKeys.id, id);
   await SharedPrefHelper.setData(SharedPrefKeys.expireToken, expire);
+  await getIt<SharedPrefHelper>().setProfileInfo(
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phone: phone,
+  );
 }

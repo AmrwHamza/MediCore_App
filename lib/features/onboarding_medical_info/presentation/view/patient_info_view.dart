@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/onboarding_medical_info/presentation/view/widgets/patient_info_view_body.dart';
 
 class PatientInfoView extends StatelessWidget {
@@ -9,9 +7,10 @@ class PatientInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor:
+          isDark ? const Color(0xff0D1117) : const Color(0xffF8FAFC),
       body: const PatientInfoViewBody(),
     );
   }

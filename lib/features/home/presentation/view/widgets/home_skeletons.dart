@@ -13,7 +13,7 @@ class DepartmentSkeletonList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 4,
       separatorBuilder: (_, __) => SizedBox(width: 16.w),
-      itemBuilder: (_, __) => CustomShimer(width: 90.w, height: 100.h),
+      itemBuilder: (_, __) => CustomShimer(width: 105.w, height: 135.h),
     );
   }
 }
@@ -29,7 +29,7 @@ class DoctorsSkeletonList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 3,
       separatorBuilder: (_, __) => SizedBox(width: 16.w),
-      itemBuilder: (_, __) => CustomShimer(width: 125.w, height: 210.h),
+      itemBuilder: (_, __) => CustomShimer(width: 165.w, height: 230.h),
     );
   }
 }

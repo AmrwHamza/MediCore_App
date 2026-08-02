@@ -14,7 +14,21 @@ class PriviewsCubit extends Cubit<PriviewsState> {
     emit(PriviewsLoading());
     final response = await getIt<AppointmentsRepoImpl>().getPrivews();
     return response.fold(
-      (failure) => emit(PriviewsFailure(error: failure.message)),
+      (failure) {
+        print('💕💕💕💕💕💕💕💕💕💕${failure.statusCode}');
+        if (failure.statusCode == 400) {
+          emit(
+            PriviewsSuccess(
+              completePreviews: [],
+              partlyPreviews: [],
+              completeSons: [],
+              partlyPreviewsSons: [],
+            ),
+          );
+        } else {
+          emit(PriviewsFailure(error: failure.message));
+        }
+      },
       (privews) {
         final completePreviews = privews.completePreviews;
         final partlyPreviews = privews.partlyPreviews;

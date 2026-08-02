@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
+import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/features/home/domain/entities/doctor_entity.dart';
 
 class DoctorCard extends StatelessWidget {
@@ -15,6 +16,10 @@ class DoctorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
     final isDark = theme.brightness == Brightness.dark;
+
+    final doctorIdInt = int.tryParse(doctor.doctorId.toString()) ?? 0;
+    final String finalImage =
+        Assets.doctorsImages[doctorIdInt % Assets.doctorsImages.length];
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
@@ -44,38 +49,64 @@ class DoctorCard extends StatelessWidget {
               children: [
                 Stack(
                   alignment: Alignment.bottomCenter,
+                  clipBehavior: Clip.none,
                   children: [
                     Container(
                       width: 76,
                       height: 76,
                       decoration: BoxDecoration(
-                        color: isDark ? Colors.white10 : KBackgroundLight,
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color:
-                              isDark
-                                  ? Colors.white10
-                                  : KPrimaryColor.withAlpha(30),
-                          width: 1.5,
+                        gradient: const LinearGradient(
+                          colors: [KPrimaryColor, KDarkBlue],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
                       ),
+                      padding: const EdgeInsets.all(2),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: Image.network(
-                          doctor.user.imagePath,
-                          fit: BoxFit.cover,
-                          errorBuilder:
-                              (context, error, stackTrace) => Icon(
-                                Icons.person_rounded,
-                                size: 40,
-                                color: isDark ? KCyan : KPrimaryColor,
+                        borderRadius: BorderRadius.circular(12),
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [KCyan, KPrimaryLight],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
                               ),
+                            ),
+                            Center(
+                              child: Opacity(
+                                opacity: 0.5,
+                                child: Image.asset(
+                                  'assets/images/Logo_without_background.png',
+                                  width: 48,
+                                  height: 48,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            Positioned.fill(
+                              child: Image.asset(
+                                finalImage,
+                                fit: BoxFit.cover,
+                                alignment: Alignment.topCenter,
+                                errorBuilder:
+                                    (context, error, stackTrace) => Icon(
+                                      Icons.person_rounded,
+                                      size: 40,
+                                      color: isDark ? KCyan : KPrimaryColor,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     if (doctor.rate != null)
-                      Transform.translate(
-                        offset: const Offset(0, 6),
+                      Positioned(
+                        bottom: -6,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 6,

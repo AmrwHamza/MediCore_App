@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 
-part 'change_password_state.dart';
+part 'change_password_obscure_state.dart';
 
-class ChangePasswordCubit extends Cubit<ChangePasswordState> {
-  ChangePasswordCubit() : super(ChangePasswordInitial());
+class ChangeObscurePasswordCubit extends Cubit<ChangeObscurePasswordState> {
+  ChangeObscurePasswordCubit() : super(ChangeObscurePasswordInitial());
 
   bool obscureOldPassword = true;
   bool obscureNewPassword = true;

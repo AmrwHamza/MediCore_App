@@ -49,13 +49,7 @@ class IncompletePage extends StatelessWidget {
 
           if (state is PriviewsSuccess) {
             final allAppointments = [
-              // ...state.completePreviews.map(
-              //   (e) => {
-              //     'data': e,
-              //     'isChild': false,
-              //     'status': AppointmentTypes.complete,
-              //   },
-              // ),
+          
               ...state.partlyPreviews.map(
                 (e) => {
                   'data': e,
@@ -63,13 +57,7 @@ class IncompletePage extends StatelessWidget {
                   'status': AppointmentTypes.incomplete,
                 },
               ),
-              // ...state.completeSons.map(
-              //   (e) => {
-              //     'data': e,
-              //     'isChild': true,
-              //     'status': AppointmentTypes.complete,
-              //   },
-              // ),
+         
               ...state.partlyPreviewsSons.map(
                 (e) => {
                   'data': e,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 
@@ -30,7 +29,7 @@ class SettingsListItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                FaIcon(icon, color: KDarkBlue, size: 22),
+                FaIcon(icon, color: theme.splashColor, size: 22),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(

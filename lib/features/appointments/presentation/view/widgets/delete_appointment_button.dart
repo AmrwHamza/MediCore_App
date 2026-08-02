@@ -8,7 +8,6 @@ import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/features/appointments/presentation/view_model/cubit/delete_appointment_cubit.dart';
 
 import '../../view_model/appointments_cubit/appointments_cubit.dart';
-import '../../view_model/priviews_cubit/priviews_cubit.dart';
 
 class DeleteAppointmentButton extends StatelessWidget {
   const DeleteAppointmentButton({super.key, required this.appointmentId});
@@ -21,8 +20,8 @@ class DeleteAppointmentButton extends StatelessWidget {
       listener: (context, state) {
         state.maybeWhen(
           success: (message) async {
-            await context.read<PriviewsCubit>().getPriviews();
-            // await context.read<AppointmentsCubit>().getAppointments();
+            // await context.read<PriviewsCubit>().getPriviews();
+            await context.read<AppointmentsCubit>().getAppointments();
           },
           error: (errorMessage) {
             ScaffoldMessenger.of(context).showSnackBar(

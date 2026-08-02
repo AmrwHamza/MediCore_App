@@ -18,58 +18,70 @@ class SymptomBottomSheet extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: theme.scaffoldBackgroundColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(40),
-            blurRadius: 25,
-            offset: const Offset(0, -4),
+            color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.15),
+            blurRadius: 30,
+            offset: const Offset(0, -6),
           ),
         ],
       ),
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      padding: EdgeInsets.fromLTRB(
+        20,
+        14,
+        20,
+        MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 45,
+            width: 50,
             height: 5,
             decoration: BoxDecoration(
-              color: theme.disabledColor.withAlpha(80),
+              color: theme.disabledColor.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
+
           TextField(
             onChanged: cubit.searchOfSymptoms,
-            style: TextStyle(color: theme.canvasColor),
+            style: TextStyle(color: theme.canvasColor, fontSize: 15),
             decoration: InputDecoration(
               hintText: 'search_symptom'.tr(),
-              hintStyle: TextStyle(color: theme.disabledColor),
+              hintStyle: TextStyle(
+                color: theme.disabledColor.withValues(alpha: 0.7),
+              ),
               prefixIcon: Icon(
                 Icons.search_rounded,
-                color: theme.disabledColor,
+                color: KPrimaryColor.withValues(alpha: 0.7),
+                size: 22,
               ),
               filled: true,
               fillColor: theme.cardColor,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 14,
+                vertical: 16,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(18),
                 borderSide: BorderSide(
                   color:
-                      isDark ? Colors.white12 : theme.shadowColor.withAlpha(15),
+                      isDark
+                          ? Colors.white12
+                          : theme.shadowColor.withValues(alpha: 0.05),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: KPrimaryColor, width: 1.5),
+                borderRadius: BorderRadius.circular(18),
+                borderSide: const BorderSide(color: KPrimaryColor, width: 1.8),
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
+
           Flexible(
             child: ConstrainedBox(
               constraints: BoxConstraints(
@@ -80,40 +92,82 @@ class SymptomBottomSheet extends StatelessWidget {
                   final filteredSymptoms = cubit.filteredSymptoms;
                   final selectedSymptoms = cubit.selectedSymptoms;
 
+                  if (filteredSymptoms.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.search_off_rounded,
+                            color: theme.disabledColor,
+                            size: 48,
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'لا توجد نتائج مطابقة لعرضك الحالي',
+                            style: TextStyle(
+                              color: theme.disabledColor,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     itemCount: filteredSymptoms.length,
-                    separatorBuilder:
-                        (_, __) => Divider(
-                          color:
-                              isDark
-                                  ? Colors.white10
-                                  : theme.shadowColor.withAlpha(10),
-                          height: 1,
-                        ),
+                    separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final name = filteredSymptoms[index].symptomName;
                       final isSelected = selectedSymptoms.contains(name);
 
-                      return CheckboxListTile(
-                        activeColor: KOrange,
-                        checkColor: Colors.white,
-                        value: isSelected,
-                        title: Text(
-                          name,
-                          style: TextStyle(
-                            color: theme.canvasColor,
-                            fontWeight:
-                                isSelected ? FontWeight.bold : FontWeight.w500,
-                            fontSize: 14,
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        decoration: BoxDecoration(
+                          color:
+                              isSelected
+                                  ? KPrimaryColor.withValues(alpha: 0.06)
+                                  : theme.cardColor,
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color:
+                                isSelected
+                                    ? KPrimaryColor.withValues(alpha: 0.3)
+                                    : Colors.transparent,
+                            width: 1,
                           ),
                         ),
-                        controlAffinity: ListTileControlAffinity.leading,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                        child: CheckboxListTile(
+                          activeColor: KPrimaryColor,
+                          checkColor: Colors.white,
+                          value: isSelected,
+                          title: Text(
+                            name,
+                            style: TextStyle(
+                              color:
+                                  isSelected
+                                      ? KPrimaryColor
+                                      : theme.canvasColor,
+                              fontWeight:
+                                  isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.w500,
+                              fontSize: 14.5,
+                            ),
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          checkboxShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          onChanged: (_) => cubit.selectSymptom(name),
                         ),
-                        onChanged: (_) => cubit.selectSymptom(name),
                       );
                     },
                   );
@@ -121,7 +175,8 @@ class SymptomBottomSheet extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
+
           CustomButton(
             title: 'confirm'.tr(),
             color: KPrimaryColor,

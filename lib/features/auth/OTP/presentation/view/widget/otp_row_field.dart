@@ -10,14 +10,47 @@ class OTPRowFields extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomTextFieldOTP(first: true, last: false, controller: c1),
-          CustomTextFieldOTP(first: false, last: false, controller: c2),
-          CustomTextFieldOTP(first: false, last: false, controller: c3),
-          CustomTextFieldOTP(first: false, last: false, controller: c4),
-          CustomTextFieldOTP(first: false, last: false, controller: c5),
-          CustomTextFieldOTP(first: false, last: true, controller: c6),
+          Expanded(
+            child: CustomTextFieldOTP(first: true, last: false, controller: c1),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: CustomTextFieldOTP(
+              first: false,
+              last: false,
+              controller: c2,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: CustomTextFieldOTP(
+              first: false,
+              last: false,
+              controller: c3,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: CustomTextFieldOTP(
+              first: false,
+              last: false,
+              controller: c4,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: CustomTextFieldOTP(
+              first: false,
+              last: false,
+              controller: c5,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: CustomTextFieldOTP(first: false, last: true, controller: c6),
+          ),
         ],
       ),
     );

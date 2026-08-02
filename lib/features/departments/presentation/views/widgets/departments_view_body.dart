@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_lottie.dart';
 import 'package:medicore_app/core/widget/lottie_state.dart';
@@ -24,6 +25,8 @@ class DepartmentsViewBody extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return RefreshIndicator(
+            color: KPrimaryColor,
+            backgroundColor: theme.cardColor,
             onRefresh: () async {
               context.read<DepartmentsViewCubit>().getDepartments();
             },

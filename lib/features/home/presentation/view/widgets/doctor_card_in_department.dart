@@ -1,18 +1,23 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 
+import '../../../../../core/utils/app_images.dart';
+
 class DoctorCardInDepartment extends StatefulWidget {
   final dynamic doctor;
   final void Function()? onTap;
+  final int index; 
 
-  const DoctorCardInDepartment({super.key, required this.doctor, this.onTap});
+  const DoctorCardInDepartment({
+    super.key,
+    required this.doctor,
+    this.onTap,
+    required this.index,
+  });
 
   @override
   State<DoctorCardInDepartment> createState() => _DoctorCardInDepartmentState();
@@ -21,15 +26,18 @@ class DoctorCardInDepartment extends StatefulWidget {
 class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
   bool _isPressed = false;
 
+     List<String>   doctorsImages = Assets.doctorsImages;
+
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
     final isDark = theme.brightness == Brightness.dark;
 
+     final localAssetImage = doctorsImages[widget.index % doctorsImages.length];
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOutCubic,
-      // هنا نقوم بالتحريك الفيزيائي المتفاعل عند الضغط بسلاسة
       transform:
           _isPressed ? Matrix4.translationValues(4, -2, 0) : Matrix4.identity(),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
@@ -77,7 +85,7 @@ class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Stack(
+                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
                       Container(
@@ -100,47 +108,50 @@ class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
                             shape: BoxShape.circle,
                             color: isDark ? KCardDark : Colors.white,
                           ),
-                          padding: const EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(1),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(36),
-                            child:
-                                (widget.doctor.user.imagePath != null &&
-                                        widget.doctor.user.imagePath.isNotEmpty)
-                                    ? CachedNetworkImage(
-                                      imageUrl:
-                                          '$base${widget.doctor.user.imagePath}',
-                                      fit: BoxFit.cover,
-                                      placeholder:
-                                          (context, url) =>
-                                              SpinKitSpinningLines(
-                                                color: KPrimaryColor.withValues(
-                                                  alpha: 0.6,
-                                                ),
-                                                size: 28,
-                                              ),
-                                      errorWidget:
-                                          (context, url, error) => Center(
-                                            child: FaIcon(
-                                              FontAwesomeIcons.userDoctor,
-                                              color: KPrimaryColor.withValues(
-                                                alpha: 0.6,
-                                              ),
-                                              size: 24,
-                                            ),
-                                          ),
-                                    )
-                                    : Center(
-                                      child: FaIcon(
-                                        FontAwesomeIcons.userDoctor,
-                                        color: KPrimaryColor.withValues(
-                                          alpha: 0.6,
-                                        ),
-                                        size: 24,
-                                      ),
+                            child: Stack(
+                              children: [
+                                // 1. الخلفية الرقمية الموحدة المتناسقة مع الشعار (تدرج كحلي / أزرق داكن)
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color(0xFF0F2B48),
+                                        Color(0xFF071625),
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
                                     ),
+                                  ),
+                                ),
+                                // 2. اللوجو مدمج في الخلفية كعلامة مائية رقمية منخفضة الإضاءة لتبرز الهوية
+                                Center(
+                                  child: Opacity(
+                                    opacity: 0.18,
+                                    child: Image.asset(
+                                      'assets/images/Logo_without_background.png',
+                                      width: 48,
+                                      height: 48,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                // 3. صورة الطبيب المعزولة فوق الخلفية واللوجو
+                                Positioned.fill(
+                                  child: Image.asset(
+                                    localAssetImage,
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.topCenter,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
+                      // شارة التحقق (Verified Badge)
                       Container(
                         width: 18,
                         height: 18,

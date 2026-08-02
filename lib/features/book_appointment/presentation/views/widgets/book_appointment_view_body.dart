@@ -14,7 +14,6 @@ import 'package:medicore_app/features/book_appointment/presentation/views/widget
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/section_header.dart';
 import 'package:medicore_app/features/book_appointment/presentation/views/widgets/select_symptoms_section.dart';
 
-import '../../../../appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
 import 'child_or_me_selector.dart';
 import 'payment_section.dart';
 
@@ -101,8 +100,7 @@ class BookAppointmentViewBody extends StatelessWidget {
                     message: state.message,
                     type: SnackbarType.success,
                   );
-
-                  context.pop();
+                  context.pop(true);
                 }
               },
               builder: (context, state) {
