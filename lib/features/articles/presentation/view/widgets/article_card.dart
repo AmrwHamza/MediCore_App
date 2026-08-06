@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,12 +113,18 @@ class ArticleCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     child:
                         hasImage
-                            ? Image.network(
-                              imageUrl,
+                            ? CachedNetworkImage(
+                              imageUrl: imageUrl,
                               width: 115,
                               height: 125,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => buildPlaceholder(),
+                              placeholder: (context, url) => Container(
+                                width: 115,
+                                height: 125,
+                                color: theme.cardColor,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  buildPlaceholder(),
                             )
                             : buildPlaceholder(),
                   ),

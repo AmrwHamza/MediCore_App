@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/core/widget/custom_form_field.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view/widget/custom_phone_field.dart';
@@ -61,6 +62,14 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+    final modeTextColor = isDark ? KTextPrimaryDark : KTextPrimaryLight;
+    final containerColor = isDark ? KSurfaceDark : KWhite;
+    final containerBorder = isDark ? KBorderDark : KBorderLight;
+    final switchInactive =
+        isDark ? KTextSecondaryDark : Colors.grey[300]!;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -82,17 +91,17 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   children: [
                     Text(
                       'Editing Mode'.tr(),
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: modeTextColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Switch(
-                      activeThumbColor: Colors.white,
-                      activeTrackColor: KPrimaryColor,
-                      inactiveThumbColor: Colors.grey[400],
-                      inactiveTrackColor: Colors.white.withValues(alpha: 0.1),
+                      activeThumbColor: KPrimaryColor,
+                      activeTrackColor: KPrimaryColor.withValues(alpha: 0.4),
+                      inactiveThumbColor: isDark ? KDisabledDark : Colors.grey[400],
+                      inactiveTrackColor: switchInactive,
                       value: _isEditable,
                       onChanged: (value) {
                         setState(() {
@@ -109,11 +118,18 @@ class _EditProfileFormState extends State<EditProfileForm> {
                     return Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.08),
+                        color: containerColor,
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.15),
-                        ),
+                        border: Border.all(color: containerBorder),
+                        boxShadow: [
+                          BoxShadow(
+                            color: isDark
+                                ? Colors.black.withValues(alpha: 0.15)
+                                : Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
                       ),
                       child: Column(
                         children: [
@@ -160,7 +176,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 if (_isEditable)
                   CustomButton(
                     title: 'Save Changes'.tr(),
-                    color: KDarkBlue.withValues(alpha: 0.9),
+                    color: KPrimaryColor,
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         await context

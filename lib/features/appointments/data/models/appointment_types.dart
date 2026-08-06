@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
+import '../../domain/entities/privew_entity.dart';
 
 enum AppointmentTypes { pending, accepted, incomplete, complete }
 
@@ -70,4 +71,12 @@ Color pickStatusColor(String status) {
     default:
       return Colors.grey;
   }
+}
+
+/// Uploading medical analysis files is strictly allowed **only** when the
+/// appointment is in an "incomplete diagnosis" state. It is hidden for
+/// pending/waiting, accepted, and completed appointments.
+bool canUploadMedicalAnalysis(PrivewEntity preview) {
+  final status = preview.status.toLowerCase();
+  return status == 'incomplete' || status == 'incomplete_diagnosis';
 }

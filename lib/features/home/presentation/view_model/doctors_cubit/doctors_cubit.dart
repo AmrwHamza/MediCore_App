@@ -12,9 +12,21 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   Future<void> getDoctors() async {
     emit(DoctorsLoading());
     final response = await getIt<HomeRepoImpl>().getDoctors();
-    response.fold(
-      (failure) => emit(DoctorsFailure(error: failure.message)),
-      (data) => emit(DoctorsSuccess(data)),
+    await response.fold(
+      (failure) async {
+        final cached = await getIt<HomeRepoImpl>().getCachedDoctors();
+        cached.fold(
+          (cacheFailure) => emit(DoctorsFailure(error: failure.message)),
+          (doctors) {
+            if (doctors.isEmpty) {
+              emit(DoctorsFailure(error: failure.message));
+            } else {
+              emit(DoctorsSuccess(doctors));
+            }
+          },
+        );
+      },
+      (data) async => emit(DoctorsSuccess(data)),
     );
   }
 }

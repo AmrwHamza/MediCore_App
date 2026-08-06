@@ -18,6 +18,7 @@ class PrivewEntity {
   final int diagnoseisType;
   final bool isChild;
   final int appointmentId;
+  final String analysisFile;
 
   PrivewEntity({
     required this.id,
@@ -38,6 +39,7 @@ class PrivewEntity {
     required this.updatedAt,
     required this.diagnoseisType,
     required this.isChild,
-    required this.appointmentId
+    required this.appointmentId,
+    this.analysisFile = ''
   });
 }

@@ -11,6 +11,13 @@ class DropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    final theme = themeProvider.themeData;
+    final isDark = theme.brightness == Brightness.dark;
+    final surfaceColor = isDark ? KCardDark : KSurfaceLight;
+    final textColor = isDark ? KTextPrimaryDark : KTextPrimaryLight;
+    final mutedColor = isDark ? KTextSecondaryDark : KTextSecondaryLight;
+
     final languages = [
       {'locale': const Locale('en'), 'label': 'English', 'fontFamily': null},
       {
@@ -25,11 +32,14 @@ class DropDown extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: surfaceColor,
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isDark ? KBorderDark : KBorderLight,
+            ),
             boxShadow: [
               BoxShadow(
-                color: context.watch<ThemeProvider>().themeData.shadowColor,
+                color: theme.shadowColor,
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -38,13 +48,13 @@ class DropDown extends StatelessWidget {
           child: DropdownButtonHideUnderline(
             child: DropdownButton<Locale>(
               value: state.language,
-              dropdownColor: Colors.white,
-              style: TextStyles.public.copyWith(color: Colors.black),
+              dropdownColor: surfaceColor,
+              style: TextStyles.public.copyWith(color: textColor),
               elevation: 8,
               icon: const Icon(
                 Icons.arrow_drop_down,
                 size: 35,
-                color: Colors.black,
+                color: KPrimaryColor,
               ),
               items:
                   languages.map((lang) {
@@ -53,7 +63,7 @@ class DropDown extends StatelessWidget {
                       child: Text(
                         lang['label'] as String,
                         style: TextStyle(
-                          color: Colors.black,
+                          color: textColor,
                           fontFamily: lang['fontFamily'] as String?,
                         ),
                       ),
@@ -71,11 +81,11 @@ class DropDown extends StatelessWidget {
                 return languages.map((lang) {
                   return Row(
                     children: [
-                      const Icon(Icons.language, color: KDarkBlue),
+                      Icon(Icons.language, color: isDark ? KPrimaryColor : KDarkBlue),
                       const SizedBox(width: 8),
                       Text(
                         lang['label'] as String,
-                        style: TextStyles.public.copyWith(color: Colors.black),
+                        style: TextStyles.public.copyWith(color: textColor),
                       ),
                     ],
                   );

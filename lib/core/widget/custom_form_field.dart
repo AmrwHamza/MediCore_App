@@ -14,6 +14,9 @@ class CustomFormField extends StatelessWidget {
   final TextEditingController? controller;
   final bool enabled;
   final String? hintText;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const CustomFormField({
     super.key,
@@ -28,64 +31,83 @@ class CustomFormField extends StatelessWidget {
     this.controller,
     this.enabled = true,
     this.hintText,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final fillColor = isDark ? KSurfaceDark.withValues(alpha: 0.55) : KWhite;
+    final iconColor = enabled ? KPrimaryColor : KDisabledLight;
+    final borderColor = isDark ? KBorderDark : KBorderLight;
+    final labelColor = isDark ? KTextSecondaryDark : KGrey;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: TextStyles.notes),
+          Text(label, style: TextStyles.notes.copyWith(color: labelColor)),
           const SizedBox(height: 6),
           TextFormField(
             enabled: enabled,
             controller: controller,
             obscureText: obscure,
             onChanged: onChanged,
-
+            focusNode: focusNode,
+            textInputAction: textInputAction,
+            onFieldSubmitted: onFieldSubmitted,
             keyboardType: keyboardType,
             validator: validator,
+            style: TextStyle(color: isDark ? KTextPrimaryDark : KTextPrimaryLight),
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyles.notes.copyWith(color: Colors.grey),
               filled: true,
-              fillColor: KWhite,
-              prefixIcon: Icon(icon, color: KDarkBlue),
+              fillColor: fillColor,
+              prefixIcon: Icon(icon, color: iconColor),
               suffixIcon:
                   isPassword
                       ? IconButton(
                         icon: Icon(
                           obscure ? Icons.visibility_off : Icons.visibility,
-                          color: KDarkBlue,
+                          color: iconColor,
                         ),
                         onPressed: pressOnEye,
                       )
                       : null,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: KDarkBlue.withAlpha((0.2 * 255).round()),
+                  color: enabled ? borderColor : borderColor.withValues(alpha: 0.4),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: KDarkBlue.withAlpha((0.5 * 255).round()),
-                  width: 1.2,
+                  color: enabled ? KPrimaryColor : borderColor,
+                  width: 1.6,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: borderColor.withValues(alpha: 0.3),
                 ),
               ),
               errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.red),
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: KError),
               ),
               focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.red),
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: KError),
               ),
               errorStyle: const TextStyle(
-                color: Colors.red,
+                color: KError,
                 fontSize: 12,
                 height: 1.2,
               ),

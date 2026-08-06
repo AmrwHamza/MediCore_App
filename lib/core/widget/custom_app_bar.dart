@@ -10,6 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool isMainBar;
   final Color? color;
+  final LinearGradient? gradient;
 
   String _getFirstWords(String text, int wordCount) {
     final words = text.trim().split(RegExp(r'\s+'));
@@ -21,6 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     required this.isMainBar,
     this.color,
+    this.gradient,
   });
 
   @override
@@ -30,9 +32,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       decoration: BoxDecoration(
         color:
-            (color != null)
-                ? color
-                : (isMainBar ? (theme.primaryColor) : KDarkBlue),
+            gradient == null
+                ? (color != null
+                    ? color
+                    : (isMainBar ? (theme.primaryColor) : KDarkBlue))
+                : null,
+        gradient: gradient,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(10),
           bottomRight: Radius.circular(10),

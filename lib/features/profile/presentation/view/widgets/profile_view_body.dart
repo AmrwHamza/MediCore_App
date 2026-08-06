@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
+import 'package:medicore_app/features/notification/presentation/view/notification_view.dart';
 import 'package:medicore_app/features/profile/presentation/view/change_password_view.dart';
 import 'package:medicore_app/features/profile/presentation/view/edit_profile_view.dart';
 import 'package:medicore_app/features/profile/presentation/view/widgets/profile_header.dart';
@@ -61,7 +62,9 @@ class ProfileViewBody extends StatelessWidget {
                   SettingsListItem(
                     title: 'Notifications'.tr(),
                     icon: FontAwesomeIcons.solidBell,
-                    onTap: () {},
+                    onTap: () {
+                      context.pushNamed(NotificationView.routeName);
+                    },
                   ),
                 ],
               ),

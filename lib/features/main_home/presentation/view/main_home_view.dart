@@ -24,7 +24,7 @@ class MainHomeView extends StatelessWidget {
   final List<Widget> pages = <Widget>[
     const HomeView(),
     const ArticlesView(),
-    const Placeholder(),
+    const SizedBox.shrink(),
     const AppointmentsView(),
     const FamilyView(),
   ];

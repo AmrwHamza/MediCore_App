@@ -45,6 +45,18 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   @override
+  Future<Either<Failure, List<DoctorEntity>>> getCachedDoctors() async {
+    try {
+      final doctors = await getIt<HiveHomeLocalStorge>().getCachedDoctors();
+      return Right(doctors);
+    } catch (e) {
+      return const Left(
+        UnknownFailure(message: "Failed to get cached doctors "),
+      );
+    }
+  }
+
+  @override
   Future<Either<Failure, DoctorInfoEntity>> getDoctorInfo(int doctorId) async {
     final response = await getIt<Api>().getWithAuth(
       endPoint: 'doctor/$doctorId',

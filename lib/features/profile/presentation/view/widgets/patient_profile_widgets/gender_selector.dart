@@ -16,6 +16,7 @@ class GenderSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Opacity(
       opacity: enabled ? 1.0 : 0.6,
       child: AbsorbPointer(
@@ -23,11 +24,21 @@ class GenderSelector extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: _buildGenderCard('Male', Icons.male, KPrimaryColor),
+              child: _buildGenderCard(
+                'Male',
+                Icons.male,
+                KPrimaryColor,
+                isDark,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: _buildGenderCard('Female', Icons.female, Colors.pink),
+              child: _buildGenderCard(
+                'Female',
+                Icons.female,
+                Colors.pink,
+                isDark,
+              ),
             ),
           ],
         ),
@@ -35,8 +46,20 @@ class GenderSelector extends StatelessWidget {
     );
   }
 
-  Widget _buildGenderCard(String gender, IconData icon, Color activeColor) {
+  Widget _buildGenderCard(
+    String gender,
+    IconData icon,
+    Color activeColor,
+    bool isDark,
+  ) {
     final isSelected = selectedGender?.toLowerCase() == gender.toLowerCase();
+    final unselectedColor = isDark
+        ? Colors.white.withValues(alpha: 0.06)
+        : KDisabledLight.withValues(alpha: 0.35);
+    final unselectedBorder = isDark
+        ? Colors.white.withValues(alpha: 0.15)
+        : KBorderLight;
+    final unselectedFg = isDark ? Colors.white60 : KGrey;
 
     return GestureDetector(
       onTap: () => onChanged(gender),
@@ -44,15 +67,13 @@ class GenderSelector extends StatelessWidget {
         duration: const Duration(milliseconds: 250),
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color:
-              isSelected
-                  ? activeColor.withValues(alpha: 0.25)
-                  : Colors.white.withValues(alpha: 0.08),
+          color: isSelected
+              ? activeColor.withValues(alpha: isDark ? 0.35 : 0.15)
+              : unselectedColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color:
-                isSelected ? activeColor : Colors.white.withValues(alpha: 0.2),
-            width: 2,
+            color: isSelected ? activeColor : unselectedBorder,
+            width: isSelected ? 2 : 1,
           ),
         ),
         child: Column(
@@ -60,13 +81,15 @@ class GenderSelector extends StatelessWidget {
             Icon(
               icon,
               size: 32,
-              color: isSelected ? activeColor : Colors.white60,
+              color: isSelected ? activeColor : unselectedFg,
             ),
             const SizedBox(height: 8),
             Text(
               gender.tr(),
               style: TextStyle(
-                color: isSelected ? Colors.white : Colors.white70,
+                color: isSelected
+                    ? (isDark ? Colors.white : KPrimaryDark)
+                    : unselectedFg,
                 fontWeight: FontWeight.bold,
               ),
             ),

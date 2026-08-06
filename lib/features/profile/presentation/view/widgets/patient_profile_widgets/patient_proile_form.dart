@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_button.dart';
 import 'package:medicore_app/core/widget/custom_form_field.dart';
 import 'package:medicore_app/features/profile/domain/entities/patient_profile_entity.dart';
@@ -71,6 +72,11 @@ class _PatientProfileFormState extends State<PatientProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+    final modeTextColor = isDark ? KTextPrimaryDark : KTextPrimaryLight;
+    final switchInactive = isDark ? KTextSecondaryDark : Colors.grey[300]!;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: DefaultTabController(
@@ -85,17 +91,17 @@ class _PatientProfileFormState extends State<PatientProfileForm> {
                 children: [
                   Text(
                     'editing_mode'.tr(),
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: modeTextColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   Switch(
-                    activeThumbColor: Colors.white,
-                    activeTrackColor: KPrimaryColor,
-                    inactiveThumbColor: Colors.grey[400],
-                    inactiveTrackColor: Colors.white.withValues(alpha: 0.1),
+                    activeThumbColor: KPrimaryColor,
+                    activeTrackColor: KPrimaryColor.withValues(alpha: 0.4),
+                    inactiveThumbColor: isDark ? KDisabledDark : Colors.grey[400],
+                    inactiveTrackColor: switchInactive,
                     value: _isEditable,
                     onChanged: (value) {
                       setState(() {
@@ -108,6 +114,18 @@ class _PatientProfileFormState extends State<PatientProfileForm> {
             ),
             const SizedBox(height: 10),
             TabBar(
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: isDark
+                    ? KPrimaryColor.withValues(alpha: 0.18)
+                    : KBackgroundLight,
+              ),
+              indicatorColor: Colors.transparent,
+              indicatorWeight: 3,
+              indicatorSize: TabBarIndicatorSize.label,
+              labelColor: KPrimaryColor,
+              unselectedLabelColor: isDark ? Colors.white60 : KGrey,
+              dividerColor: Colors.transparent,
               tabs: [
                 Tab(text: 'bio_info'.tr(), icon: const Icon(Icons.badge)),
                 Tab(
@@ -115,10 +133,6 @@ class _PatientProfileFormState extends State<PatientProfileForm> {
                   icon: const Icon(Icons.health_and_safety),
                 ),
               ],
-              labelColor: KPrimaryColor,
-              unselectedLabelColor: Colors.white60,
-              indicatorColor: Colors.cyanAccent,
-              dividerColor: Colors.transparent,
             ),
             Expanded(
               child: Form(
@@ -134,7 +148,7 @@ class _PatientProfileFormState extends State<PatientProfileForm> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
                 child: CustomButton(
                   title: 'save_medical_data'.tr(),
-                  color: KDarkBlue.withValues(alpha: 0.85),
+                  color: KPrimaryColor,
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
                       context
@@ -161,21 +175,36 @@ class _PatientProfileFormState extends State<PatientProfileForm> {
   }
 
   Widget _buildBioTab() {
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+    final containerColor = isDark ? KSurfaceDark : KWhite;
+    final containerBorder = isDark ? KBorderDark : KBorderLight;
+    final labelColor = isDark ? KTextSecondaryDark : KGrey;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.07),
+          color: containerColor,
           borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+          border: Border.all(color: containerBorder),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withValues(alpha: 0.15)
+                  : Colors.black.withValues(alpha: 0.05),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'gender'.tr(),
-              style: const TextStyle(color: Colors.white70, fontSize: 16),
+              style: TextStyle(color: labelColor, fontSize: 16),
             ),
             const SizedBox(height: 10),
             GenderSelector(
@@ -186,7 +215,7 @@ class _PatientProfileFormState extends State<PatientProfileForm> {
             const SizedBox(height: 25),
             Text(
               'blood_type'.tr(),
-              style: const TextStyle(color: Colors.white70, fontSize: 16),
+              style: TextStyle(color: labelColor, fontSize: 16),
             ),
             const SizedBox(height: 10),
             BloodTypeSelector(
@@ -217,14 +246,28 @@ class _PatientProfileFormState extends State<PatientProfileForm> {
   }
 
   Widget _buildMedicalTab() {
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+    final containerColor = isDark ? KSurfaceDark : KWhite;
+    final containerBorder = isDark ? KBorderDark : KBorderLight;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.07),
+          color: containerColor,
           borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+          border: Border.all(color: containerBorder),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withValues(alpha: 0.15)
+                  : Colors.black.withValues(alpha: 0.05),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
         child: Column(
           children: [

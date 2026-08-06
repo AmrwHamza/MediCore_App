@@ -4,6 +4,7 @@ import 'package:medicore_app/features/appointments/presentation/view/appointment
 import 'package:medicore_app/features/appointments/presentation/view/appointment_details_view.dart';
 import 'package:medicore_app/features/appointments/presentation/view/appointments_view.dart';
 import 'package:medicore_app/features/articles/presentation/view/article_details_view.dart';
+import 'package:medicore_app/features/articles/presentation/view/articles_favorites_view.dart';
 import 'package:medicore_app/features/articles/presentation/view/articles_view.dart';
 import 'package:medicore_app/features/auth/OTP/presentation/view/otp_view.dart';
 import 'package:medicore_app/features/auth/create_account/presentation/view/create_account.dart';
@@ -202,6 +203,11 @@ final GoRouter router = GoRouter(
         final args = state.extra as Map<String, dynamic>?;
         return ArticleDetailsView(article: args?['article']);
       },
+    ),
+    GoRoute(
+      path: ArticlesFavoritesView.routeName,
+      name: ArticlesFavoritesView.routeName,
+      builder: (context, state) => const ArticlesFavoritesView(),
     ),
     GoRoute(
       path: DoctorsView.routeName,

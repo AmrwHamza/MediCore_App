@@ -7,17 +7,20 @@ import 'package:medicore_app/core/utils/app_images.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/theme/theme_provider.dart';
 import '../../view_model/cubit/profile_image_cubit.dart';
+import 'profile_image_viewer.dart';
 
 class ProfileImageWidget extends StatelessWidget {
   final double radius;
   final void Function()? onTap;
   final bool isInHome;
+  final String heroTag;
 
   const ProfileImageWidget({
     super.key,
     this.radius = 40,
     this.onTap,
     this.isInHome = true,
+    this.heroTag = 'profile_image_hero',
   });
 
   @override
@@ -25,7 +28,17 @@ class ProfileImageWidget extends StatelessWidget {
     final theme = context.watch<ThemeProvider>().themeData;
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap ??
+          () {
+            final cubit = context.read<ProfileImageCubit>();
+            if (cubit.hasImage && cubit.profileImagePath != null) {
+              context.showProfileImageViewer(
+                imageUrl: '$base${cubit.profileImagePath}',
+                heroTag: heroTag,
+                title: 'Profile Photo',
+              );
+            }
+          },
       child: Stack(
         children: [
           BlocBuilder<ProfileImageCubit, ProfileImageState>(
@@ -78,20 +91,24 @@ class ProfileImageWidget extends StatelessWidget {
               }
 
               if (state is GetProfileImageSuccess) {
-                return CircleAvatar(
-                  radius: radius,
-                  backgroundImage: NetworkImage(
-                    '$base${state.profileImagePath}',
+                final imageUrl = '$base${state.profileImagePath}';
+                return Hero(
+                  tag: heroTag,
+                  child: CircleAvatar(
+                    radius: radius,
+                    backgroundImage: NetworkImage(imageUrl),
                   ),
                 );
               }
 
               if (state is AddProfileImageSuccess) {
-                return CircleAvatar(
-                  radius: radius,
-                  backgroundColor: KPrimaryColor,
-                  backgroundImage: NetworkImage(
-                    '$base${state.profileImagePath}',
+                final imageUrl = '$base${state.profileImagePath}';
+                return Hero(
+                  tag: heroTag,
+                  child: CircleAvatar(
+                    radius: radius,
+                    backgroundColor: KPrimaryColor,
+                    backgroundImage: NetworkImage(imageUrl),
                   ),
                 );
               }

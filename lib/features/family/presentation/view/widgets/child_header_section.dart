@@ -8,9 +8,10 @@ import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/features/onboarding_medical_info/domain/entities/get_child_entity.dart';
 
 class ChildHeaderSection extends StatelessWidget {
-  const ChildHeaderSection({super.key, required this.child});
+  const ChildHeaderSection({super.key, required this.child, this.visitsCount});
 
   final GetChildEntity child;
+  final int? visitsCount;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +101,7 @@ class ChildHeaderSection extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Visits'.tr(namedArgs: {'num': 0.toString()}),
+                        'Visits'.tr(namedArgs: {'num': (visitsCount ?? 0).toString()}),
                         style: TextStyles.public.copyWith(
                           color: Colors.white70,
                         ),

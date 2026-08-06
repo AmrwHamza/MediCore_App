@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +9,44 @@ import 'package:medicore_app/core/helper_function/user_information.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 
-class WelcomeCard extends StatelessWidget {
+class WelcomeCard extends StatefulWidget {
   const WelcomeCard({super.key});
+
+  @override
+  State<WelcomeCard> createState() => _WelcomeCardState();
+}
+
+class _WelcomeCardState extends State<WelcomeCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _bubbleController;
+  late final List<_Bubble> _bubbles;
+  final _random = math.Random(42);
+
+  @override
+  void initState() {
+    super.initState();
+    _bubbleController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 9),
+    )..repeat();
+
+    _bubbles = List.generate(18, (index) {
+      return _Bubble(
+        x: _random.nextDouble(),
+        baseY: _random.nextDouble(),
+        radius: 4 + _random.nextDouble() * 14,
+        speed: 0.35 + _random.nextDouble() * 0.8,
+        opacity: 0.12 + _random.nextDouble() * 0.2,
+        wobble: _random.nextDouble() * math.pi * 2,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _bubbleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +119,17 @@ class WelcomeCard extends StatelessWidget {
                       Colors.white.withValues(alpha: 0.1),
                       Colors.white.withValues(alpha: 0.0),
                     ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: AnimatedBuilder(
+                animation: _bubbleController,
+                builder: (context, _) => CustomPaint(
+                  painter: _BubbleBackgroundPainter(
+                    bubbles: _bubbles,
+                    progress: _bubbleController.value,
                   ),
                 ),
               ),
@@ -182,11 +231,7 @@ class WelcomeCard extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(22),
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 4,
-                          right: 4,
-                          left: 4,
-                        ),
+                        padding: const EdgeInsets.only(top: 4, right: 4, left: 4),
                         child: Image.asset(
                           Assets.imagesWelcomeDoctor,
                           width: 100,
@@ -204,4 +249,51 @@ class WelcomeCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _Bubble {
+  final double x;
+  final double baseY;
+  final double radius;
+  final double speed;
+  final double opacity;
+  final double wobble;
+
+  const _Bubble({
+    required this.x,
+    required this.baseY,
+    required this.radius,
+    required this.speed,
+    required this.opacity,
+    required this.wobble,
+  });
+}
+
+class _BubbleBackgroundPainter extends CustomPainter {
+  final List<_Bubble> bubbles;
+  final double progress;
+
+  _BubbleBackgroundPainter({required this.bubbles, required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.white;
+    for (final bubble in bubbles) {
+      final drift = progress * bubble.speed;
+      var y = (bubble.baseY - drift) % 1.0;
+      if (y < 0) y += 1.0;
+      final x = (bubble.x + 0.02 * math.sin(drift * math.pi * 2 + bubble.wobble)) % 1.0;
+
+      paint.color = Colors.white.withValues(alpha: bubble.opacity);
+      canvas.drawCircle(
+        Offset(x * size.width, y * size.height),
+        bubble.radius,
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_BubbleBackgroundPainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }

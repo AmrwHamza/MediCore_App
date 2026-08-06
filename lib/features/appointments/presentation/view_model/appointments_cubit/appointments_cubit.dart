@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:medicore_app/features/appointments/data/models/appointment_types.dart';
 import 'package:medicore_app/features/appointments/data/repo/appointments_repo_impl.dart';
 import 'package:medicore_app/features/appointments/domain/entities/patient_appointment_entity.dart';
 
@@ -17,7 +18,7 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     if (isClosed) return;
 
     return response.fold(
-      (failure) {
+      (failure) async {
         if (isClosed) return;
         if (failure.statusCode == 400) {
           emit(
@@ -28,9 +29,30 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
               waitingSon: [],
             ),
           );
-        } else {
-          emit(AppointmentsFailure(error: failure.message));
+          return;
         }
+        final cached = await getIt<AppointmentsRepoImpl>()
+            .getCachedAppointments();
+        if (isClosed) return;
+        cached.fold(
+          (cacheFailure) => emit(AppointmentsFailure(error: failure.message)),
+          (appointments) {
+            final accepted = appointments
+                .where((e) => e.status == AppointmentTypes.accepted)
+                .toList();
+            final waiting = appointments
+                .where((e) => e.status == AppointmentTypes.pending)
+                .toList();
+            emit(
+              AppointmentsSuccess(
+                acceptedPatient: accepted,
+                waitingPatient: waiting,
+                acceptedSon: [],
+                waitingSon: [],
+              ),
+            );
+          },
+        );
       },
       (appointments) {
         if (isClosed) return;

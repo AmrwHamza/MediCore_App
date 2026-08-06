@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/theme/theme_provider.dart';
 import '../../../data/models/appointment_types.dart';
 import 'delete_appointment_button.dart';
 import 'image_card.dart';
@@ -35,21 +37,41 @@ class PreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('cnskcjnscjknszjk = $status');
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+
     final done = status == AppointmentTypes.complete;
+
+    final cardColor = isDark
+        ? KCardDark
+        : (done ? Colors.grey.withValues(alpha: 0.7) : Colors.white);
+    final primaryTextColor = isDark
+        ? Colors.white.withValues(alpha: 0.85)
+        : (done ? Colors.white.withValues(alpha: 0.8) : Colors.grey[700]);
+    final secondaryTextColor = isDark
+        ? Colors.white.withValues(alpha: 0.6)
+        : (done ? Colors.white.withValues(alpha: 0.8) : Colors.grey[600]);
+    final dividerColor = isDark
+        ? Colors.white.withValues(alpha: 0.1)
+        : (done
+            ? Colors.white.withValues(alpha: 0.3)
+            : Colors.grey.withValues(alpha: 0.1));
+
     return Card(
       margin: EdgeInsets.zero,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
         side: BorderSide(
-          color: Colors.grey.withValues(alpha: 0.08),
+          color: isDark
+              ? KBorderDark.withValues(alpha: 0.5)
+              : Colors.grey.withValues(alpha: 0.08),
           width: 1.w,
         ),
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: done ? Colors.grey.withValues(alpha: 0.7) : Colors.white,
+          color: cardColor,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
             color: Colors.white.withValues(alpha: 0.4),
@@ -57,7 +79,7 @@ class PreviewCard extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.02),
+              color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.02),
               blurRadius: 16.r,
               offset: const Offset(0, 6),
             ),
@@ -92,10 +114,7 @@ class PreviewCard extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 15.sp,
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      done
-                                          ? Colors.white.withValues(alpha: 0.8)
-                                          : Colors.grey[700],
+                                  color: primaryTextColor,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -122,10 +141,7 @@ class PreviewCard extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
-                                  color:
-                                      done
-                                          ? Colors.white.withValues(alpha: 0.8)
-                                          : Colors.grey[700],
+                                  color: primaryTextColor,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -135,10 +151,7 @@ class PreviewCard extends StatelessWidget {
                         ),
                         SizedBox(height: 12.h),
                         Divider(
-                          color:
-                              done
-                                  ? Colors.white.withValues(alpha: 0.3)
-                                  : Colors.grey.withValues(alpha: 0.1),
+                          color: dividerColor,
                           height: 1.h,
                           thickness: 1.h,
                         ),
@@ -176,12 +189,7 @@ class PreviewCard extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 11.sp,
                                       fontWeight: FontWeight.w500,
-                                      color:
-                                          done
-                                              ? Colors.white.withValues(
-                                                alpha: 0.8,
-                                              )
-                                              : Colors.grey[600],
+                                      color: secondaryTextColor,
                                     ),
                                   ),
                                   SizedBox(width: 10.w),
@@ -212,12 +220,7 @@ class PreviewCard extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 11.sp,
                                       fontWeight: FontWeight.w500,
-                                      color:
-                                          done
-                                              ? Colors.white.withValues(
-                                                alpha: 0.8,
-                                              )
-                                              : Colors.grey[600],
+                                      color: secondaryTextColor,
                                     ),
                                   ),
                                 ],

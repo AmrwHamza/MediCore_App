@@ -9,6 +9,7 @@ abstract class HomeRepo {
   Future<Either<Failure, List<DepartmentEntity>>> getDepartments();
   Future<Either<Failure, List<DepartmentEntity>>> getCachedDepartments();
   Future<Either<Failure, List<DoctorEntity>>> getDoctors();
+  Future<Either<Failure, List<DoctorEntity>>> getCachedDoctors();
   Future<Either<Failure, DoctorInfoEntity>> getDoctorInfo(int id);
   Future<Either<Failure, List<DoctorEntity>>> getDoctorsInDepartment(int id);
 }

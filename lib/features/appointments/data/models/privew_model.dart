@@ -57,6 +57,7 @@ class PrivewModel extends PrivewEntity {
     required super.imgPath,
     required super.isChild,
     required super.appointmentId,
+    super.analysisFile,
   });
 
   factory PrivewModel.fromJson(
@@ -82,7 +83,27 @@ class PrivewModel extends PrivewEntity {
       gender: json['gender'] ?? '',
       imgPath: json['imgPath'] ?? '',
       isChild: isChild,
-      appointmentId: json['apointment_id']
+      appointmentId: json['apointment_id'],
+      analysisFile: _readAnalysisFile(json),
     );
+  }
+
+  static String _readAnalysisFile(Map<String, dynamic> json) {
+    for (final key in const [
+      'analysis_file',
+      'analysisFile',
+      'medical_analysis',
+      'medicalAnalysis',
+      'analysis_path',
+      'analysisPath',
+      'file',
+      'file_path',
+      'attachment',
+      'attachment_url',
+    ]) {
+      final value = json[key];
+      if (value is String && value.trim().isNotEmpty) return value;
+    }
+    return '';
   }
 }

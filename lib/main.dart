@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicore_app/core/helper/observer.dart';
 import 'package:medicore_app/core/helper/router.dart';
 import 'package:medicore_app/core/helper/shared_pref.dart';
+import 'package:medicore_app/core/helper_function/cache_sync_service.dart';
 import 'package:medicore_app/core/helper_function/get_it_service.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/auth/logout/presentation/view_model/cubit/logout_cubit.dart';
@@ -70,24 +74,62 @@ class MediCoreApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final theme = context.watch<ThemeProvider>().themeData;
-          return MaterialApp.router(
-            themeMode: ThemeMode.system,
-            theme: theme.copyWith(
-              textTheme: Theme.of(context).textTheme.apply(
-                fontFamily:
-                    context.locale.languageCode == 'ar'
-                        ? 'Tajawal'
-                        : 'RobotoSlab',
+          return ConnectivityWatcher(
+            child: MaterialApp.router(
+              themeMode: ThemeMode.system,
+              theme: theme.copyWith(
+                textTheme: Theme.of(context).textTheme.apply(
+                  fontFamily:
+                      context.locale.languageCode == 'ar'
+                          ? 'Tajawal'
+                          : 'RobotoSlab',
+                ),
               ),
+              locale: context.locale,
+              supportedLocales: context.supportedLocales,
+              localizationsDelegates: context.localizationDelegates,
+              debugShowCheckedModeBanner: false,
+              routerConfig: router,
             ),
-            locale: context.locale,
-            supportedLocales: context.supportedLocales,
-            localizationsDelegates: context.localizationDelegates,
-            debugShowCheckedModeBanner: false,
-            routerConfig: router,
           );
         },
       ),
     );
   }
+}
+
+class ConnectivityWatcher extends StatefulWidget {
+  final Widget child;
+
+  const ConnectivityWatcher({super.key, required this.child});
+
+  @override
+  State<ConnectivityWatcher> createState() => _ConnectivityWatcherState();
+}
+
+class _ConnectivityWatcherState extends State<ConnectivityWatcher> {
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<List<ConnectivityResult>>? _subscription;
+  bool _wasOffline = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = _connectivity.onConnectivityChanged.listen((results) {
+      final isOnline = results.any((r) => r != ConnectivityResult.none);
+      if (isOnline && _wasOffline) {
+        getIt<CacheSyncService>().syncAll();
+      }
+      _wasOffline = !isOnline;
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }

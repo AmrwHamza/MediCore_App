@@ -17,20 +17,59 @@ import 'package:medicore_app/features/auth/public_cubits/auth_validate_cubit/aut
 import 'package:medicore_app/features/auth/public_cubits/auth_validate_cubit/auth_validate_state.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class CreateAccountBody extends StatelessWidget {
+class CreateAccountBody extends StatefulWidget {
   const CreateAccountBody({super.key});
+
+  @override
+  State<CreateAccountBody> createState() => _CreateAccountBodyState();
+}
+
+class _CreateAccountBodyState extends State<CreateAccountBody> {
+  final _formKey = GlobalKey<FormState>();
+  final _firstNameFocusNode = FocusNode();
+  final _lastNameFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
+  final _phoneFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+  final _confirmPasswordFocusNode = FocusNode();
+
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? phoneNumber;
+  String? password;
+  String? confPassword;
+  String id = '';
+
+  @override
+  void dispose() {
+    _firstNameFocusNode.dispose();
+    _lastNameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _phoneFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    _confirmPasswordFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (_formKey.currentState!.validate()) {
+      context.read<CreateAccountCubit>().createAccount(
+        firstName: firstName!,
+        lastName: lastName!,
+        email: email!,
+        phoneNumber: phoneNumber!,
+        password: password!,
+        confPassword: confPassword!,
+        id,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AuthValidateCubit>();
-    final formKey = GlobalKey<FormState>();
-    String? firstName;
-    String? lastName;
-    String? email;
-    String? phoneNumber;
-    String? password;
-    String? confPassword;
-    String id = '';
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final surfaceColor = isDark ? KSurfaceDark : KSurfaceLight;
@@ -102,7 +141,7 @@ class CreateAccountBody extends StatelessWidget {
                         vertical: 16.0,
                       ),
                       child: Form(
-                        key: formKey,
+                        key: _formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -192,9 +231,14 @@ class CreateAccountBody extends StatelessWidget {
                                           label: 'first_name_hint'.tr(),
                                           icon: Icons.person_outline_rounded,
                                           keyboardType: TextInputType.text,
+                                          focusNode: _firstNameFocusNode,
+                                          textInputAction: TextInputAction.next,
                                           validator: cubit.validateName,
                                           onChanged: (val) {
                                             firstName = val.trim();
+                                          },
+                                          onFieldSubmitted: (_) {
+                                            _lastNameFocusNode.requestFocus();
                                           },
                                         ),
                                         const SizedBox(height: 16),
@@ -202,9 +246,14 @@ class CreateAccountBody extends StatelessWidget {
                                           label: 'last_name_hint'.tr(),
                                           icon: Icons.person_outline_rounded,
                                           keyboardType: TextInputType.text,
+                                          focusNode: _lastNameFocusNode,
+                                          textInputAction: TextInputAction.next,
                                           validator: cubit.validateName,
                                           onChanged: (val) {
                                             lastName = val.trim();
+                                          },
+                                          onFieldSubmitted: (_) {
+                                            _emailFocusNode.requestFocus();
                                           },
                                         ),
                                         const SizedBox(height: 16),
@@ -213,20 +262,30 @@ class CreateAccountBody extends StatelessWidget {
                                           icon: Icons.email_outlined,
                                           keyboardType:
                                               TextInputType.emailAddress,
+                                          focusNode: _emailFocusNode,
+                                          textInputAction: TextInputAction.next,
                                           validator: cubit.validateEmail,
                                           onChanged: (value) {
                                             cubit.email = value;
                                             email = value.trim();
                                           },
+                                          onFieldSubmitted: (_) {
+                                            _phoneFocusNode.requestFocus();
+                                          },
                                         ),
                                         const SizedBox(height: 16),
                                         CustomPhoneField(
                                           label: 'phone_hint'.tr(),
+                                          focusNode: _phoneFocusNode,
+                                          textInputAction: TextInputAction.next,
                                           onChanged: (val) {
                                             cubit.phone = val;
                                             phoneNumber = val.trim();
                                           },
                                           validator: cubit.validatePhone,
+                                          onFieldSubmitted: (_) {
+                                            _passwordFocusNode.requestFocus();
+                                          },
                                         ),
                                         const SizedBox(height: 16),
                                         BlocBuilder<
@@ -246,6 +305,9 @@ class CreateAccountBody extends StatelessWidget {
                                               icon: Icons.lock_outline_rounded,
                                               isPassword: true,
                                               obscure: cubit.obscurePassword,
+                                              focusNode: _passwordFocusNode,
+                                              textInputAction:
+                                                  TextInputAction.next,
                                               pressOnEye:
                                                   cubit.changeObscurePassword,
                                               validator:
@@ -253,6 +315,10 @@ class CreateAccountBody extends StatelessWidget {
                                               onChanged: (value) {
                                                 cubit.password = value.trim();
                                                 password = value.trim();
+                                              },
+                                              onFieldSubmitted: (_) {
+                                                _confirmPasswordFocusNode
+                                                    .requestFocus();
                                               },
                                             );
                                           },
@@ -277,6 +343,10 @@ class CreateAccountBody extends StatelessWidget {
                                               isPassword: true,
                                               obscure:
                                                   cubit.obscureConfirmPassword,
+                                              focusNode:
+                                                  _confirmPasswordFocusNode,
+                                              textInputAction:
+                                                  TextInputAction.done,
                                               pressOnEye:
                                                   cubit
                                                       .changeObscureConfirmPassword,
@@ -287,6 +357,8 @@ class CreateAccountBody extends StatelessWidget {
                                                     value.trim();
                                                 confPassword = value.trim();
                                               },
+                                              onFieldSubmitted: (_) =>
+                                                  _submit(),
                                             );
                                           },
                                         ),
@@ -355,9 +427,13 @@ class CreateAccountBody extends StatelessWidget {
                                                               .credit_card_rounded,
                                                       keyboardType:
                                                           TextInputType.phone,
+                                                      textInputAction:
+                                                          TextInputAction.done,
                                                       onChanged:
                                                           (value) =>
                                                               id = value.trim(),
+                                                      onFieldSubmitted: (_) =>
+                                                          _submit(),
                                                     ),
                                                   ],
                                                 ],
@@ -393,23 +469,7 @@ class CreateAccountBody extends StatelessWidget {
                                           ),
                                           child: CustomButton(
                                             title: 'create_account_btn'.tr(),
-                                            onTap: () {
-                                              if (formKey.currentState!
-                                                  .validate()) {
-                                                context
-                                                    .read<CreateAccountCubit>()
-                                                    .createAccount(
-                                                      firstName: firstName!,
-                                                      lastName: lastName!,
-                                                      email: email!,
-                                                      phoneNumber: phoneNumber!,
-                                                      password: password!,
-                                                      confPassword:
-                                                          confPassword!,
-                                                      id,
-                                                    );
-                                              }
-                                            },
+                                            onTap: _submit,
                                           ),
                                         ),
                                       ],

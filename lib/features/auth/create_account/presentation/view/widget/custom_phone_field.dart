@@ -9,7 +9,10 @@ class CustomPhoneField extends StatelessWidget {
   final void Function(String fullNumber) onChanged;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
-  final bool enabled ;
+  final bool enabled;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const CustomPhoneField({
     super.key,
@@ -18,6 +21,9 @@ class CustomPhoneField extends StatelessWidget {
     required this.validator,
     this.controller,
     this.enabled = true,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -34,6 +40,9 @@ class CustomPhoneField extends StatelessWidget {
             controller: controller,
             initialCountryCode: 'SY',
             disableLengthCheck: true,
+            focusNode: focusNode,
+            textInputAction: textInputAction,
+            onSubmitted: onFieldSubmitted,
             inputFormatters: [LengthLimitingTextInputFormatter(9)],
             decoration: InputDecoration(
               counterText: '',

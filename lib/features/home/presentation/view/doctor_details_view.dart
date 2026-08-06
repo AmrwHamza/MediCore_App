@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
@@ -11,6 +10,7 @@ import 'package:medicore_app/features/home/domain/entities/doctor_entity.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/doctor_details_widgets/contact_info_card.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/doctor_details_widgets/doctor_details_loading_skeleton.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/doctor_details_widgets/doctor_premium_avatar.dart';
+import 'package:medicore_app/features/home/presentation/view/widgets/doctor_details_widgets/doctor_rating_section.dart';
 import 'package:medicore_app/features/home/presentation/view_model/doctor_info_cubit/doctor_info_cubit.dart';
 
 class DoctorDetailsView extends StatelessWidget {
@@ -106,16 +106,8 @@ class DoctorDetailsView extends StatelessWidget {
                           ),
                           const SizedBox(height: 12),
                           // Rating
-                          RatingBarIndicator(
-                            rating: (info.rate ?? 3.5).toDouble(),
-                            itemBuilder:
-                                (context, _) => const Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.amber,
-                                ),
-                            itemCount: 5,
-                            itemSize: 26,
-                            direction: Axis.horizontal,
+                          DoctorRatingSection(
+                            doctorId: doctor.doctorId,
                           ),
                           const SizedBox(height: 32),
                           // Contact Information Title

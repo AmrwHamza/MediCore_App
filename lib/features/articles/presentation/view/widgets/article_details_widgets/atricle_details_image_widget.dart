@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:medicore_app/features/articles/presentation/view/widgets/article_details_widgets/image_shimmer.dart';
@@ -28,15 +29,11 @@ class AtricleDetailsImageWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: Image.network(
-            fixedUrl,
+          child: CachedNetworkImage(
+            imageUrl: fixedUrl,
             fit: BoxFit.cover,
-            loadingBuilder: (context, child, progress) {
-              if (progress == null) return child;
-
-              return const ImageShimmer();
-            },
-            errorBuilder: (context, error, stackTrace) {
+            placeholder: (context, url) => const ImageShimmer(),
+            errorWidget: (context, url, error) {
               return const Center(child: Icon(Icons.broken_image, size: 40));
             },
           ),

@@ -1,25 +1,42 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
+import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/appointment_card_info.dart';
+import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/appointment_doctor_rating.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/appointment_row_info.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/doctor_details_section.dart';
+import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/upload_section.dart';
 
 import '../../../../data/models/appointment_types.dart';
 import '../../../../domain/entities/privew_entity.dart';
 import '../image_card.dart';
 import 'medical_background_painter.dart';
 import 'medication_item.dart';
+import 'upload_widgets/completed_analysis_card.dart';
 
 class AppointmentDetailsViewBody extends StatelessWidget {
   const AppointmentDetailsViewBody({super.key, required this.privewEntity});
 
   final PrivewEntity privewEntity;
 
+  bool get _isCompleted {
+    final status = privewEntity.status.toLowerCase();
+    return status == 'complete' || status == 'completed';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+    final primaryTextColor = isDark ? Colors.white : Colors.black87;
+    final mutedTextColor = isDark
+        ? Colors.white.withValues(alpha: 0.6)
+        : Colors.grey[600];
+
     final parsedDate = DateTime.tryParse(privewEntity.date) ?? DateTime.now();
     final localeCode = context.locale.languageCode;
     final formattedDate = DateFormat(
@@ -60,7 +77,7 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                                 style: TextStyles.public.copyWith(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
+                                  color: primaryTextColor,
                                 ),
                               ),
                               SizedBox(height: 4.h),
@@ -90,7 +107,9 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
                     Divider(
-                      color: Colors.grey.withValues(alpha: 0.08),
+                      color: isDark
+                          ? KBorderDark.withValues(alpha: 0.5)
+                          : Colors.grey.withValues(alpha: 0.08),
                       height: 1.h,
                     ),
                     SizedBox(height: 12.h),
@@ -115,6 +134,18 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                   ],
                 ),
               ),
+              if (canUploadMedicalAnalysis(privewEntity)) ...[
+                SizedBox(height: 16.h),
+                UploadSection(privewEntity: privewEntity),
+              ],
+              if (_isCompleted &&
+                  privewEntity.analysisFile.trim().isNotEmpty) ...[
+                SizedBox(height: 16.h),
+                CompletedAnalysisCard(
+                  fileName: privewEntity.analysisFile,
+                  fileUrl: privewEntity.analysisFile,
+                ),
+              ],
               if (privewEntity.diagnoseis.isNotEmpty) ...[
                 SizedBox(height: 16.h),
                 AppointmentCardInfo(
@@ -127,7 +158,7 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                         style: TextStyles.public.copyWith(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color: primaryTextColor,
                         ),
                       ),
                       if (privewEntity.notes.isNotEmpty) ...[
@@ -211,7 +242,9 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                                             style: TextStyle(
                                               fontSize: 13.sp,
                                               fontWeight: FontWeight.bold,
-                                              color: KDarkBlue,
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : KDarkBlue,
                                               letterSpacing: 0.3,
                                             ),
                                           ),
@@ -226,7 +259,7 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                                           privewEntity.notes,
                                           style: TextStyles.notes.copyWith(
                                             fontSize: 13.sp,
-                                            color: Colors.black87,
+                                            color: primaryTextColor,
                                             height: 1.5,
                                             fontWeight: FontWeight.w400,
                                           ),
@@ -255,7 +288,7 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 8.h),
                         child: Text(
                           'appointment_details_no_meds_recorded'.tr(),
-                          style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+                          style: TextStyle(fontSize: 13.sp, color: mutedTextColor),
                         ),
                       )
                     else
@@ -269,6 +302,8 @@ class AppointmentDetailsViewBody extends StatelessWidget {
               ),
               SizedBox(height: 16.h),
               DoctorDetailsSection(privewEntity: privewEntity),
+              SizedBox(height: 16.h),
+              AppointmentDoctorRating(privewEntity: privewEntity),
               SizedBox(height: 24.h),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -297,7 +332,7 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                         ).tr(),
                         style: TextStyles.notes.copyWith(
                           fontSize: 14.sp,
-                          color: Colors.grey[600],
+                          color: mutedTextColor,
                           fontWeight: FontWeight.w400,
                           height: 1.4,
                         ),

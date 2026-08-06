@@ -14,6 +14,7 @@ class AddChildCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
     final state = context.watch<ChildrenInfoCubit>().state;
 
     if (state is AddChildLoading) {
@@ -29,19 +30,27 @@ class AddChildCard extends StatelessWidget {
       );
     }
 
+    final accentColor = isDark ? KCyan : KDarkBlue;
+
     return Card(
       elevation: 0,
-      color: Colors.transparent,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.circular(16),
-      //   side: BorderSide(color: theme.dividerColor.withAlpha(40)),
-      // ),
+      color: isDark
+          ? Colors.white.withValues(alpha: 0.04)
+          : KPrimaryColor.withValues(alpha: 0.04),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.1)
+              : KPrimaryColor.withValues(alpha: 0.15),
+        ),
+      ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () async {
           final child = await showDialog(
             context: context,
-            builder: (_) => AddChildDialog(),
+            builder: (_) => const AddChildDialog(),
           );
           if (child != null && context.mounted) {
             context.read<ChildrenInfoCubit>().addChild(child);
@@ -52,12 +61,12 @@ class AddChildCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.add_circle, size: 44, color: KDarkBlue),
+              Icon(Icons.add_circle, size: 44, color: accentColor),
               const SizedBox(height: 8),
               Text(
                 "add_child".tr(),
                 style: TextStyles.button.copyWith(
-                  color: KDarkBlue,
+                  color: accentColor,
                   fontSize: 12,
                 ),
                 textAlign: TextAlign.center,

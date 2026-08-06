@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:medicore_app/constants.dart';
+import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/features/home/presentation/view/department_details_view.dart';
 import 'package:medicore_app/features/home/presentation/view/doctor_details_view.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/department_card.dart';
@@ -14,6 +16,10 @@ import '../../../../../core/theme/theme_provider.dart';
 import '../../../../../core/utils/app_images.dart';
 import '../../../../departments/presentation/views/departments_view.dart';
 import '../../../../doctors/presentation/views/doctors_view.dart';
+import 'health_widgets/bmi_card.dart';
+import 'health_widgets/health_tips_carousel.dart';
+import 'health_widgets/home_wellness_section.dart';
+import 'health_widgets/quick_actions_row.dart';
 import 'home_error_state.dart';
 import 'home_sections_header.dart';
 import 'home_skeletons.dart';
@@ -26,6 +32,7 @@ class HomeViewBody extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 600;
     final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
 
     return RefreshIndicator.adaptive(
       color: theme.splashColor,
@@ -69,6 +76,19 @@ class HomeViewBody extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: WelcomeCard(),
                 ),
+
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: HomeWellnessSection(),
+                ),
+
+                const SizedBox(height: 28),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: HealthTipsCarousel(),
+                ),
+
                 const SizedBox(height: 36),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -100,8 +120,7 @@ class HomeViewBody extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),
                           itemCount: state.departments.length,
-                          separatorBuilder:
-                              (_, __) => const SizedBox(width: 16),
+                          separatorBuilder: (_, _) => const SizedBox(width: 16),
                           itemBuilder: (context, index) {
                             final department = state.departments[index];
                             return DepartmentCard(
@@ -159,8 +178,7 @@ class HomeViewBody extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),
                           itemCount: state.doctors.length,
-                          separatorBuilder:
-                              (_, __) => const SizedBox(width: 18),
+                          separatorBuilder: (_, _) => const SizedBox(width: 18),
                           itemBuilder: (context, index) {
                             final doctor = state.doctors[index];
                             return DoctorCardInHome(
@@ -187,6 +205,43 @@ class HomeViewBody extends StatelessWidget {
                       }
                     },
                   ),
+                ),
+
+                const SizedBox(height: 36),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 4,
+                        height: 18,
+                        decoration: BoxDecoration(
+                          color: KPrimaryColor,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'health_tools'.tr(),
+                        style: TextStyles.H2.copyWith(
+                          color: isDark ? Colors.white : KBlack,
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: BmiCard(),
+                ),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: QuickActionsRow(),
                 ),
               ],
             ),

@@ -145,6 +145,17 @@ class SharedPrefHelper {
     }
   }
 
+  static dynamic getData(String key) async {
+    try {
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      return sharedPreferences.get(key);
+    } on Exception catch (e) {
+      debugPrint('=================Error while getting data:======= $e');
+      return null;
+    }
+  }
+
   static setData(String key, value) async {
     try {
       final SharedPreferences sharedPreferences =
@@ -205,4 +216,8 @@ class SharedPrefKeys {
   static const String permanentMedications = 'permanentMedications';
   static const String previousSurgeries = 'previousSurgeries';
   static const String previousIllnesses = 'previousIllnesses';
+  static const String bmiHeight = 'bmiHeight';
+  static const String bmiWeight = 'bmiWeight';
+  static const String waterTrackerDate = 'waterTrackerDate';
+  static const String waterTrackerGlasses = 'waterTrackerGlasses';
 }

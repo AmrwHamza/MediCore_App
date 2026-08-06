@@ -26,6 +26,13 @@ class BloodTypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final unselectedColor = isDark
+        ? Colors.white.withValues(alpha: 0.06)
+        : KDisabledLight.withValues(alpha: 0.35);
+    final unselectedBorder = isDark ? Colors.white.withValues(alpha: 0.15) : KBorderLight;
+    final unselectedFg = isDark ? Colors.white70 : KGrey;
+
     return Opacity(
       opacity: enabled ? 1.0 : 0.6,
       child: AbsorbPointer(
@@ -45,34 +52,29 @@ class BloodTypeSelector extends StatelessWidget {
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      color:
-                          isSelected
-                              ? KPrimaryColor.withValues(alpha: 0.8)
-                              : Colors.white.withValues(alpha: 0.08),
+                      color: isSelected
+                          ? KPrimaryColor.withValues(alpha: isDark ? 0.9 : 1)
+                          : unselectedColor,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color:
-                            isSelected
-                                ? KPrimaryColor
-                                : Colors.white.withValues(alpha: 0.2),
-                        width: 1.5,
+                        color: isSelected ? KPrimaryColor : unselectedBorder,
+                        width: isSelected ? 1.5 : 1,
                       ),
-                      boxShadow:
-                          isSelected
-                              ? [
-                                BoxShadow(
-                                  color: Colors.redAccent.withValues(
-                                    alpha: 0.3,
-                                  ),
-                                  blurRadius: 8,
-                                ),
-                              ]
-                              : [],
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: KPrimaryColor.withValues(alpha: 0.35),
+                                blurRadius: 8,
+                              ),
+                            ]
+                          : [],
                     ),
                     child: Text(
                       type,
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.white70,
+                        color: isSelected
+                            ? Colors.white
+                            : unselectedFg,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

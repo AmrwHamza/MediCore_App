@@ -17,10 +17,30 @@ class ArticlesViewBody extends StatefulWidget {
 }
 
 class _ArticlesViewBodyState extends State<ArticlesViewBody> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     context.read<ArticleCubit>().fetchInitialArticles();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= 300) {
+      context.read<ArticleCubit>().fetchMoreArticles();
+    }
   }
 
   @override
@@ -35,9 +55,21 @@ class _ArticlesViewBodyState extends State<ArticlesViewBody> {
         builder: (context, state) {
           if (state is ArticlePaginationLoaded) {
             return ListView.builder(
+              controller: _scrollController,
               padding: EdgeInsets.only(top: 8.h, bottom: 16.h),
-              itemCount: state.articles.length,
+              itemCount: state.articles.length + 1,
               itemBuilder: (context, index) {
+                if (index >= state.articles.length) {
+                  if (state.hasReachedEnd) {
+                    return const SizedBox.shrink();
+                  }
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
                 return ArticleCard(article: state.articles[index])
                     .animate()
                     .fadeIn(

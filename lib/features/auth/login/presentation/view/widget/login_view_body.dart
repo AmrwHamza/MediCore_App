@@ -16,19 +16,41 @@ import 'package:medicore_app/features/auth/public_cubits/auth_validate_cubit/aut
 import 'package:medicore_app/features/auth/public_cubits/auth_validate_cubit/auth_validate_state.dart';
 import 'package:medicore_app/features/main_home/presentation/view/main_home_view.dart';
 
-// ignore: must_be_immutable
-class LoginViewBody extends StatelessWidget {
-  LoginViewBody({super.key});
+class LoginViewBody extends StatefulWidget {
+  const LoginViewBody({super.key});
+
+  @override
+  State<LoginViewBody> createState() => _LoginViewBodyState();
+}
+
+class _LoginViewBodyState extends State<LoginViewBody> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
 
   String? email;
   String? password;
-  int? id;
-  String? phine;
+
+  @override
+  void dispose() {
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (_formKey.currentState!.validate()) {
+      context.read<LoginCubit>().login(
+        email: email!,
+        password: password!,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AuthValidateCubit>();
-    final formKey = GlobalKey<FormState>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final surfaceColor = isDark ? KSurfaceDark : KSurfaceLight;
     final textPrimary = isDark ? KTextPrimaryDark : KTextPrimaryLight;
@@ -81,7 +103,7 @@ class LoginViewBody extends StatelessWidget {
                   vertical: 16.0,
                 ),
                 child: Form(
-                  key: formKey,
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -165,10 +187,15 @@ class LoginViewBody extends StatelessWidget {
                                     label: 'email_hint'.tr(),
                                     icon: Icons.email_rounded,
                                     keyboardType: TextInputType.emailAddress,
+                                    focusNode: _emailFocusNode,
+                                    textInputAction: TextInputAction.next,
                                     validator: cubit.validateEmail,
                                     onChanged: (value) {
                                       cubit.email = value.trim();
                                       email = value.trim();
+                                    },
+                                    onFieldSubmitted: (_) {
+                                      _passwordFocusNode.requestFocus();
                                     },
                                   ),
                                   const SizedBox(height: 20),
@@ -187,12 +214,15 @@ class LoginViewBody extends StatelessWidget {
                                         icon: Icons.lock_rounded,
                                         isPassword: true,
                                         obscure: cubit.obscurePassword,
+                                        focusNode: _passwordFocusNode,
+                                        textInputAction: TextInputAction.done,
                                         pressOnEye: cubit.changeObscurePassword,
                                         validator: cubit.validateNewPassword,
                                         onChanged: (value) {
                                           cubit.password = value.trim();
                                           password = value.trim();
                                         },
+                                        onFieldSubmitted: (_) => _submit(),
                                       );
                                     },
                                   ),
@@ -275,17 +305,7 @@ class LoginViewBody extends StatelessWidget {
                                           ),
                                           child: CustomButton(
                                             title: 'login_btn'.tr(),
-                                            onTap: () {
-                                              if (formKey.currentState!
-                                                  .validate()) {
-                                                context
-                                                    .read<LoginCubit>()
-                                                    .login(
-                                                      email: email!,
-                                                      password: password!,
-                                                    );
-                                              }
-                                            },
+                                            onTap: _submit,
                                           ),
                                         );
                                       }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_app_bar.dart';
 import 'package:medicore_app/features/notification/presentation/view/widgets/notification_view_body.dart';
+import 'package:medicore_app/features/notification/presentation/view_model/notification_cubit/notification_cubit.dart';
 
 class NotificationView extends StatelessWidget {
   static const routeName = '/notification';
@@ -15,7 +16,10 @@ class NotificationView extends StatelessWidget {
       backgroundColor:
           context.watch<ThemeProvider>().themeData.scaffoldBackgroundColor,
       appBar: CustomAppBar(title: 'Notifications'.tr(), isMainBar: false),
-      body: const NotificationViewBody(),
+      body: BlocProvider(
+        create: (context) => NotificationCubit(),
+        child: const NotificationViewBody(),
+      ),
     );
   }
 }

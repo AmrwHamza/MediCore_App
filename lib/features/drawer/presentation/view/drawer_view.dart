@@ -18,6 +18,9 @@ import 'package:medicore_app/features/drawer/presentation/view/widgets/custom_dr
 import 'package:provider/provider.dart';
 
 import '../../../../core/utils/app_lottie.dart';
+import '../../../appointments/presentation/view/appointment_archive_view.dart';
+import '../../../articles/presentation/view/articles_favorites_view.dart';
+import '../../../doctors/presentation/views/doctors_view.dart';
 import '../../../payment/presentation/views/payment_view.dart';
 
 class DrawerView extends StatelessWidget {
@@ -83,7 +86,9 @@ class DrawerView extends StatelessWidget {
                           'Doctors'.tr(),
                           style: TextStyles.public.copyWith(color: KDarkBlue),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          context.push(DoctorsView.routeName);
+                        },
                         leading: const FaIcon(
                           FontAwesomeIcons.userDoctor,
                           color: KOrange,
@@ -97,7 +102,9 @@ class DrawerView extends StatelessWidget {
                             fontSize: 14,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          context.push(ArticlesFavoritesView.routeName);
+                        },
                         leading: const FaIcon(
                           FontAwesomeIcons.bookMedical,
                           color: KPurple,
@@ -174,6 +181,9 @@ class DrawerView extends StatelessWidget {
               style: TextStyles.public.copyWith(color: KDarkBlue, fontSize: 14),
             ),
             leading: const Icon(Icons.archive, color: KOrange),
+            onTap: () {
+              context.pushNamed(AppointmentArchiveView.routeName);
+            },
           ),
           ListTile(
             title: Text(

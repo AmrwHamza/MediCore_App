@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicore_app/constants.dart';
 
 class ProfileHeaderCard extends StatelessWidget {
   final String firstName;
@@ -20,20 +21,17 @@ class ProfileHeaderCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(  
-        gradient: LinearGradient(
-          colors: [
-            Colors.white.withValues(alpha: 0.15),
-            Colors.white.withValues(alpha: 0.02),
-          ],
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [KPrimaryColor, KPrimaryDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: KPrimaryColor.withValues(alpha: 0.35),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -47,11 +45,12 @@ class ProfileHeaderCard extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: const LinearGradient(
-                colors: [Colors.cyanAccent, Colors.blueAccent],
+                colors: [Colors.white, KCyanLight],
               ),
+              border: Border.all(color: Colors.white, width: 2),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.cyanAccent.withValues(alpha: 0.4),
+                  color: Colors.white.withValues(alpha: 0.4),
                   blurRadius: 15,
                   spreadRadius: 2,
                 ),
@@ -63,7 +62,7 @@ class ProfileHeaderCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: KPrimaryDark,
                 ),
               ),
             ),
@@ -82,7 +81,7 @@ class ProfileHeaderCard extends StatelessWidget {
           Text(
             email,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.6),
+              color: Colors.white.withValues(alpha: 0.85),
               fontSize: 14,
             ),
           ),

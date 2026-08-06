@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medicore_app/core/theme/theme_provider.dart';
 
 class AppointmentRowInfo extends StatelessWidget {
   const AppointmentRowInfo({
@@ -15,31 +17,45 @@ class AppointmentRowInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeProvider>().themeData;
+    final isDark = theme.brightness == Brightness.dark;
+
+    final iconColor = isDark
+        ? Colors.white.withValues(alpha: 0.4)
+        : Colors.grey[400];
+    final labelColor = isDark
+        ? Colors.white.withValues(alpha: 0.55)
+        : Colors.grey[500];
+    final valueColor = isDark ? Colors.white : Colors.black87;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
             if (icon != null) ...[
-              Icon(icon, size: 16.r, color: Colors.grey[400]),
+              Icon(icon, size: 16.r, color: iconColor),
               SizedBox(width: 6.w),
             ],
             Text(
               label,
               style: TextStyle(
                 fontSize: 13.sp,
-                color: Colors.grey[500],
+                color: labelColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ],
         ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: valueColor,
+            ),
           ),
         ),
       ],

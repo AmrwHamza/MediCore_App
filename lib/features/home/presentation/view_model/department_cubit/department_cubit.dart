@@ -13,12 +13,24 @@ class DepartmentCubit extends Cubit<DepartmentState> {
 
   Future<void> getDepartments(BuildContext context) async {
     emit(DepartmentLoading());
-    
+
     final response = await getIt<HomeRepoImpl>().getDepartments();
-    response.fold(
-      (failure) =>
-          emit(DepartmentFailure(error: 'get_department_failure'.tr())),
-      (data) => emit(DepartmentSuccess(departments: data)),
+    await response.fold(
+      (failure) async {
+        final cached = await getIt<HomeRepoImpl>().getCachedDepartments();
+        cached.fold(
+          (cacheFailure) =>
+              emit(DepartmentFailure(error: 'get_department_failure'.tr())),
+          (departments) {
+            if (departments.isEmpty) {
+              emit(DepartmentFailure(error: 'get_department_failure'.tr()));
+            } else {
+              emit(DepartmentSuccess(departments: departments));
+            }
+          },
+        );
+      },
+      (data) async => emit(DepartmentSuccess(departments: data)),
     );
   }
 }

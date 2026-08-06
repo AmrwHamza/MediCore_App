@@ -7,5 +7,5 @@ abstract class ArticleRepo {
   Future<bool> hasMore(int currentPage);
   Future<Either<Failure,void>> addArticleFav(int articleId);
   Future<Either<Failure,void>> deleteArticleFav(int articleId);
-
+  Future<Either<Failure, List<ArticleEntity>>> getFavoriteArticles();
 }

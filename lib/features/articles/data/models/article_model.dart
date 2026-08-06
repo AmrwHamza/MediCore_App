@@ -19,7 +19,7 @@ class ArticleModel extends ArticleEntity {
       body: json['body'],
       createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
       updatedAt: DateTime.tryParse(json['updated_at'] ?? '') ?? DateTime.now(),
-      isFav: json['fav'],
+      isFav: json['fav'] is bool ? json['fav'] as bool : false,
     );
   }
 
