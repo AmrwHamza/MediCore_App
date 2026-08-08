@@ -51,6 +51,7 @@ class Api {
     required dynamic data,
     bool isMultipart = false,
     void Function(int sent, int total)? onSendProgress,
+    CancelToken? cancelToken,
   }) async {
     try {
       final token = await SharedPrefHelper.getString(SharedPrefKeys.userToken);
@@ -68,6 +69,7 @@ class Api {
         data: isMultipart ? data : {...?data, 'lang': lang},
         options: options,
         onSendProgress: onSendProgress,
+        cancelToken: cancelToken,
       );
 
       return Right(response.data);

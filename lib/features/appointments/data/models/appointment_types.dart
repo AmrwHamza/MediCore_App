@@ -73,10 +73,30 @@ Color pickStatusColor(String status) {
   }
 }
 
-/// Uploading medical analysis files is strictly allowed **only** when the
-/// appointment is in an "incomplete diagnosis" state. It is hidden for
-/// pending/waiting, accepted, and completed appointments.
+/// Uploading medical analysis files is allowed **only** when the preview is a
+/// partial diagnosis (`diagnoseis_type = 0`, the backend's authoritative field).
+/// It is hidden for complete diagnoses (`diagnoseis_type = 1`).
 bool canUploadMedicalAnalysis(PrivewEntity preview) {
+  return preview.diagnoseisType == 0;
+}
+
+/// Whether the preview represents a complete diagnosis (`diagnoseis_type = 1`).
+bool isCompletedDiagnosis(PrivewEntity preview) {
+  return preview.diagnoseisType == 1;
+}
+
+/// Whether the preview is a partial diagnosis that should offer the medical
+/// analysis upload section.
+///
+/// The medical analysis (upload / view / replace / delete) section is only
+/// offered at this step. Appointments that are still `Waiting` or `Accepted`
+/// default to `diagnoseisType == 0` but must NOT show the analysis section.
+/// Any other partial-diagnosis status (e.g. `incomplete`, `partial`, custom
+/// localized values) qualifies.
+bool isIncompleteDiagnosis(PrivewEntity preview) {
+  if (preview.diagnoseisType != 0) return false;
   final status = preview.status.toLowerCase();
-  return status == 'incomplete' || status == 'incomplete_diagnosis';
+  return status != 'pending' &&
+      status != 'waiting' &&
+      status != 'accepted';
 }

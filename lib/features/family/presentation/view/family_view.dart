@@ -30,6 +30,7 @@ class FamilyView extends StatelessWidget {
       backgroundColor:
           context.watch<ThemeProvider>().themeData.scaffoldBackgroundColor,
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'family_add_child_fab',
         onPressed: () => _handleAddChild(context),
         backgroundColor: KPrimaryColor,
         foregroundColor: Colors.white,

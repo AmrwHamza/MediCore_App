@@ -17,12 +17,9 @@ class AppointmentDoctorRating extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final status = privewEntity.status.toLowerCase();
-    final editable =
-        status == 'incomplete' ||
-        status == 'incomplete_diagnosis' ||
-        status == 'complete' ||
-        status == 'completed';
+    // Rating becomes available once the diagnosis is complete
+    // (diagnoseis_type = 1). Partial/incomplete diagnoses are read-only.
+    final editable = privewEntity.diagnoseisType == 1;
 
     return AppointmentCardInfo(
       title: 'doctor_rating'.tr(),

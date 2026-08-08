@@ -4,17 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:medicore_app/constants.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   final String pdfUrl;
   final String title;
 
-  const PdfViewerScreen({
-    super.key,
-    required this.pdfUrl,
-    required this.title,
-  });
+  const PdfViewerScreen({super.key, required this.pdfUrl, required this.title});
 
   @override
   State<PdfViewerScreen> createState() => _PdfViewerScreenState();
@@ -95,11 +90,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+        title: Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         backgroundColor: isDark ? const Color(0xFF1E1E2C) : Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black87),
@@ -109,7 +100,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           fontWeight: FontWeight.w600,
         ),
         actions: [
-          if (!_isLoading && _localPdfPath != null && File(_localPdfPath!).existsSync())
+          if (!_isLoading &&
+              _localPdfPath != null &&
+              File(_localPdfPath!).existsSync())
             IconButton(
               icon: const Icon(Icons.download_outlined),
               onPressed: _savePdf,
@@ -124,7 +117,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
   Future<void> _savePdf() async {
     if (_localPdfPath == null) return;
-    
+
     try {
       final downloadsDir = await getExternalStorageDirectory();
       if (downloadsDir == null) {
@@ -135,13 +128,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         );
         return;
       }
-      
+
       final fileName = widget.pdfUrl.split('/').last;
       final savePath = '${downloadsDir.path}/$fileName';
-      
+
       final file = File(_localPdfPath!);
       await file.copy(savePath);
-      
+
       if (mounted) {
         CustomSnackbar.show(
           context,
@@ -222,9 +215,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             child: CircularProgressIndicator(
               value: _downloadProgress > 0 ? _downloadProgress : null,
               strokeWidth: 4,
-              backgroundColor: isDark
-                  ? Colors.white.withValues(alpha: 0.1)
-                  : Colors.grey[300],
+              backgroundColor:
+                  isDark
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.grey[300],
               valueColor: const AlwaysStoppedAnimation(Color(0xFF32B2CF)),
             ),
           ),
@@ -281,7 +275,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF32B2CF),
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 12,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -303,14 +300,18 @@ Future<Directory?> getExternalStorageDirectory() async {
 }
 
 class CustomSnackbar {
-  static void show(BuildContext context, {required String message, required SnackbarType type}) {
+  static void show(
+    BuildContext context, {
+    required String message,
+    required SnackbarType type,
+  }) {
     final color = switch (type) {
       SnackbarType.success => Colors.green,
       SnackbarType.error => Colors.red,
       SnackbarType.warning => Colors.orange,
       SnackbarType.info => Colors.blue,
     };
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),

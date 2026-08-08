@@ -6,7 +6,6 @@ import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/features/appointments/domain/entities/privew_entity.dart';
-import 'package:medicore_app/features/home/presentation/view/widgets/doctor_details_widgets/doctor_rating_section.dart';
 
 class DoctorDetailsSection extends StatelessWidget {
   const DoctorDetailsSection({super.key, required this.privewEntity});
@@ -73,49 +72,80 @@ class DoctorDetailsSection extends StatelessWidget {
                           ),
                 ),
               ),
-              Column(
-                children: [
-                  Text(
-                    privewEntity.doctorName,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      privewEntity.doctorName,
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 14.h),
-                  if (privewEntity.price != 0) ...[
-                    Divider(
-                      color: borderColor.withValues(alpha: 0.4),
-                      height: 1.h,
-                    ),
-                    SizedBox(height: 12.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'appointment_details_preview_fees'.tr(),
-                          style: TextStyle(fontSize: 13.sp, color: mutedColor),
+                    SizedBox(height: 14.h),
+                    if (privewEntity.price != 0) ...[
+                      Divider(
+                        color: borderColor.withValues(alpha: 0.4),
+                        height: 1.h,
+                      ),
+                      SizedBox(height: 14.h),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 12.h,
                         ),
-                        Text(
-                          ' ${privewEntity.price}',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: KPrimaryColor,
+                        decoration: BoxDecoration(
+                          color: KPrimaryColor.withValues(
+                            alpha: isDark ? 0.12 : 0.06,
+                          ),
+                          borderRadius: BorderRadius.circular(14.r),
+                          border: Border.all(
+                            color: KPrimaryColor.withValues(alpha: 0.2),
+                            width: 1.w,
                           ),
                         ),
-                      ],
-                    ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.payments_outlined,
+                              size: 20.r,
+                              color: KPrimaryColor,
+                            ),
+                            SizedBox(width: 8.w),
+                            Text(
+                              'appointment_details_preview_fees'.tr(),
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: isDark
+                                    ? Colors.white.withValues(alpha: 0.7)
+                                    : Colors.grey[700],
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(width: 6.w),
+                            Text(
+                              '${privewEntity.price}',
+                              style: TextStyle(
+                                fontSize: 22.sp,
+                                fontWeight: FontWeight.bold,
+                                color: KPrimaryColor,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ],
           ),
           SizedBox(height: 16.h),
           Divider(color: borderColor.withValues(alpha: 0.4), height: 1.h),
-          SizedBox(height: 16.h),
-          DoctorRatingSection(doctorId: privewEntity.doctorId),
         ],
       ),
     );

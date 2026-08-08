@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicore_app/constants.dart';
-import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/features/appointments/data/models/appointment_types.dart';
 import 'package:medicore_app/features/appointments/domain/entities/privew_entity.dart';
 
@@ -128,10 +127,7 @@ class TimelineNodeCard extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color,
-            border: Border.all(
-              color: color.withValues(alpha: 0.3),
-              width: 3,
-            ),
+            border: Border.all(color: color.withValues(alpha: 0.3), width: 3),
           ),
           child: Center(
             child: Container(
@@ -168,11 +164,7 @@ class TimelineNodeCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.healing_outlined,
-            size: 14.r,
-            color: KPrimaryColor,
-          ),
+          Icon(Icons.healing_outlined, size: 14.r, color: KPrimaryColor),
           SizedBox(width: 8.w),
           Expanded(
             child: Text(

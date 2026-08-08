@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:medicore_app/core/utils/errors/failure.dart';
 import 'package:medicore_app/features/appointments/domain/entities/appointments_entity.dart';
 import 'package:medicore_app/features/appointments/domain/entities/patient_appointment_entity.dart';
 
+import '../../data/models/medical_analysis_model.dart';
 import '../../data/models/privew_model.dart';
 import '../../data/models/uploaded_analysis_file.dart';
 
@@ -18,6 +20,12 @@ abstract class AppointmentsRepo {
     required int previewId,
     required File file,
     void Function(int sent, int total)? onSendProgress,
+    CancelToken? cancelToken,
+  });
+  Future<Either<Failure, List<MedicalAnalysisModel>>>
+  getMedicalAnalyses({required int previewId});
+  Future<Either<Failure, String>> deleteMedicalAnalysis({
+    required int medicalId,
   });
   Future<UploadedAnalysisFile?> getCachedAnalysis({required int previewId});
   Future<void> cacheAnalysis({

@@ -1,8 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medicore_app/constants.dart';
-import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/features/appointments/domain/entities/privew_entity.dart';
 import 'package:medicore_app/features/family/presentation/view/widgets/child_details_widgets/timeline_node_card.dart';
 

@@ -16,7 +16,7 @@ class DropDown extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final surfaceColor = isDark ? KCardDark : KSurfaceLight;
     final textColor = isDark ? KTextPrimaryDark : KTextPrimaryLight;
-    final mutedColor = isDark ? KTextSecondaryDark : KTextSecondaryLight;
+    // final mutedColor = isDark ? KTextSecondaryDark : KTextSecondaryLight;
 
     final languages = [
       {'locale': const Locale('en'), 'label': 'English', 'fontFamily': null},
@@ -34,9 +34,7 @@ class DropDown extends StatelessWidget {
           decoration: BoxDecoration(
             color: surfaceColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isDark ? KBorderDark : KBorderLight,
-            ),
+            border: Border.all(color: isDark ? KBorderDark : KBorderLight),
             boxShadow: [
               BoxShadow(
                 color: theme.shadowColor,
@@ -81,7 +79,10 @@ class DropDown extends StatelessWidget {
                 return languages.map((lang) {
                   return Row(
                     children: [
-                      Icon(Icons.language, color: isDark ? KPrimaryColor : KDarkBlue),
+                      Icon(
+                        Icons.language,
+                        color: isDark ? KPrimaryColor : KDarkBlue,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         lang['label'] as String,

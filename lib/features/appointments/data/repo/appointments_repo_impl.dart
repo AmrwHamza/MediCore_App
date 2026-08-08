@@ -16,6 +16,7 @@ import 'package:medicore_app/features/appointments/domain/entities/appointments_
 import 'package:medicore_app/features/appointments/domain/entities/patient_appointment_entity.dart';
 import 'package:medicore_app/features/appointments/domain/repos/appointments_repo.dart';
 
+import '../models/medical_analysis_model.dart';
 import '../models/privew_model.dart';
 import '../models/uploaded_analysis_file.dart';
 import '../models/appointment_types.dart';
@@ -125,6 +126,7 @@ class AppointmentsRepoImpl implements AppointmentsRepo {
     required int previewId,
     required File file,
     void Function(int sent, int total)? onSendProgress,
+    CancelToken? cancelToken,
   }) async {
     try {
       final fileName = file.path.split('\\').last.split('/').last;
@@ -136,6 +138,7 @@ class AppointmentsRepoImpl implements AppointmentsRepo {
         data: formData,
         isMultipart: true,
         onSendProgress: onSendProgress,
+        cancelToken: cancelToken,
       );
       return response.fold(
         (failure) => Left(failure),
@@ -147,6 +150,47 @@ class AppointmentsRepoImpl implements AppointmentsRepo {
   }
 
   static const String _analysisCachePrefix = 'analysis_upload_';
+
+  @override
+  Future<Either<Failure, List<MedicalAnalysisModel>>> getMedicalAnalyses({
+    required int previewId,
+  }) async {
+    final response = await getIt<Api>().getWithAuth(
+      endPoint: 'getMedicalAnalysis/$previewId',
+    );
+    return response.fold(
+      (failure) => Left(failure),
+      (data) {
+        final list = data['data'];
+        if (list is List) {
+          return Right(
+            list
+                .whereType<Map>()
+                .map(
+                  (e) =>
+                      MedicalAnalysisModel.fromJson(e.cast<String, dynamic>()),
+                )
+                .toList(),
+          );
+        }
+        return const Right([]);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, String>> deleteMedicalAnalysis({
+    required int medicalId,
+  }) async {
+    final response = await getIt<Api>().deleteWithAuth(
+      endPoint: 'deleteMedicalAnalysis/$medicalId',
+      data: {},
+    );
+    return response.fold((failure) => Left(failure), (data) {
+      final message = data['message'] ?? data['msg'] ?? 'deleted';
+      return Right(message.toString());
+    });
+  }
 
   @override
   Future<UploadedAnalysisFile?> getCachedAnalysis({

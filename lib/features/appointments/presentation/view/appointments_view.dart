@@ -36,6 +36,7 @@ class AppointmentsView extends StatelessWidget {
         child: Scaffold(
           backgroundColor: theme.scaffoldBackgroundColor,
           floatingActionButton: FloatingActionButton(
+            heroTag: 'appointments_archive_fab',
             elevation: 4,
             highlightElevation: 8,
             shape: RoundedRectangleBorder(

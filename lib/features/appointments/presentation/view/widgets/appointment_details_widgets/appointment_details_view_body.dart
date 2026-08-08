@@ -16,17 +16,11 @@ import '../../../../domain/entities/privew_entity.dart';
 import '../image_card.dart';
 import 'medical_background_painter.dart';
 import 'medication_item.dart';
-import 'upload_widgets/completed_analysis_card.dart';
 
 class AppointmentDetailsViewBody extends StatelessWidget {
   const AppointmentDetailsViewBody({super.key, required this.privewEntity});
 
   final PrivewEntity privewEntity;
-
-  bool get _isCompleted {
-    final status = privewEntity.status.toLowerCase();
-    return status == 'complete' || status == 'completed';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,17 +128,9 @@ class AppointmentDetailsViewBody extends StatelessWidget {
                   ],
                 ),
               ),
-              if (canUploadMedicalAnalysis(privewEntity)) ...[
+              if (isIncompleteDiagnosis(privewEntity)) ...[
                 SizedBox(height: 16.h),
                 UploadSection(privewEntity: privewEntity),
-              ],
-              if (_isCompleted &&
-                  privewEntity.analysisFile.trim().isNotEmpty) ...[
-                SizedBox(height: 16.h),
-                CompletedAnalysisCard(
-                  fileName: privewEntity.analysisFile,
-                  fileUrl: privewEntity.analysisFile,
-                ),
               ],
               if (privewEntity.diagnoseis.isNotEmpty) ...[
                 SizedBox(height: 16.h),

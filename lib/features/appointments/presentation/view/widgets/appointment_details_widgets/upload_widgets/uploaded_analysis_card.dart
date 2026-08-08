@@ -8,16 +8,22 @@ class UploadedAnalysisCard extends StatelessWidget {
   final bool isDark;
   final String fileName;
   final DateTime? uploadedAt;
+  final bool isBusy;
+  final String? busyLabel;
   final VoidCallback? onViewFile;
   final VoidCallback? onReplaceFile;
+  final VoidCallback? onDeleteFile;
 
   const UploadedAnalysisCard({
     super.key,
     required this.isDark,
     required this.fileName,
     this.uploadedAt,
+    this.isBusy = false,
+    this.busyLabel,
     this.onViewFile,
     this.onReplaceFile,
+    this.onDeleteFile,
   });
 
   @override
@@ -126,28 +132,64 @@ class UploadedAnalysisCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 16.h),
-          Row(
-            children: [
-              Expanded(
-                child: _ActionButton(
-                  isDark: isDark,
-                  icon: Icons.visibility_outlined,
-                  label: 'view_file'.tr(),
-                  onTap: onViewFile,
+          if (isBusy) ...[
+            SizedBox(height: 18.h),
+            Row(
+              children: [
+                SizedBox(
+                  width: 18.r,
+                  height: 18.r,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    color: KPrimaryColor,
+                  ),
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: _ActionButton(
-                  isDark: isDark,
-                  icon: Icons.edit_outlined,
-                  label: 'replace_file'.tr(),
-                  onTap: onReplaceFile,
+                SizedBox(width: 10.w),
+                if (busyLabel != null)
+                  Text(
+                    busyLabel!,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: KPrimaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+              ],
+            ),
+          ] else ...[
+            SizedBox(height: 16.h),
+            Row(
+              children: [
+                Expanded(
+                  child: _ActionButton(
+                    isDark: isDark,
+                    icon: Icons.visibility_outlined,
+                    label: 'view_file'.tr(),
+                    onTap: onViewFile,
+                  ),
                 ),
-              ),
-            ],
-          ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: _ActionButton(
+                    isDark: isDark,
+                    icon: Icons.edit_outlined,
+                    label: 'replace_file'.tr(),
+                    onTap: onReplaceFile,
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: _ActionButton(
+                    isDark: isDark,
+                    icon: Icons.delete_outline_rounded,
+                    label: 'delete_action'.tr(),
+                    isDestructive: true,
+                    onTap: onDeleteFile,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -179,37 +221,45 @@ class _ActionButton extends StatelessWidget {
   final bool isDark;
   final IconData icon;
   final String label;
+  final bool isDestructive;
   final VoidCallback? onTap;
 
   const _ActionButton({
     required this.isDark,
     required this.icon,
     required this.label,
+    this.isDestructive = false,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final color = isDestructive
+        ? KError
+        : KPrimaryColor;
+    final bg = isDestructive
+        ? KError.withValues(alpha: isDark ? 0.15 : 0.08)
+        : KPrimaryColor.withValues(alpha: isDark ? 0.15 : 0.08);
     return Material(
-      color: KPrimaryColor.withValues(alpha: isDark ? 0.15 : 0.08),
+      color: bg,
       borderRadius: BorderRadius.circular(12.r),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12.r),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 18.r, color: KPrimaryColor),
-              SizedBox(width: 8.w),
+              Icon(icon, size: 18.r, color: color),
+              SizedBox(width: 6.w),
               Flexible(
                 child: Text(
                   label,
                   style: TextStyle(
-                    fontSize: 13.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
-                    color: KPrimaryColor,
+                    color: color,
                   ),
                 ),
               ),

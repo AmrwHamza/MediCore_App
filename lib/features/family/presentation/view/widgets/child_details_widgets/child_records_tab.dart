@@ -13,8 +13,8 @@ class ChildRecordsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    // final theme = Theme.of(context);
+    // final isDark = theme.brightness == Brightness.dark;
 
     if (previews.isEmpty) {
       return _buildEmptyState('no_medical_records'.tr());
