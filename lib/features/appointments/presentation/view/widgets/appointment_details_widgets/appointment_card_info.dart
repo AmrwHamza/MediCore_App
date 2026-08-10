@@ -25,34 +25,52 @@ class AppointmentCardInfo extends StatelessWidget {
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: isDark ? KCardDark : Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(24.r),
         border: Border.all(
           color: isDark
-              ? KBorderDark.withValues(alpha: 0.5)
-              : Colors.grey.withValues(alpha: 0.08),
+              ? KBorderDark.withValues(alpha: 0.3)
+              : KPrimaryColor.withValues(alpha: 0.08),
           width: 1.w,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.015),
+            color: isDark 
+                ? Colors.black.withValues(alpha: 0.3) 
+                : KPrimaryColor.withValues(alpha: 0.04),
             spreadRadius: 0,
-            blurRadius: 16.r,
-            offset: const Offset(0, 4),
+            blurRadius: 20.r,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: TextStyles.H2.copyWith(
-              color: isDark ? Colors.white : KDarkBlue,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            children: [
+              Container(
+                width: 4.w,
+                height: 18.h,
+                decoration: BoxDecoration(
+                  color: KPrimaryColor,
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyles.H2.copyWith(
+                    color: isDark ? Colors.white : KDarkBlue,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 20.h),
           child,
         ],
       ),

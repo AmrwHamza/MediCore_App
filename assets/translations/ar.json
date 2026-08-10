@@ -384,5 +384,25 @@
   "analysis_document": "وثيقة التحاليل",
   "password_weak": "كلمة مرور ضعيفة",
   "password_fair": "كلمة مرور متوسطة",
-  "password_strong": "كلمة مرور قوية"
+  "password_strong": "كلمة مرور قوية",
+
+  "appointment_summary": "الموعد",
+  "patient": "المريض",
+  "diagnosis": "التشخيص",
+  "diagnosis_complete": "اكتمل التشخيص",
+  "diagnosis_incomplete": "التشخيص غير مكتمل",
+  "diagnosis_complete_hint": "تمت معالجة تشخيصك بالكامل.",
+  "diagnosis_incomplete_hint": "يطلب طبيبك تحليلاً طبياً إضافياً لإكمال التشخيص.",
+  "doctor_notes": "ملاحظات الطبيب",
+  "upload_medical_analysis": "رفع التحليل الطبي",
+  "add_the_medical_report_requested_by_your_doctor": "أضف التقرير الطبي الذي طلبه طبيبك.",
+  "choose_pdf": "اختر ملف PDF",
+  "maximum_file_size_20_mb": "الحد الأقصى لحجم الملف: 20 ميجابايت",
+  "uploading_your_medical_analysis": "جاري رفع التحليل الطبي",
+  "please_wait": "يرجى الانتظار...",
+  "view_pdf": "عرض PDF",
+  "replace_pdf": "استبدال PDF",
+  "uploaded": "تم الرفع",
+  "processing": "جاري المعالجة...",
+  "view_medical_report": "عرض التقرير الطبي"
 }

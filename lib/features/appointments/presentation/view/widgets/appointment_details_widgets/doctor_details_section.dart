@@ -19,133 +19,177 @@ class DoctorDetailsSection extends StatelessWidget {
     );
     final isDark = theme.brightness == Brightness.dark;
 
-    final surfaceColor = isDark ? KCardDark : Colors.white;
-    final borderColor = isDark
-        ? KBorderDark.withValues(alpha: 0.4)
-        : Colors.grey.withValues(alpha: 0.1);
-    final textColor = isDark ? Colors.white : const Color(0xFF5A7A7C);
     final mutedColor = isDark
         ? Colors.white.withValues(alpha: 0.6)
         : Colors.grey[600];
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: surfaceColor.withValues(alpha: isDark ? 0.6 : 0.9),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: borderColor, width: 1.w),
+        color: isDark ? KCardDark : Colors.white,
+        borderRadius: BorderRadius.circular(24.r),
+        border: Border.all(
+          color: isDark
+              ? KBorderDark.withValues(alpha: 0.3)
+              : KPrimaryColor.withValues(alpha: 0.08),
+          width: 1.w,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDark 
+                ? Colors.black.withValues(alpha: 0.3) 
+                : KPrimaryColor.withValues(alpha: 0.04),
+            spreadRadius: 0,
+            blurRadius: 20.r,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
+                width: 70.r,
+                height: 70.r,
                 decoration: BoxDecoration(
-                  color: surfaceColor,
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(color: borderColor, width: 1.w),
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(
+                    color: KPrimaryColor.withValues(alpha: 0.2),
+                    width: 2.w,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: KPrimaryColor.withValues(alpha: 0.1),
+                      blurRadius: 10.r,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child:
-                      privewEntity.imgPath.trim().isNotEmpty
-                          ? Image.network(
-                            privewEntity.imgPath,
-                            width: 60.r,
-                            height: 60.r,
-                            fit: BoxFit.cover,
-                            errorBuilder:
-                                (_, __, ___) => Image.asset(
-                                  Assets.doc,
-                                  width: 60.r,
-                                  height: 60.r,
-                                  fit: BoxFit.cover,
-                                ),
-                          )
-                          : Image.asset(
+                  borderRadius: BorderRadius.circular(18.r),
+                  child: privewEntity.imgPath.trim().isNotEmpty
+                      ? Image.network(
+                          privewEntity.imgPath,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, _, _) => Image.asset(
                             Assets.doc,
-                            width: 60.r,
-                            height: 60.r,
                             fit: BoxFit.cover,
                           ),
+                        )
+                      : Image.asset(
+                          Assets.doc,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
+              SizedBox(width: 16.w),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       privewEntity.doctorName,
                       style: TextStyle(
-                        fontSize: 20.sp,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
-                        color: textColor,
+                        color: isDark ? Colors.white : KDarkBlue,
+                        letterSpacing: 0.2,
                       ),
                     ),
-                    SizedBox(height: 14.h),
-                    if (privewEntity.price != 0) ...[
-                      Divider(
-                        color: borderColor.withValues(alpha: 0.4),
-                        height: 1.h,
-                      ),
-                      SizedBox(height: 14.h),
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 12.h,
+                    SizedBox(height: 4.h),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.medical_services_outlined,
+                          size: 14.r,
+                          color: KPrimaryColor,
                         ),
-                        decoration: BoxDecoration(
-                          color: KPrimaryColor.withValues(
-                            alpha: isDark ? 0.12 : 0.06,
-                          ),
-                          borderRadius: BorderRadius.circular(14.r),
-                          border: Border.all(
-                            color: KPrimaryColor.withValues(alpha: 0.2),
-                            width: 1.w,
+                        SizedBox(width: 4.w),
+                        Text(
+                          'doctor'.tr(),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: mutedColor,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.payments_outlined,
-                              size: 20.r,
-                              color: KPrimaryColor,
-                            ),
-                            SizedBox(width: 8.w),
-                            Text(
-                              'appointment_details_preview_fees'.tr(),
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: isDark
-                                    ? Colors.white.withValues(alpha: 0.7)
-                                    : Colors.grey[700],
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(width: 6.w),
-                            Text(
-                              '${privewEntity.price}',
-                              style: TextStyle(
-                                fontSize: 22.sp,
-                                fontWeight: FontWeight.bold,
-                                color: KPrimaryColor,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(height: 16.h),
-          Divider(color: borderColor.withValues(alpha: 0.4), height: 1.h),
+          if (privewEntity.price != 0) ...[
+            SizedBox(height: 20.h),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 12.h,
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: isDark
+                      ? [
+                          KPrimaryColor.withValues(alpha: 0.15),
+                          KPrimaryColor.withValues(alpha: 0.05),
+                        ]
+                      : [
+                          KPrimaryColor.withValues(alpha: 0.08),
+                          KPrimaryColor.withValues(alpha: 0.02),
+                        ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16.r),
+                border: Border.all(
+                  color: KPrimaryColor.withValues(alpha: 0.1),
+                  width: 1.w,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8.r),
+                    decoration: BoxDecoration(
+                      color: KPrimaryColor.withValues(alpha: 0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.payments_outlined,
+                      size: 18.r,
+                      color: KPrimaryColor,
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      'appointment_details_preview_fees'.tr(),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.7)
+                            : KDarkBlue.withValues(alpha: 0.8),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${privewEntity.price}',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: KPrimaryColor,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );

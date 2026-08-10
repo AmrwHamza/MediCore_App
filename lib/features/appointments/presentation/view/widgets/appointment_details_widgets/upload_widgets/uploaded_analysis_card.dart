@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicore_app/constants.dart';
-import 'package:medicore_app/core/helper/text_styles.dart';
 
 class UploadedAnalysisCard extends StatelessWidget {
   final bool isDark;
@@ -30,167 +29,225 @@ class UploadedAnalysisCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: isDark ? KCardDark : Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(24.r),
         border: Border.all(
-          color: KSuccess.withValues(alpha: 0.3),
+          color: isDark
+              ? KBorderDark.withValues(alpha: 0.3)
+              : KPrimaryColor.withValues(alpha: 0.08),
           width: 1.w,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.015),
-            spreadRadius: 0,
-            blurRadius: 16.r,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
+            blurRadius: 20.r,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8.r),
-                decoration: const BoxDecoration(
-                  color: KSuccess,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24.r),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -20.r,
+              top: -20.r,
+              child: Container(
+                width: 100.r,
+                height: 100.r,
+                decoration: BoxDecoration(
+                  color: KPrimaryColor.withValues(alpha: 0.03),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.check_rounded,
-                  size: 16.r,
-                  color: Colors.white,
-                ),
               ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Text(
-                  'uploaded_analysis_title'.tr(),
-                  style: TextStyles.H2.copyWith(
-                    color: isDark ? Colors.white : KDarkBlue,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(12.w),
-            decoration: BoxDecoration(
-              color: KSuccessLight.withValues(alpha: isDark ? 0.12 : 0.6),
-              borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8.r),
-                  decoration: BoxDecoration(
-                    color: KPrimaryColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Icon(
-                    _fileIcon(fileName),
-                    size: 22.r,
-                    color: KPrimaryColor,
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Text(
-                        fileName,
-                        style: TextStyles.public.copyWith(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: isDark ? Colors.white : KDarkBlue,
+                      Container(
+                        padding: EdgeInsets.all(12.r),
+                        decoration: BoxDecoration(
+                          color: KPrimaryColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(16.r),
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                        child: Icon(
+                          _fileIcon(fileName),
+                          size: 28.r,
+                          color: KPrimaryColor,
+                        ),
                       ),
-                      if (uploadedAt != null) ...[
-                        SizedBox(height: 4.h),
+                      SizedBox(width: 16.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'medical_analysis'.tr(),
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.bold,
+                                color: KPrimaryColor,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            SizedBox(height: 2.h),
+                            Text(
+                              fileName,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : KDarkBlue,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (!isBusy)
+                        PopupMenuButton<String>(
+                          icon: Icon(
+                            Icons.more_vert_rounded,
+                            color: isDark ? Colors.white54 : Colors.grey,
+                          ),
+                          onSelected: (value) {
+                            if (value == 'view') onViewFile?.call();
+                            if (value == 'replace') onReplaceFile?.call();
+                            if (value == 'delete') onDeleteFile?.call();
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 'view',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.visibility_outlined, size: 20.r),
+                                  SizedBox(width: 8.w),
+                                  Text('view_pdf'.tr()),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'replace',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.sync_rounded, size: 20.r),
+                                  SizedBox(width: 8.w),
+                                  Text('replace_pdf'.tr()),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.delete_outline_rounded,
+                                      size: 20.r, color: KError),
+                                  SizedBox(width: 8.w),
+                                  Text('delete'.tr(),
+                                      style: const TextStyle(color: KError)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                  SizedBox(height: 20.h),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_today_outlined,
+                        size: 14.r,
+                        color: isDark ? Colors.white38 : Colors.grey,
+                      ),
+                      SizedBox(width: 6.w),
+                      Text(
+                        uploadedAt != null
+                            ? '${'uploaded'.tr()} ${_formatDate(uploadedAt!)}'
+                            : 'uploaded'.tr(),
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: isDark ? Colors.white38 : Colors.grey[600],
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 4.h),
+                        decoration: BoxDecoration(
+                          color: KSuccess.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Text(
+                          'uploaded'.tr().toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                            color: KSuccess,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (isBusy) ...[
+                    SizedBox(height: 16.h),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 16.r,
+                          height: 16.r,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: KPrimaryColor,
+                          ),
+                        ),
+                        SizedBox(width: 10.w),
                         Text(
-                          '${'uploaded_on'.tr()} ${_formatDate(uploadedAt!)}',
-                          style: TextStyles.notes.copyWith(
-                            fontSize: 11.sp,
-                            color: isDark
-                                ? Colors.white.withValues(alpha: 0.6)
-                                : Colors.grey[600],
+                          busyLabel ?? 'processing'.tr(),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: KPrimaryColor,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (isBusy) ...[
-            SizedBox(height: 18.h),
-            Row(
-              children: [
-                SizedBox(
-                  width: 18.r,
-                  height: 18.r,
-                  child: const CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    color: KPrimaryColor,
-                  ),
-                ),
-                SizedBox(width: 10.w),
-                if (busyLabel != null)
-                  Text(
-                    busyLabel!,
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      color: KPrimaryColor,
-                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-              ],
-            ),
-          ] else ...[
-            SizedBox(height: 16.h),
-            Row(
-              children: [
-                Expanded(
-                  child: _ActionButton(
-                    isDark: isDark,
-                    icon: Icons.visibility_outlined,
-                    label: 'view_file'.tr(),
-                    onTap: onViewFile,
-                  ),
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: _ActionButton(
-                    isDark: isDark,
-                    icon: Icons.edit_outlined,
-                    label: 'replace_file'.tr(),
-                    onTap: onReplaceFile,
-                  ),
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: _ActionButton(
-                    isDark: isDark,
-                    icon: Icons.delete_outline_rounded,
-                    label: 'delete_action'.tr(),
-                    isDestructive: true,
-                    onTap: onDeleteFile,
-                  ),
-                ),
-              ],
+                  ] else ...[
+                    SizedBox(height: 20.h),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48.h,
+                      child: ElevatedButton.icon(
+                        onPressed: onViewFile,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: KPrimaryColor,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.r),
+                          ),
+                        ),
+                        icon: Icon(Icons.visibility_rounded, size: 20.r),
+                        label: Text(
+                          'view_medical_report'.tr(),
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ),
           ],
-        ],
+        ),
       ),
     );
   }
@@ -215,58 +272,4 @@ class UploadedAnalysisCard extends StatelessWidget {
   }
 
   String _twoDigits(int value) => value.toString().padLeft(2, '0');
-}
-
-class _ActionButton extends StatelessWidget {
-  final bool isDark;
-  final IconData icon;
-  final String label;
-  final bool isDestructive;
-  final VoidCallback? onTap;
-
-  const _ActionButton({
-    required this.isDark,
-    required this.icon,
-    required this.label,
-    this.isDestructive = false,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isDestructive
-        ? KError
-        : KPrimaryColor;
-    final bg = isDestructive
-        ? KError.withValues(alpha: isDark ? 0.15 : 0.08)
-        : KPrimaryColor.withValues(alpha: isDark ? 0.15 : 0.08);
-    return Material(
-      color: bg,
-      borderRadius: BorderRadius.circular(12.r),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12.r),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 18.r, color: color),
-              SizedBox(width: 6.w),
-              Flexible(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: color,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

@@ -9,16 +9,6 @@ import 'package:medicore_app/features/appointments/data/repo/appointments_repo_i
 
 import 'upload_state.dart';
 
-/// Manages the Medical Analysis lifecycle for a single preview:
-///
-/// - load existing analyses (`GET /getMedicalAnalysis/{preview_id}`)
-/// - upload (`POST /postMedicalAnalysis/{preview_id}`)
-/// - delete (`DELETE /deleteMedicalAnalysis/{medical_id}`)
-/// - replace (upload new, then delete the old on success)
-///
-/// Replacement is intentionally NON-atomic: the new file is uploaded first and
-/// only after a successful upload is the old file removed, reducing the chance
-/// of losing an already-uploaded document when the new upload fails.
 class PreviewUploadCubit extends Cubit<PreviewUploadState> {
   PreviewUploadCubit() : super(const PreviewUploadInitial());
 
@@ -27,18 +17,15 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
   CancelToken? _cancelToken;
   bool _uploadCancelled = false;
 
-  Future<void> initialize({required int previewId, bool isChild = false}) async {
+  Future<void> initialize({
+    required int previewId,
+    bool isChild = false,
+  }) async {
     _previewId = previewId;
     _isChild = isChild;
     await loadAnalyses();
   }
 
-  /// Loads uploaded analyses.
-  ///
-  /// Backend limitation: `getMedicalAnalysis/{preview_id}` filters by the
-  /// authenticated patient's `patient_id`, so child analyses are NOT returned.
-  /// For child previews we avoid the misleading call and simply expose an empty
-  /// state (the patient still gains immediate feedback after an upload).
   Future<void> loadAnalyses() async {
     if (_previewId <= 0) return;
 
@@ -57,16 +44,10 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
       (failure) => emit(
         state.copyWith(isAnalysesLoading: false, error: failure.message),
       ),
-      (list) => emit(
-        state.copyWith(isAnalysesLoading: false, analyses: list),
-      ),
+      (list) => emit(state.copyWith(isAnalysesLoading: false, analyses: list)),
     );
   }
 
-  /// Uploads a new file. When [replaceOldId] is non-null the operation is a
-  /// "replace": the old document is deleted only after the new upload succeeds.
-  /// [category] tags the upload with its medical-analysis section (e.g.
-  /// "Blood", "Urine"); it is empty when the backend does not group analyses.
   Future<void> upload({
     required String filePath,
     required String fileName,
@@ -123,18 +104,19 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
             progress: 1,
             selectedFileName: null,
             successMessage: 'upload_success'.tr(),
-            analyses: _isChild
-                ? [
-                    MedicalAnalysisModel(
-                      id: 0,
-                      previewId: _previewId,
-                      fileUrl: uploadedFile?.fileUrl ?? '',
-                      uploadedAt: DateTime.now(),
-                      category: category,
-                    ),
-                    ...state.analyses,
-                  ]
-                : state.analyses,
+            analyses:
+                _isChild
+                    ? [
+                      MedicalAnalysisModel(
+                        id: 0,
+                        previewId: _previewId,
+                        fileUrl: uploadedFile?.fileUrl ?? '',
+                        uploadedAt: DateTime.now(),
+                        category: category,
+                      ),
+                      ...state.analyses,
+                    ]
+                    : state.analyses,
           ),
         );
 
@@ -178,9 +160,7 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
     if (medicalId == 0) {
       emit(
         state.copyWith(
-          analyses: state.analyses
-              .where((a) => a.id != medicalId)
-              .toList(),
+          analyses: state.analyses.where((a) => a.id != medicalId).toList(),
           clearDeletingId: true,
         ),
       );
@@ -191,17 +171,14 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
 
   Future<void> _delete(int medicalId) async {
     emit(state.copyWith(deletingId: medicalId, clearError: true));
-    final response = await getIt<AppointmentsRepoImpl>()
-        .deleteMedicalAnalysis(medicalId: medicalId);
+    final response = await getIt<AppointmentsRepoImpl>().deleteMedicalAnalysis(
+      medicalId: medicalId,
+    );
     if (isClosed) return;
 
     response.fold(
-      (failure) => emit(
-        state.copyWith(
-          clearDeletingId: true,
-          error: failure.message,
-        ),
-      ),
+      (failure) =>
+          emit(state.copyWith(clearDeletingId: true, error: failure.message)),
       (message) => emit(
         state.copyWith(
           clearDeletingId: true,

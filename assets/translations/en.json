@@ -384,5 +384,25 @@
   "analysis_document": "Analysis Document",
   "password_weak": "Weak password",
   "password_fair": "Fair password",
-  "password_strong": "Strong password"
+  "password_strong": "Strong password",
+
+  "appointment_summary": "Appointment",
+  "patient": "Patient",
+  "diagnosis": "Diagnosis",
+  "diagnosis_complete": "Diagnosis complete",
+  "diagnosis_incomplete": "Diagnosis incomplete",
+  "diagnosis_complete_hint": "Your diagnosis is fully processed.",
+  "diagnosis_incomplete_hint": "Additional medical analysis is required by your doctor to complete your diagnosis.",
+  "doctor_notes": "Doctor's Notes",
+  "upload_medical_analysis": "Upload Medical Analysis",
+  "add_the_medical_report_requested_by_your_doctor": "Add the medical report requested by your doctor.",
+  "choose_pdf": "Choose PDF",
+  "maximum_file_size_20_mb": "Maximum file size: 20 MB",
+  "uploading_your_medical_analysis": "Uploading your medical analysis",
+  "please_wait": "Please wait...",
+  "view_pdf": "View PDF",
+  "replace_pdf": "Replace PDF",
+  "uploaded": "Uploaded",
+  "processing": "Processing...",
+  "view_medical_report": "View Medical Report"
 }
