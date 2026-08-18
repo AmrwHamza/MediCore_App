@@ -28,7 +28,7 @@ class ArticlesFavoritesView extends StatelessWidget {
                 child: CircularProgressIndicator(color: KPrimaryColor),
               );
             } else if (state is FavoriteArticlesFailure) {
-              return Center(child: Text('Error: ${state.error}'));
+              return Center(child: Text(state.error));
             } else if (state is FavoriteArticlesSuccess) {
               if (state.articles.isEmpty) {
                 return Center(child: Text('no_favorite_articles'.tr()));

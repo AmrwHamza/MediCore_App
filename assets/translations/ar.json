@@ -406,5 +406,27 @@
   "replace_pdf": "استبدال PDF",
   "uploaded": "تم الرفع",
   "processing": "جاري المعالجة...",
-  "view_medical_report": "عرض التقرير الطبي"
+  "view_medical_report": "عرض التقرير الطبي",
+
+  "create_account_title": "إنشاء حساب",
+  "id_question2": "إذا كان لديك بطاقة هوية",
+  "calculate": "احسب",
+  "change_password": "تغيير كلمة المرور",
+  "close": "إغلاق",
+  "done": "تم",
+  "Edit Patient Profile": "تعديل ملف المريض",
+  "edit_medical_info": "تعديل المعلومات الطبية",
+  "Editing Mode": "وضع التعديل",
+  "error": "خطأ",
+  "error_generic": "حدث خطأ ما، يرجى المحاولة لاحقاً",
+  "Failed to load image": "فشل تحميل الصورة",
+  "page_not_found": "الصفحة غير موجودة",
+  "profile_photo": "صورة الملف الشخصي",
+  "Save Changes": "حفظ التغييرات",
+  "unknown_error_occurred": "حدث خطأ غير معروف",
+  "water_tip_start": "ابدأ بتتبع كمية الماء اليومية. اضغط على الكوب لتسجيله.",
+  "water_tip_quarter": "بداية جيدة! واصل الشرب على مدار اليوم.",
+  "water_tip_half": "وصلت إلى المنتصف! أداؤك رائع.",
+  "water_tip_three_quarter": "اقتربت من الهدف! بقي القليل من الأكواب.",
+  "water_tip_complete": "ممتاز! حققت هدفك اليومي من الماء."
 }

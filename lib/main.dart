@@ -35,12 +35,17 @@ void main() async {
 
   Bloc.observer = const CounterObserver();
 
+  final supportedCodes = const ['en', 'ar'];
+  final startCode = supportedCodes.contains(prefs.languageCode)
+      ? prefs.languageCode
+      : 'en';
+
   runApp(
   EasyLocalization(
     supportedLocales: const [Locale('en'), Locale('ar')],
     path: 'assets/translations',
     fallbackLocale: const Locale('en'),
-    startLocale: Locale(prefs.languageCode),
+    startLocale: Locale(startCode),
     child: ChangeNotifierProvider(
       create: (context) => themeProvider,
       child: ScreenUtilInit(

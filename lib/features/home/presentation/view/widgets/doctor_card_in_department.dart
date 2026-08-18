@@ -32,6 +32,7 @@ class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeProvider>().themeData;
     final isDark = theme.brightness == Brightness.dark;
+    final isRtl = Directionality.of(context).name == 'rtl';
 
      final localAssetImage = doctorsImages[widget.index % doctorsImages.length];
 
@@ -236,7 +237,9 @@ class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
                     ),
                     child: Center(
                       child: Icon(
-                        Icons.arrow_forward_ios_rounded,
+                        isRtl
+                            ? Icons.arrow_back_ios_new_rounded
+                            : Icons.arrow_forward_ios_rounded,
                         size: 14,
                         color:
                             _isPressed

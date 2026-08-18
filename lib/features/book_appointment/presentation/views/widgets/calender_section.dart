@@ -124,11 +124,15 @@ class _CalenderSectionState extends State<CalenderSection> {
                       fontSize: 16,
                     ),
                     leftChevronIcon: Icon(
-                      Icons.chevron_left,
+                      Directionality.of(context).name == 'rtl'
+                          ? Icons.chevron_right
+                          : Icons.chevron_left,
                       color: isDark ? Colors.white : KPrimaryColor,
                     ),
                     rightChevronIcon: Icon(
-                      Icons.chevron_right,
+                      Directionality.of(context).name == 'rtl'
+                          ? Icons.chevron_left
+                          : Icons.chevron_right,
                       color: isDark ? Colors.white : KPrimaryColor,
                     ),
                   ),

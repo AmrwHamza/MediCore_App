@@ -12,7 +12,8 @@ class OnBoardingPageView extends StatelessWidget {
     return PageView(
       controller: pageController,
       physics: const BouncingScrollPhysics(),
-      children: const [FirstPage(), const SecoundPage()],
+      allowImplicitScrolling: true,
+      children: const [FirstPage(), SecoundPage()],
     );
   }
 }

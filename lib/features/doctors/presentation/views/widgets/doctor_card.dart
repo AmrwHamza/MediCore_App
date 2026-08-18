@@ -170,7 +170,9 @@ class DoctorCard extends StatelessWidget {
                             ),
                           ),
                           Icon(
-                            Icons.arrow_forward_ios_rounded,
+                            Directionality.of(context) == TextDirection.rtl
+                                ? Icons.arrow_back_ios_new_rounded
+                                : Icons.arrow_forward_ios_rounded,
                             color:
                                 isDark ? Colors.white30 : KGrey.withAlpha(120),
                             size: 14,

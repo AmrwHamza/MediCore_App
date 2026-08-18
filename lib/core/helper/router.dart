@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medicore_app/features/appointments/presentation/view/appointment_archive_view.dart';
 import 'package:medicore_app/features/appointments/presentation/view/appointment_details_view.dart';
@@ -36,8 +37,9 @@ import '../../features/profile/presentation/view/patient_profile_view.dart';
 final GoRouter router = GoRouter(
   initialLocation: SplashView.routeName,
   errorBuilder:
-      (context, state) =>
-          const Scaffold(body: Center(child: Text('404 - Page Not Found'))),
+      (context, state) => Scaffold(
+        body: Center(child: Text('page_not_found'.tr())),
+      ),
   routes: [
     GoRoute(
       path: SplashView.routeName,

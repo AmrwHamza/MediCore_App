@@ -55,6 +55,12 @@ class SecoundPage extends StatelessWidget {
                       child: Image.asset(
                         Assets.imagesLogoWithoutBackground,
                         fit: BoxFit.contain,
+                        cacheWidth: 512,
+                        errorBuilder: (_, __, ___) => Icon(
+                          Icons.local_hospital_rounded,
+                          color: isDark ? Colors.white54 : Colors.black26,
+                          size: 80,
+                        ),
                       ),
                     ),
                   ),

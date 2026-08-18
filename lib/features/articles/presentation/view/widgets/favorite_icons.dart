@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -87,9 +88,7 @@ class _FavoriteIconState extends State<FavoriteIcon> {
               });
 
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('حدث خطأ ما، يرجى المحاولة لاحقاً'),
-                ),
+                SnackBar(content: Text('error_generic'.tr())),
               );
             }
           },

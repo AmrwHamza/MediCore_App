@@ -13,6 +13,7 @@ import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/logger_helper.dart';
 import 'package:medicore_app/core/widget/custom_snack_bar.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
+import 'package:medicore_app/features/auth/first_page/presentation/view_model/change_lang_cubit/change_language_cubit.dart';
 import 'package:medicore_app/features/auth/logout/presentation/view_model/cubit/logout_cubit.dart';
 import 'package:medicore_app/features/drawer/presentation/view/widgets/custom_drawer_header.dart';
 import 'package:provider/provider.dart';
@@ -147,7 +148,10 @@ class DrawerView extends StatelessWidget {
                             ),
                           ),
                           onTap: () async {
-                            await context.setLocale(const Locale('ar'));
+                            await getIt<ChangeLanguageCubit>().changeLanguage(
+                              context,
+                              const Locale('ar'),
+                            );
                             context.pop();
                           },
                         ),
@@ -159,7 +163,10 @@ class DrawerView extends StatelessWidget {
                             ),
                           ),
                           onTap: () async {
-                            await context.setLocale(const Locale('en'));
+                            await getIt<ChangeLanguageCubit>().changeLanguage(
+                              context,
+                              const Locale('en'),
+                            );
                             context.pop();
                           },
                         ),

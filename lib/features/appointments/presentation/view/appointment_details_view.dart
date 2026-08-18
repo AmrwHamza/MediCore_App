@@ -37,7 +37,9 @@ class AppointmentDetailsView extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
+            Directionality.of(context).name == 'rtl'
+                ? Icons.arrow_forward_ios_rounded
+                : Icons.arrow_back_ios_new_rounded,
             color: Colors.white,
             size: 20.r,
           ),

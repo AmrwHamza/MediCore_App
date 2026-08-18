@@ -83,8 +83,10 @@ class HomeSectionsHeader extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(
-                  Icons.arrow_forward_ios_rounded,
+                Icon(
+                  Directionality.of(context).name == 'rtl'
+                      ? Icons.arrow_back_ios_new_rounded
+                      : Icons.arrow_forward_ios_rounded,
                   size: 10,
                   color: KPrimaryColor,
                 ),

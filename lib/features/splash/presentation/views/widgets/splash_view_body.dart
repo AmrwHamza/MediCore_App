@@ -64,6 +64,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
     await Future.wait([
       initHive(),
       Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+      ImageCacheHelper.cacheOnboardingImages(context),
       Future.delayed(const Duration(milliseconds: 2300)),
     ]);
 

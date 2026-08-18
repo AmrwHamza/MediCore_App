@@ -406,5 +406,25 @@
   "replace_pdf": "Replace PDF",
   "uploaded": "Uploaded",
   "processing": "Processing...",
-  "view_medical_report": "View Medical Report"
+  "view_medical_report": "View Medical Report",
+
+  "calculate": "Calculate",
+  "change_password": "Change Password",
+  "close": "Close",
+  "done": "Done",
+  "Edit Patient Profile": "Edit Patient Profile",
+  "edit_medical_info": "Edit Medical Info",
+  "Editing Mode": "Editing Mode",
+  "error": "Error",
+  "error_generic": "Something went wrong, please try again later.",
+  "Failed to load image": "Failed to load image",
+  "page_not_found": "Page Not Found",
+  "profile_photo": "Profile Photo",
+  "Save Changes": "Save Changes",
+  "unknown_error_occurred": "Unknown error occurred",
+  "water_tip_start": "Start tracking your water intake today. Tap a glass to log it.",
+  "water_tip_quarter": "Good start! Keep sipping throughout the day.",
+  "water_tip_half": "Halfway there! You're doing great.",
+  "water_tip_three_quarter": "Almost there! A few more glasses to go.",
+  "water_tip_complete": "Excellent! You've reached your daily water goal."
 }

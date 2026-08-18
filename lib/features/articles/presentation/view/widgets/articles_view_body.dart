@@ -85,7 +85,7 @@ class _ArticlesViewBodyState extends State<ArticlesViewBody> {
               },
             );
           } else if (state is ArticleError) {
-            return Center(child: Text("Error: ${state.message}"));
+            return Center(child: Text(state.message));
           } else {
             return ListView.builder(
               padding: EdgeInsets.only(

@@ -37,7 +37,13 @@ class SettingsListItem extends StatelessWidget {
                     style: TextStyles.public.copyWith(color: theme.canvasColor),
                   ),
                 ),
-                Icon(Icons.chevron_right, color: theme.canvasColor, size: 20),
+                Icon(
+                  Directionality.of(context) == TextDirection.rtl
+                      ? Icons.chevron_left
+                      : Icons.chevron_right,
+                  color: theme.canvasColor,
+                  size: 20,
+                ),
               ],
             ),
             SizedBox(height: 4.h),

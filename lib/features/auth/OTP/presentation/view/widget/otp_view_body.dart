@@ -189,7 +189,9 @@ class _OTPViewBodyState extends State<OTPViewBody> {
                                 ],
                               ),
                               child: Icon(
-                                Icons.arrow_back_ios_new_rounded,
+                                Directionality.of(context).name == 'rtl'
+                                    ? Icons.arrow_forward_ios_rounded
+                                    : Icons.arrow_back_ios_new_rounded,
                                 size: 18,
                                 color: textPrimary,
                               ),

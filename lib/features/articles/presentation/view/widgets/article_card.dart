@@ -67,6 +67,7 @@ class ArticleCard extends StatelessWidget {
                     child: Image.asset(
                       Assets.imagesLogoWithoutBackground,
                       fit: BoxFit.contain,
+                      cacheWidth: 64,
                       errorBuilder:
                           (_, __, ___) => const Icon(
                             Icons.local_hospital_rounded,
@@ -181,7 +182,9 @@ class ArticleCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 2),
                             Icon(
-                              Icons.arrow_forward_rounded,
+                              Directionality.of(context).name == 'rtl'
+                                  ? Icons.arrow_back_rounded
+                                  : Icons.arrow_forward_rounded,
                               size: 14,
                               color: theme.primaryColor,
                             ),

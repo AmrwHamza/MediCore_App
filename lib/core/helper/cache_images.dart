@@ -1,23 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
+import 'package:medicore_app/core/utils/logger_helper.dart';
 
+/// Central place for precaching app images so that screens that depend on
+/// them render without visible loading gaps.
 class ImageCacheHelper {
-  static Future<void> cacheAppImages(BuildContext context) async {
-    final List<Future<void>> cacheFutures = [];
+  /// Preloads the images used by the Onboarding screens so that the second
+  /// page is already decoded by the time the user swipes to it.
+  ///
+  /// The SVG is parsed through flutter_svg's own cache while the PNG is
+  /// decoded into the Flutter image cache. Failures are swallowed on purpose:
+  /// precaching must never block navigation or crash the UI.
+  static const int _logoTargetWidth = 512;
 
-    cacheFutures.add(
-      precacheImage(
-        const AssetImage(Assets.imagesLogoWithoutBackground),
+  static Future<void> cacheOnboardingImages(BuildContext context) async {
+    await Future.wait([
+      _safePrecache(
+        ResizeImage(
+          const AssetImage(Assets.imagesLogoWithoutBackground),
+          width: _logoTargetWidth,
+        ),
         context,
       ),
-    );
+      _precacheSvg(Assets.imagesDoctors),
+    ]);
+  }
+
+  static Future<void> _safePrecache(
+    ImageProvider provider,
+    BuildContext context,
+  ) async {
+    try {
+      await precacheImage(provider, context);
+    } catch (error, stackTrace) {
+      LoggerHelper.error('Failed to precache image: $error');
+      LoggerHelper.error(stackTrace.toString());
+    }
+  }
+
+  static Future<void> _precacheSvg(String assetPath) async {
+    try {
+      final loader = SvgAssetLoader(assetPath);
+      await vg.loadPicture(loader, null);
+    } catch (error, stackTrace) {
+      LoggerHelper.error('Failed to precache svg: $error');
+      LoggerHelper.error(stackTrace.toString());
+    }
+  }
+
+  static Future<void> cacheAppImages(BuildContext context) async {
+    await cacheOnboardingImages(context);
+
+    final List<Future<void>> cacheFutures = [];
 
     for (String imagePath in Assets.departmentsImages) {
-      cacheFutures.add(precacheImage(AssetImage(imagePath), context));
+      cacheFutures.add(_safePrecache(AssetImage(imagePath), context));
     }
 
     for (String imagePath in Assets.doctorsImages) {
-      cacheFutures.add(precacheImage(AssetImage(imagePath), context));
+      cacheFutures.add(_safePrecache(AssetImage(imagePath), context));
     }
 
     await Future.wait(cacheFutures);

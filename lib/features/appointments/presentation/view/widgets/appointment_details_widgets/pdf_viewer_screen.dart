@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
@@ -260,7 +261,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              customMessage ?? _errorMessage ?? 'Unknown error occurred',
+              customMessage ?? _errorMessage ?? 'unknown_error_occurred'.tr(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -271,7 +272,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ElevatedButton.icon(
               onPressed: _retry,
               icon: const Icon(Icons.refresh_rounded),
-              label: const Text('Retry'),
+              label: Text('retry'.tr()),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF32B2CF),
                 foregroundColor: Colors.white,

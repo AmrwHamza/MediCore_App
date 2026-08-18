@@ -11,8 +11,8 @@ class FirstPageAuth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => getIt<ChangeLanguageCubit>(),
+      body: BlocProvider.value(
+        value: getIt<ChangeLanguageCubit>(),
         child: const FirstPageAuthBody(),
       ),
     );

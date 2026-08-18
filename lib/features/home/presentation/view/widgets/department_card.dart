@@ -166,6 +166,10 @@ class _DepartmentCardState extends State<DepartmentCard> {
                                           width: 32,
                                           height: 32,
                                           fit: BoxFit.contain,
+                                          cacheWidth: 48,
+                                          errorBuilder:
+                                              (_, __, ___) => const SizedBox
+                                                  .shrink(),
                                         ),
                                       ),
                                     ),

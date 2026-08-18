@@ -8,6 +8,7 @@ import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/auth/first_page/presentation/view/first_page_auth.dart';
 import 'package:medicore_app/features/on_boarding/presentation/views/widget/on_boarding_page_view.dart';
+import 'package:medicore_app/core/helper/cache_images.dart';
 
 class OnBoardingViewBody extends StatefulWidget {
   const OnBoardingViewBody({super.key});
@@ -29,6 +30,12 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
         setState(() {
           currentPage = nextPage;
         });
+      }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ImageCacheHelper.cacheOnboardingImages(context);
       }
     });
     super.initState();
@@ -208,11 +215,13 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                                     currentPage == 0
                                         ? CrossFadeState.showFirst
                                         : CrossFadeState.showSecond,
-                                firstChild: const SizedBox(
+                                firstChild: SizedBox(
                                   width: 64,
                                   height: 64,
                                   child: Icon(
-                                    Icons.arrow_forward_rounded,
+                                    Directionality.of(context).name == 'rtl'
+                                        ? Icons.arrow_back_rounded
+                                        : Icons.arrow_forward_rounded,
                                     color: Colors.white,
                                     size: 28,
                                   ),
