@@ -48,7 +48,7 @@ class BirthDateCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Text(
-                'birth_date_label'.tr(),
+                'birth_date'.tr(),
                 style: TextStyles.H2.copyWith(
                   color: theme.canvasColor,
                   fontSize: 14,

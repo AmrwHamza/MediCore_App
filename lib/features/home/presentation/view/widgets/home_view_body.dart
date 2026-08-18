@@ -19,7 +19,6 @@ import '../../../../doctors/presentation/views/doctors_view.dart';
 import 'health_widgets/bmi_card.dart';
 import 'health_widgets/health_tips_carousel.dart';
 import 'health_widgets/home_wellness_section.dart';
-import 'health_widgets/quick_actions_row.dart';
 import 'home_error_state.dart';
 import 'home_sections_header.dart';
 import 'home_skeletons.dart';
@@ -238,11 +237,11 @@ class HomeViewBody extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: BmiCard(),
                 ),
-                const SizedBox(height: 16),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: QuickActionsRow(),
-                ),
+                // const SizedBox(height: 16),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 20),
+                //   child: QuickActionsRow(),
+                // ),
               ],
             ),
           ],

@@ -99,7 +99,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppointmentsView.routeName,
       name: AppointmentsView.routeName,
-      builder: (context, state) => const AppointmentsView(),
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>?;
+        return AppointmentsView(initialTab: args?['tab'] ?? 0);
+      },
     ),
     GoRoute(
       path: NotificationView.routeName,

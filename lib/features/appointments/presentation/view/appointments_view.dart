@@ -10,14 +10,45 @@ import 'package:medicore_app/features/appointments/presentation/view/widgets/acc
 import 'package:medicore_app/features/appointments/presentation/view/widgets/incomplete_page.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/waiting_page.dart';
 import 'package:medicore_app/features/appointments/presentation/view_model/appointments_cubit/appointments_cubit.dart';
+import 'package:medicore_app/features/appointments/presentation/view_model/appointments_tab_cubit/appointments_tab_cubit.dart';
 
 import '../view_model/cubit/delete_appointment_cubit.dart';
 import '../view_model/priviews_cubit/priviews_cubit.dart';
 
-class AppointmentsView extends StatelessWidget {
+class AppointmentsView extends StatefulWidget {
   static const routeName = '/appointments';
 
-  const AppointmentsView({super.key});
+  /// The tab to select when the screen is first opened. 0 = waiting,
+  /// 1 = accepted, 2 = incomplete.
+  final int initialTab;
+
+  const AppointmentsView({super.key, this.initialTab = 0});
+
+  @override
+  State<AppointmentsView> createState() => _AppointmentsViewState();
+}
+
+class _AppointmentsViewState extends State<AppointmentsView>
+    with SingleTickerProviderStateMixin {
+  static const _tabCount = 3;
+
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+      length: _tabCount,
+      vsync: this,
+      initialIndex: widget.initialTab.clamp(0, _tabCount - 1),
+    );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +62,12 @@ class AppointmentsView extends StatelessWidget {
         BlocProvider(create: (context) => PriviewsCubit()..getPriviews()),
         BlocProvider(create: (context) => DeleteAppointmentCubit()),
       ],
-      child: DefaultTabController(
-        length: 3,
+      child: BlocListener<AppointmentsTabCubit, AppointmentsTabRequest?>(
+        listener: (context, request) {
+          if (request != null && request.index != _tabController.index) {
+            _tabController.animateTo(request.index);
+          }
+        },
         child: Scaffold(
           backgroundColor: theme.scaffoldBackgroundColor,
           floatingActionButton: FloatingActionButton(
@@ -62,6 +97,7 @@ class AppointmentsView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14.r),
               ),
               child: TabBar(
+                controller: _tabController,
                 labelColor: KPrimaryColor,
                 unselectedLabelColor: Colors.grey[500],
                 indicatorSize: TabBarIndicatorSize.tab,
@@ -98,8 +134,9 @@ class AppointmentsView extends StatelessWidget {
               await context.read<AppointmentsCubit>().getAppointments();
               await context.read<PriviewsCubit>().getPriviews();
             },
-            child: const TabBarView(
-              children: [WaitingPage(), AcceptedPage(), IncompletePage()],
+            child: TabBarView(
+              controller: _tabController,
+              children: const [WaitingPage(), AcceptedPage(), IncompletePage()],
             ),
           ),
         ),

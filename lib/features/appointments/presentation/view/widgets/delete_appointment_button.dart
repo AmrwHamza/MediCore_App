@@ -82,11 +82,12 @@ class DeleteAppointmentButton extends StatelessWidget {
   void _showDeleteDialog(BuildContext parentContext) {
     showGeneralDialog(
       context: parentContext,
+
       barrierDismissible: true,
       barrierLabel: '',
       barrierColor: Colors.black.withValues(alpha: 0.15),
       transitionDuration: const Duration(milliseconds: 250),
-      pageBuilder: (dialogContext, _, __) {
+      pageBuilder: (dialogContext, _, _) {
         final deleteCubit = parentContext.read<DeleteAppointmentCubit>();
 
         return Stack(
@@ -102,7 +103,7 @@ class DeleteAppointmentButton extends StatelessWidget {
                   width: 330.w,
                   padding: EdgeInsets.all(24.w),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(parentContext).cardColor,
                     borderRadius: BorderRadius.circular(24.r),
                   ),
                   child: Column(
@@ -123,6 +124,7 @@ class DeleteAppointmentButton extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
+                          color: Theme.of(parentContext).canvasColor,
                         ),
                       ),
                       SizedBox(height: 10.h),
@@ -142,7 +144,12 @@ class DeleteAppointmentButton extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(dialogContext).pop();
                               },
-                              child: Text("delete_dialog_cancel".tr()),
+                              child: Text(
+                                "delete_dialog_cancel".tr(),
+                                style: TextStyle(
+                                  color: Theme.of(parentContext).canvasColor,
+                                ),
+                              ),
                             ),
                           ),
                           SizedBox(width: 12.w),
@@ -174,7 +181,7 @@ class DeleteAppointmentButton extends StatelessWidget {
           ],
         );
       },
-      transitionBuilder: (_, animation, __, child) {
+      transitionBuilder: (_, animation, _, child) {
         return FadeTransition(
           opacity: animation,
           child: ScaleTransition(

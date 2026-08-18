@@ -65,9 +65,9 @@ class _UploadSectionState extends State<UploadSection> {
       type: FileType.custom,
       allowedExtensions: _allowedExtensions,
     );
-    if (result == null || result.files.isEmpty || !mounted) return;
+    if (result.isEmpty || !mounted) return;
 
-    final file = result.files.first;
+    final file = result.first;
     final path = file.path;
     if (path == null) return;
 
@@ -80,7 +80,7 @@ class _UploadSectionState extends State<UploadSection> {
       return;
     }
 
-    if (file.size > _maxSizeBytes) {
+    if (await file.length() > _maxSizeBytes) {
       _showErrorFeedback('file_too_large'.tr());
       return;
     }

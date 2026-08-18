@@ -20,7 +20,6 @@ import 'package:provider/provider.dart';
 import '../../../../core/utils/app_lottie.dart';
 import '../../../appointments/presentation/view/appointment_archive_view.dart';
 import '../../../articles/presentation/view/articles_favorites_view.dart';
-import '../../../doctors/presentation/views/doctors_view.dart';
 import '../../../payment/presentation/views/payment_view.dart';
 
 class DrawerView extends StatelessWidget {
@@ -81,19 +80,19 @@ class DrawerView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Column(
                     children: [
-                      ListTile(
-                        title: Text(
-                          'Doctors'.tr(),
-                          style: TextStyles.public.copyWith(color: KDarkBlue),
-                        ),
-                        onTap: () {
-                          context.push(DoctorsView.routeName);
-                        },
-                        leading: const FaIcon(
-                          FontAwesomeIcons.userDoctor,
-                          color: KOrange,
-                        ),
-                      ),
+                      // ListTile(
+                      //   title: Text(
+                      //     'Doctors'.tr(),
+                      //     style: TextStyles.public.copyWith(color: KDarkBlue),
+                      //   ),
+                      //   onTap: () {
+                      //     context.push(DoctorsView.routeName);
+                      //   },
+                      //   leading: const FaIcon(
+                      //     FontAwesomeIcons.userDoctor,
+                      //     color: KOrange,
+                      //   ),
+                      // ),
                       ListTile(
                         title: Text(
                           'Articles'.tr(),
@@ -237,6 +236,7 @@ class DrawerView extends StatelessWidget {
                     title: 'Logout'.tr(),
                     content: 'logout_q'.tr(),
                     confirmText: 'confirmationYes'.tr(),
+
                     cancelText: 'no'.tr(),
                   );
                   LoggerHelper.success(logout.toString());

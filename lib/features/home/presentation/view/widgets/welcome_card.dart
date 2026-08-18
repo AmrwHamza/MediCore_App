@@ -8,6 +8,7 @@ import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/core/helper_function/user_information.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
+import 'package:medicore_app/core/widget/custom_shimer.dart';
 
 class WelcomeCard extends StatefulWidget {
   const WelcomeCard({super.key});
@@ -19,7 +20,7 @@ class WelcomeCard extends StatefulWidget {
 class _WelcomeCardState extends State<WelcomeCard>
     with SingleTickerProviderStateMixin {
   late final AnimationController _bubbleController;
-  late final List<_Bubble> _bubbles;
+  late final List<Bubble> _bubbles;
   final _random = math.Random(42);
 
   @override
@@ -31,7 +32,7 @@ class _WelcomeCardState extends State<WelcomeCard>
     )..repeat();
 
     _bubbles = List.generate(18, (index) {
-      return _Bubble(
+      return Bubble(
         x: _random.nextDouble(),
         baseY: _random.nextDouble(),
         radius: 4 + _random.nextDouble() * 14,
@@ -181,9 +182,27 @@ class _WelcomeCardState extends State<WelcomeCard>
                         FutureBuilder<String>(
                           future: getFullName(),
                           builder: (context, snapshot) {
-                            final name = snapshot.data ?? '...';
+                            if (!snapshot.hasData) {
+                              return const Align(
+                                alignment: AlignmentDirectional.centerStart,
+                                child: ShimmerBox(
+                                  child: SizedBox(
+                                    width: 160,
+                                    height: 32,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Color(0x99FFFFFF),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
                             return Text(
-                              name,
+                              snapshot.data!,
                               style: TextStyles.H1.copyWith(
                                 color: Colors.white,
                                 fontSize: 24,
@@ -251,7 +270,7 @@ class _WelcomeCardState extends State<WelcomeCard>
   }
 }
 
-class _Bubble {
+class Bubble {
   final double x;
   final double baseY;
   final double radius;
@@ -259,7 +278,7 @@ class _Bubble {
   final double opacity;
   final double wobble;
 
-  const _Bubble({
+  const Bubble({
     required this.x,
     required this.baseY,
     required this.radius,
@@ -270,7 +289,7 @@ class _Bubble {
 }
 
 class _BubbleBackgroundPainter extends CustomPainter {
-  final List<_Bubble> bubbles;
+  final List<Bubble> bubbles;
   final double progress;
 
   _BubbleBackgroundPainter({required this.bubbles, required this.progress});
