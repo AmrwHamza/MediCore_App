@@ -1,17 +1,7 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// coverage:ignore-file
-// ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
-
 part of 'edit_patient_profile_cubit.dart';
 
-// **************************************************************************
-// FreezedGenerator
-// **************************************************************************
-
-// dart format off
 T _$identity<T>(T value) => value;
-/// @nodoc
+
 mixin _$EditPatientProfileState {
 
 
@@ -35,25 +25,11 @@ String toString() {
 
 }
 
-/// @nodoc
 class $EditPatientProfileStateCopyWith<$Res>  {
 $EditPatientProfileStateCopyWith(EditPatientProfileState _, $Res Function(EditPatientProfileState) __);
 }
 
-
-/// Adds pattern-matching-related methods to [EditPatientProfileState].
 extension EditPatientProfileStatePatterns on EditPatientProfileState {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
 
 @optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _EditSuccess value)?  editSuccess,TResult Function( _Failure value)?  failure,required TResult orElse(),}){
 final _that = this;
@@ -68,18 +44,6 @@ return failure(_that);case _:
 
 }
 }
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
 
 @optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _EditSuccess value)  editSuccess,required TResult Function( _Failure value)  failure,}){
 final _that = this;
@@ -94,17 +58,6 @@ return failure(_that);case _:
 
 }
 }
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
 
 @optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _EditSuccess value)?  editSuccess,TResult? Function( _Failure value)?  failure,}){
 final _that = this;
@@ -119,17 +72,6 @@ return failure(_that);case _:
 
 }
 }
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( PatientProfileEntity patientProfileInfo)?  success,TResult Function( PatientProfileEntity patientProfileInfo)?  editSuccess,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
 switch (_that) {
@@ -143,18 +85,6 @@ return failure(_that.message);case _:
 
 }
 }
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( PatientProfileEntity patientProfileInfo)  success,required TResult Function( PatientProfileEntity patientProfileInfo)  editSuccess,required TResult Function( String message)  failure,}) {final _that = this;
 switch (_that) {
@@ -168,17 +98,6 @@ return failure(_that.message);case _:
 
 }
 }
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( PatientProfileEntity patientProfileInfo)?  success,TResult? Function( PatientProfileEntity patientProfileInfo)?  editSuccess,TResult? Function( String message)?  failure,}) {final _that = this;
 switch (_that) {
@@ -194,9 +113,6 @@ return failure(_that.message);case _:
 }
 
 }
-
-/// @nodoc
-
 
 class _Initial implements EditPatientProfileState {
   const _Initial();
@@ -224,12 +140,6 @@ String toString() {
 
 }
 
-
-
-
-/// @nodoc
-
-
 class _Loading implements EditPatientProfileState {
   const _Loading();
   
@@ -256,20 +166,12 @@ String toString() {
 
 }
 
-
-
-
-/// @nodoc
-
-
 class _Success implements EditPatientProfileState {
   const _Success(this.patientProfileInfo);
   
 
  final  PatientProfileEntity patientProfileInfo;
 
-/// Create a copy of EditPatientProfileState
-/// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$SuccessCopyWith<_Success> get copyWith => __$SuccessCopyWithImpl<_Success>(this, _$identity);
@@ -293,7 +195,6 @@ String toString() {
 
 }
 
-/// @nodoc
 abstract mixin class _$SuccessCopyWith<$Res> implements $EditPatientProfileStateCopyWith<$Res> {
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) _then) = __$SuccessCopyWithImpl;
 @useResult
@@ -305,7 +206,7 @@ $Res call({
 
 
 }
-/// @nodoc
+
 class __$SuccessCopyWithImpl<$Res>
     implements _$SuccessCopyWith<$Res> {
   __$SuccessCopyWithImpl(this._self, this._then);
@@ -313,11 +214,9 @@ class __$SuccessCopyWithImpl<$Res>
   final _Success _self;
   final $Res Function(_Success) _then;
 
-/// Create a copy of EditPatientProfileState
-/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? patientProfileInfo = null,}) {
   return _then(_Success(
-null == patientProfileInfo ? _self.patientProfileInfo : patientProfileInfo // ignore: cast_nullable_to_non_nullable
+null == patientProfileInfo ? _self.patientProfileInfo : patientProfileInfo
 as PatientProfileEntity,
   ));
 }
@@ -325,17 +224,12 @@ as PatientProfileEntity,
 
 }
 
-/// @nodoc
-
-
 class _EditSuccess implements EditPatientProfileState {
   const _EditSuccess(this.patientProfileInfo);
   
 
  final  PatientProfileEntity patientProfileInfo;
 
-/// Create a copy of EditPatientProfileState
-/// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$EditSuccessCopyWith<_EditSuccess> get copyWith => __$EditSuccessCopyWithImpl<_EditSuccess>(this, _$identity);
@@ -359,7 +253,6 @@ String toString() {
 
 }
 
-/// @nodoc
 abstract mixin class _$EditSuccessCopyWith<$Res> implements $EditPatientProfileStateCopyWith<$Res> {
   factory _$EditSuccessCopyWith(_EditSuccess value, $Res Function(_EditSuccess) _then) = __$EditSuccessCopyWithImpl;
 @useResult
@@ -371,7 +264,7 @@ $Res call({
 
 
 }
-/// @nodoc
+
 class __$EditSuccessCopyWithImpl<$Res>
     implements _$EditSuccessCopyWith<$Res> {
   __$EditSuccessCopyWithImpl(this._self, this._then);
@@ -379,11 +272,9 @@ class __$EditSuccessCopyWithImpl<$Res>
   final _EditSuccess _self;
   final $Res Function(_EditSuccess) _then;
 
-/// Create a copy of EditPatientProfileState
-/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? patientProfileInfo = null,}) {
   return _then(_EditSuccess(
-null == patientProfileInfo ? _self.patientProfileInfo : patientProfileInfo // ignore: cast_nullable_to_non_nullable
+null == patientProfileInfo ? _self.patientProfileInfo : patientProfileInfo
 as PatientProfileEntity,
   ));
 }
@@ -391,17 +282,12 @@ as PatientProfileEntity,
 
 }
 
-/// @nodoc
-
-
 class _Failure implements EditPatientProfileState {
   const _Failure(this.message);
   
 
  final  String message;
 
-/// Create a copy of EditPatientProfileState
-/// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$FailureCopyWith<_Failure> get copyWith => __$FailureCopyWithImpl<_Failure>(this, _$identity);
@@ -425,7 +311,6 @@ String toString() {
 
 }
 
-/// @nodoc
 abstract mixin class _$FailureCopyWith<$Res> implements $EditPatientProfileStateCopyWith<$Res> {
   factory _$FailureCopyWith(_Failure value, $Res Function(_Failure) _then) = __$FailureCopyWithImpl;
 @useResult
@@ -437,7 +322,7 @@ $Res call({
 
 
 }
-/// @nodoc
+
 class __$FailureCopyWithImpl<$Res>
     implements _$FailureCopyWith<$Res> {
   __$FailureCopyWithImpl(this._self, this._then);
@@ -445,11 +330,9 @@ class __$FailureCopyWithImpl<$Res>
   final _Failure _self;
   final $Res Function(_Failure) _then;
 
-/// Create a copy of EditPatientProfileState
-/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
   return _then(_Failure(
-null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+null == message ? _self.message : message
 as String,
   ));
 }
@@ -457,4 +340,3 @@ as String,
 
 }
 
-// dart format on

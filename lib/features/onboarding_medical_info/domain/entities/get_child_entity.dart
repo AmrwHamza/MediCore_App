@@ -42,9 +42,6 @@ class GetChildEntity {
     );
   }
 
-  /// Flattens the various API shapes into one map. Supports direct keys,
-  /// `{ "data": {...} }`, `{ "sons": {...} }`, `{ "child": {...} }` and
-  /// `patient_info` sub-objects (with direct keys taking precedence).
   static Map<String, dynamic> _flattenNestedChild(Map<String, dynamic> json) {
     final extraSections = <String>['patient_info', 'sons', 'child'];
 
@@ -55,7 +52,7 @@ class GetChildEntity {
         merged.addAll(Map<String, dynamic>.from(value));
       }
     }
-    // Nested `data` wrapper (API response body).
+
     if (json['data'] is Map) {
       final data = Map<String, dynamic>.from(json['data'] as Map);
       merged..addAll(data);

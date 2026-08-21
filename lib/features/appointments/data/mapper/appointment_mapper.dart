@@ -22,7 +22,7 @@ class AppointmentMapper {
       imgPath: appointment.appointmentInfo.patientImage ?? '',
       patientName: appointment.appointmentInfo.patientName,
       isChild: appointment.isChild,
-      //////////
+
       medicine: '',
       notes: '',
       diagnoseis: '',

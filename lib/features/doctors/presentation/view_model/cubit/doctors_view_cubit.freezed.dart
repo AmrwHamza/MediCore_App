@@ -1,17 +1,7 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// coverage:ignore-file
-// ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
-
 part of 'doctors_view_cubit.dart';
 
-// **************************************************************************
-// FreezedGenerator
-// **************************************************************************
-
-// dart format off
 T _$identity<T>(T value) => value;
-/// @nodoc
+
 mixin _$DoctorsViewState {
 
 
@@ -35,25 +25,11 @@ String toString() {
 
 }
 
-/// @nodoc
 class $DoctorsViewStateCopyWith<$Res>  {
 $DoctorsViewStateCopyWith(DoctorsViewState _, $Res Function(DoctorsViewState) __);
 }
 
-
-/// Adds pattern-matching-related methods to [DoctorsViewState].
 extension DoctorsViewStatePatterns on DoctorsViewState {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
 
 @optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _GetDoctorsLoading value)?  getDoctorsLoading,TResult Function( _SearchDoctorsLoading value)?  searchDoctorsLoading,TResult Function( _GetDoctorsFailure value)?  getDoctorsFailure,TResult Function( _SearchDoctorsFailure value)?  searchDoctorsFailure,TResult Function( _GetDoctorsSuccess value)?  getDoctorsSuccess,TResult Function( _SearchDoctorsSuccess value)?  searchDoctorsSuccess,required TResult orElse(),}){
 final _that = this;
@@ -70,18 +46,6 @@ return searchDoctorsSuccess(_that);case _:
 
 }
 }
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
 
 @optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _GetDoctorsLoading value)  getDoctorsLoading,required TResult Function( _SearchDoctorsLoading value)  searchDoctorsLoading,required TResult Function( _GetDoctorsFailure value)  getDoctorsFailure,required TResult Function( _SearchDoctorsFailure value)  searchDoctorsFailure,required TResult Function( _GetDoctorsSuccess value)  getDoctorsSuccess,required TResult Function( _SearchDoctorsSuccess value)  searchDoctorsSuccess,}){
 final _that = this;
@@ -98,17 +62,6 @@ return searchDoctorsSuccess(_that);case _:
 
 }
 }
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
 
 @optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _GetDoctorsLoading value)?  getDoctorsLoading,TResult? Function( _SearchDoctorsLoading value)?  searchDoctorsLoading,TResult? Function( _GetDoctorsFailure value)?  getDoctorsFailure,TResult? Function( _SearchDoctorsFailure value)?  searchDoctorsFailure,TResult? Function( _GetDoctorsSuccess value)?  getDoctorsSuccess,TResult? Function( _SearchDoctorsSuccess value)?  searchDoctorsSuccess,}){
 final _that = this;
@@ -125,17 +78,6 @@ return searchDoctorsSuccess(_that);case _:
 
 }
 }
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  getDoctorsLoading,TResult Function()?  searchDoctorsLoading,TResult Function( String errorMessage)?  getDoctorsFailure,TResult Function( String errorMessage)?  searchDoctorsFailure,TResult Function( List<DoctorEntity> doctors)?  getDoctorsSuccess,TResult Function( List<DoctorEntity> doctors)?  searchDoctorsSuccess,required TResult orElse(),}) {final _that = this;
 switch (_that) {
@@ -151,18 +93,6 @@ return searchDoctorsSuccess(_that.doctors);case _:
 
 }
 }
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  getDoctorsLoading,required TResult Function()  searchDoctorsLoading,required TResult Function( String errorMessage)  getDoctorsFailure,required TResult Function( String errorMessage)  searchDoctorsFailure,required TResult Function( List<DoctorEntity> doctors)  getDoctorsSuccess,required TResult Function( List<DoctorEntity> doctors)  searchDoctorsSuccess,}) {final _that = this;
 switch (_that) {
@@ -178,17 +108,6 @@ return searchDoctorsSuccess(_that.doctors);case _:
 
 }
 }
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  getDoctorsLoading,TResult? Function()?  searchDoctorsLoading,TResult? Function( String errorMessage)?  getDoctorsFailure,TResult? Function( String errorMessage)?  searchDoctorsFailure,TResult? Function( List<DoctorEntity> doctors)?  getDoctorsSuccess,TResult? Function( List<DoctorEntity> doctors)?  searchDoctorsSuccess,}) {final _that = this;
 switch (_that) {
@@ -206,9 +125,6 @@ return searchDoctorsSuccess(_that.doctors);case _:
 }
 
 }
-
-/// @nodoc
-
 
 class _Initial implements DoctorsViewState {
   const _Initial();
@@ -236,12 +152,6 @@ String toString() {
 
 }
 
-
-
-
-/// @nodoc
-
-
 class _GetDoctorsLoading implements DoctorsViewState {
   const _GetDoctorsLoading();
   
@@ -267,12 +177,6 @@ String toString() {
 
 
 }
-
-
-
-
-/// @nodoc
-
 
 class _SearchDoctorsLoading implements DoctorsViewState {
   const _SearchDoctorsLoading();
@@ -300,20 +204,12 @@ String toString() {
 
 }
 
-
-
-
-/// @nodoc
-
-
 class _GetDoctorsFailure implements DoctorsViewState {
   const _GetDoctorsFailure({required this.errorMessage});
   
 
  final  String errorMessage;
 
-/// Create a copy of DoctorsViewState
-/// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$GetDoctorsFailureCopyWith<_GetDoctorsFailure> get copyWith => __$GetDoctorsFailureCopyWithImpl<_GetDoctorsFailure>(this, _$identity);
@@ -337,7 +233,6 @@ String toString() {
 
 }
 
-/// @nodoc
 abstract mixin class _$GetDoctorsFailureCopyWith<$Res> implements $DoctorsViewStateCopyWith<$Res> {
   factory _$GetDoctorsFailureCopyWith(_GetDoctorsFailure value, $Res Function(_GetDoctorsFailure) _then) = __$GetDoctorsFailureCopyWithImpl;
 @useResult
@@ -349,7 +244,7 @@ $Res call({
 
 
 }
-/// @nodoc
+
 class __$GetDoctorsFailureCopyWithImpl<$Res>
     implements _$GetDoctorsFailureCopyWith<$Res> {
   __$GetDoctorsFailureCopyWithImpl(this._self, this._then);
@@ -357,11 +252,9 @@ class __$GetDoctorsFailureCopyWithImpl<$Res>
   final _GetDoctorsFailure _self;
   final $Res Function(_GetDoctorsFailure) _then;
 
-/// Create a copy of DoctorsViewState
-/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? errorMessage = null,}) {
   return _then(_GetDoctorsFailure(
-errorMessage: null == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+errorMessage: null == errorMessage ? _self.errorMessage : errorMessage
 as String,
   ));
 }
@@ -369,17 +262,12 @@ as String,
 
 }
 
-/// @nodoc
-
-
 class _SearchDoctorsFailure implements DoctorsViewState {
   const _SearchDoctorsFailure({required this.errorMessage});
   
 
  final  String errorMessage;
 
-/// Create a copy of DoctorsViewState
-/// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$SearchDoctorsFailureCopyWith<_SearchDoctorsFailure> get copyWith => __$SearchDoctorsFailureCopyWithImpl<_SearchDoctorsFailure>(this, _$identity);
@@ -403,7 +291,6 @@ String toString() {
 
 }
 
-/// @nodoc
 abstract mixin class _$SearchDoctorsFailureCopyWith<$Res> implements $DoctorsViewStateCopyWith<$Res> {
   factory _$SearchDoctorsFailureCopyWith(_SearchDoctorsFailure value, $Res Function(_SearchDoctorsFailure) _then) = __$SearchDoctorsFailureCopyWithImpl;
 @useResult
@@ -415,7 +302,7 @@ $Res call({
 
 
 }
-/// @nodoc
+
 class __$SearchDoctorsFailureCopyWithImpl<$Res>
     implements _$SearchDoctorsFailureCopyWith<$Res> {
   __$SearchDoctorsFailureCopyWithImpl(this._self, this._then);
@@ -423,20 +310,15 @@ class __$SearchDoctorsFailureCopyWithImpl<$Res>
   final _SearchDoctorsFailure _self;
   final $Res Function(_SearchDoctorsFailure) _then;
 
-/// Create a copy of DoctorsViewState
-/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? errorMessage = null,}) {
   return _then(_SearchDoctorsFailure(
-errorMessage: null == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+errorMessage: null == errorMessage ? _self.errorMessage : errorMessage
 as String,
   ));
 }
 
 
 }
-
-/// @nodoc
-
 
 class _GetDoctorsSuccess implements DoctorsViewState {
   const _GetDoctorsSuccess({required final  List<DoctorEntity> doctors}): _doctors = doctors;
@@ -445,13 +327,10 @@ class _GetDoctorsSuccess implements DoctorsViewState {
  final  List<DoctorEntity> _doctors;
  List<DoctorEntity> get doctors {
   if (_doctors is EqualUnmodifiableListView) return _doctors;
-  // ignore: implicit_dynamic_type
+
   return EqualUnmodifiableListView(_doctors);
 }
 
-
-/// Create a copy of DoctorsViewState
-/// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$GetDoctorsSuccessCopyWith<_GetDoctorsSuccess> get copyWith => __$GetDoctorsSuccessCopyWithImpl<_GetDoctorsSuccess>(this, _$identity);
@@ -475,7 +354,6 @@ String toString() {
 
 }
 
-/// @nodoc
 abstract mixin class _$GetDoctorsSuccessCopyWith<$Res> implements $DoctorsViewStateCopyWith<$Res> {
   factory _$GetDoctorsSuccessCopyWith(_GetDoctorsSuccess value, $Res Function(_GetDoctorsSuccess) _then) = __$GetDoctorsSuccessCopyWithImpl;
 @useResult
@@ -487,7 +365,7 @@ $Res call({
 
 
 }
-/// @nodoc
+
 class __$GetDoctorsSuccessCopyWithImpl<$Res>
     implements _$GetDoctorsSuccessCopyWith<$Res> {
   __$GetDoctorsSuccessCopyWithImpl(this._self, this._then);
@@ -495,20 +373,15 @@ class __$GetDoctorsSuccessCopyWithImpl<$Res>
   final _GetDoctorsSuccess _self;
   final $Res Function(_GetDoctorsSuccess) _then;
 
-/// Create a copy of DoctorsViewState
-/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? doctors = null,}) {
   return _then(_GetDoctorsSuccess(
-doctors: null == doctors ? _self._doctors : doctors // ignore: cast_nullable_to_non_nullable
+doctors: null == doctors ? _self._doctors : doctors
 as List<DoctorEntity>,
   ));
 }
 
 
 }
-
-/// @nodoc
-
 
 class _SearchDoctorsSuccess implements DoctorsViewState {
   const _SearchDoctorsSuccess({required final  List<DoctorEntity> doctors}): _doctors = doctors;
@@ -517,13 +390,10 @@ class _SearchDoctorsSuccess implements DoctorsViewState {
  final  List<DoctorEntity> _doctors;
  List<DoctorEntity> get doctors {
   if (_doctors is EqualUnmodifiableListView) return _doctors;
-  // ignore: implicit_dynamic_type
+
   return EqualUnmodifiableListView(_doctors);
 }
 
-
-/// Create a copy of DoctorsViewState
-/// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$SearchDoctorsSuccessCopyWith<_SearchDoctorsSuccess> get copyWith => __$SearchDoctorsSuccessCopyWithImpl<_SearchDoctorsSuccess>(this, _$identity);
@@ -547,7 +417,6 @@ String toString() {
 
 }
 
-/// @nodoc
 abstract mixin class _$SearchDoctorsSuccessCopyWith<$Res> implements $DoctorsViewStateCopyWith<$Res> {
   factory _$SearchDoctorsSuccessCopyWith(_SearchDoctorsSuccess value, $Res Function(_SearchDoctorsSuccess) _then) = __$SearchDoctorsSuccessCopyWithImpl;
 @useResult
@@ -559,7 +428,7 @@ $Res call({
 
 
 }
-/// @nodoc
+
 class __$SearchDoctorsSuccessCopyWithImpl<$Res>
     implements _$SearchDoctorsSuccessCopyWith<$Res> {
   __$SearchDoctorsSuccessCopyWithImpl(this._self, this._then);
@@ -567,16 +436,12 @@ class __$SearchDoctorsSuccessCopyWithImpl<$Res>
   final _SearchDoctorsSuccess _self;
   final $Res Function(_SearchDoctorsSuccess) _then;
 
-/// Create a copy of DoctorsViewState
-/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? doctors = null,}) {
   return _then(_SearchDoctorsSuccess(
-doctors: null == doctors ? _self._doctors : doctors // ignore: cast_nullable_to_non_nullable
+doctors: null == doctors ? _self._doctors : doctors
 as List<DoctorEntity>,
   ));
 }
 
 
 }
-
-// dart format on

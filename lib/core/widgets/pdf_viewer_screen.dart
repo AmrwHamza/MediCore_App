@@ -225,10 +225,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         }
       },
       onRender: (pages) {
-        // PDF rendered successfully
+
       },
       onViewCreated: (controller) {
-        // PDFViewController available if needed
+
       },
     );
   }

@@ -292,11 +292,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   }
 }
 
-// Helper for external storage directory
 Future<Directory?> getExternalStorageDirectory() async {
-  // For Android, we'll use the temporary directory as a fallback
-  // In a production app, you'd use permission_handler to request storage permission
-  // and then use the actual Downloads directory
+
   return await getTemporaryDirectory();
 }
 

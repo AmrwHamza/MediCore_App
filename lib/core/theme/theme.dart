@@ -3,11 +3,11 @@ import 'package:medicore_app/constants.dart';
 
 ThemeData lightMode = ThemeData(
   brightness: Brightness.light,
-  // for app bar
+
   primaryColor: Colors.white,
-  // for text
+
   canvasColor: Colors.black,
-  //secound color of background
+
   primaryColorLight: KWhite,
   scaffoldBackgroundColor: KBackgroundLight,
   cardColor: Colors.white,
@@ -17,11 +17,11 @@ ThemeData lightMode = ThemeData(
 
 ThemeData darkMode = ThemeData(
   brightness: Brightness.dark,
-  // for app bar
+
   primaryColor: KAppBarDark,
-  // for text
+
   canvasColor: Colors.white,
-  //secound color of background
+
   primaryColorLight: KBackgroundDark,
   scaffoldBackgroundColor: KBackgroundDark,
   cardColor: KCardDark,

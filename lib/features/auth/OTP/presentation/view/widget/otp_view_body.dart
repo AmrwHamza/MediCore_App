@@ -29,7 +29,7 @@ class OTPViewBody extends StatefulWidget {
 
 class _OTPViewBodyState extends State<OTPViewBody> {
   double _progress = 0.0;
-  int _filledFieldsCount = 0; // متغير جديد للاحتفاظ بعدد الحقول المكتملة مباشرة
+  int _filledFieldsCount = 0;
 
   @override
   void initState() {

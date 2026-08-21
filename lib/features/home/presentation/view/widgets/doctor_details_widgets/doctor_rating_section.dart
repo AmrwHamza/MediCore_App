@@ -37,8 +37,7 @@ class DoctorRatingSection extends StatelessWidget {
       child: BlocBuilder<DoctorRateCubit, DoctorRateState>(
         builder: (context, state) {
           if (state is DoctorRateLoading) {
-            // Non-blocking: quietly sync in the background to avoid skeleton
-            // flicker on every screen open.
+
             return const SizedBox.shrink();
           } else if (state is DoctorRateLoaded) {
             final effectiveCanRate =

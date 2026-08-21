@@ -27,7 +27,7 @@ class NotificationRepoImpl implements NotificationRepo {
             NotificationModel.fromJson(json).toEntity(),
           );
         } catch (_) {
-          // Skip malformed items instead of failing the whole list.
+
           continue;
         }
       }

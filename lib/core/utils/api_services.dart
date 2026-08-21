@@ -292,10 +292,6 @@ class Api {
 
   final dioLoggerInterceptor = InterceptorsWrapper(
     onRequest: (RequestOptions options, handler) {
-      // String headers = "";
-      // options.headers.forEach((key, value) {
-      //   headers += "| $key: $value";
-      // });
 
       var data;
 
@@ -308,10 +304,7 @@ class Api {
       options.headers.forEach((key, value) {
         headers += "| $key: $value";
       });
-      //     log("┌------------------------------------------------------------------------------");
-      //     log('''| [DIO] Request: ${options.method} ${options.uri}
-      // | ${data}
-      // | Headers:\n$headers''');
+
       log(
         "┌------------------------------------------------------------------------------",
       );
@@ -321,23 +314,23 @@ class Api {
       log(
         "├------------------------------------------------------------------------------",
       );
-      handler.next(options); //continue
+      handler.next(options);
     },
     onResponse: (Response response, handler) async {
-      // print(response.data);
+
       log(response.data.toString());
       log(
         "└------------------------------------------------------------------------------",
       );
       handler.next(response);
-      // return response; // continue
+
     },
     onError: (DioException error, handler) async {
       log("| [DIO] Error: ${error.error}: ${error.response.toString()}");
       log(
         "└------------------------------------------------------------------------------",
       );
-      handler.next(error); //continue
+      handler.next(error);
     },
   );
 }

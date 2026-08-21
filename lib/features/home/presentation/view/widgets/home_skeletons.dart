@@ -5,8 +5,6 @@ import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/core/widget/custom_shimer.dart';
 
-/// Skeleton for the wellness section (smart wellness card + next appointment
-/// banner) that mirrors the real layout while the appointments are loading.
 class WellnessSectionSkeleton extends StatelessWidget {
   const WellnessSectionSkeleton({super.key});
 

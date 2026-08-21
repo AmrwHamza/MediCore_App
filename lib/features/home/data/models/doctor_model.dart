@@ -50,7 +50,7 @@ class DoctorDepartmentModel extends DoctorDepartmentEntity {
   });
 
   factory DoctorDepartmentModel.fromJson(Map<String, dynamic> json) {
-    // final langCode = Intl.getCurrentLocale();
+
     final nameMap = json['name'];
     return DoctorDepartmentModel(
       departmentId: json['id'],

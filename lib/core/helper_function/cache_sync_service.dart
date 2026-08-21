@@ -13,7 +13,7 @@ class CacheSyncService {
       await getIt<AppointmentsRepoImpl>().getAppointments();
       await getIt<ArticleRepoImpl>().getArticles(page: 1);
     } catch (_) {
-      // best-effort background sync; failures are non-fatal
+
     } finally {
       _syncing = false;
     }

@@ -66,7 +66,7 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // Background tap to close
+
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
             child: Container(
@@ -74,7 +74,6 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
             ),
           ),
 
-          // Image with zoom/pan support
           Center(
             child: InteractiveViewer(
               transformationController: _transformationController,
@@ -147,7 +146,6 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
             ),
           ),
 
-          // Close button
           if (_showCloseButton)
             SafeArea(
               child: Align(
@@ -174,7 +172,6 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
               ),
             ),
 
-          // Title (if provided)
           if (widget.title != null && _showCloseButton)
             SafeArea(
               child: Align(
@@ -198,7 +195,6 @@ class _ProfileImageViewerState extends State<ProfileImageViewer> {
   }
 }
 
-// Extension to easily show the viewer from any widget
 extension ProfileImageViewerExtension on BuildContext {
   void showProfileImageViewer({
     required String imageUrl,

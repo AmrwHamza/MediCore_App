@@ -7,10 +7,9 @@ import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:medicore_app/features/home/presentation/view_model/patient_wellness_algorithm.dart';
 
 class SmartWellnessMoodCard extends StatefulWidget {
-  /// Number of current upcoming appointments (waiting + accepted).
+
   final int upcomingAppointments;
 
-  /// Number of previously completed appointments.
   final int completedAppointments;
 
   const SmartWellnessMoodCard({

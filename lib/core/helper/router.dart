@@ -227,8 +227,6 @@ final GoRouter router = GoRouter(
   ],
 );
 
-// ========== TRANSITION HELPERS ==========
-
 CustomTransitionPage _slideTransition({required Widget child}) {
   return CustomTransitionPage(
     child: child,

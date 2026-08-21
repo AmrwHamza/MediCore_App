@@ -114,7 +114,7 @@ class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
                             borderRadius: BorderRadius.circular(36),
                             child: Stack(
                               children: [
-                                // 1. الخلفية الرقمية الموحدة المتناسقة مع الشعار (تدرج كحلي / أزرق داكن)
+
                                 Container(
                                   decoration: const BoxDecoration(
                                     gradient: LinearGradient(
@@ -127,7 +127,7 @@ class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
                                     ),
                                   ),
                                 ),
-                                // 2. اللوجو مدمج في الخلفية كعلامة مائية رقمية منخفضة الإضاءة لتبرز الهوية
+
                                 Center(
                                   child: Opacity(
                                     opacity: 0.18,
@@ -139,7 +139,7 @@ class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
                                     ),
                                   ),
                                 ),
-                                // 3. صورة الطبيب المعزولة فوق الخلفية واللوجو
+
                                 Positioned.fill(
                                   child: Image.asset(
                                     localAssetImage,
@@ -152,7 +152,7 @@ class _DoctorCardInDepartmentState extends State<DoctorCardInDepartment> {
                           ),
                         ),
                       ),
-                      // شارة التحقق (Verified Badge)
+
                       Container(
                         width: 18,
                         height: 18,

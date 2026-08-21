@@ -20,21 +20,18 @@ class SharedPrefHelper {
     _prefs ??= await SharedPreferences.getInstance();
   }
 
-  // === Theme ===
   Future<void> setDarkMode(bool isDark) async {
     await _prefs?.setBool(SharedPrefKeys.isDarkTheme, isDark);
   }
 
   bool get isDarkMode => _prefs?.getBool(SharedPrefKeys.isDarkTheme) ?? false;
 
-  // === Language ===
   Future<void> setLanguageCode(String code) async {
     await _prefs?.setString(SharedPrefKeys.language, code);
   }
 
   String get languageCode => _prefs?.getString(SharedPrefKeys.language) ?? 'en';
 
-  // === Auth Token ===
   Future<void> setAuthToken(String token) async {
     await _prefs?.setString(SharedPrefKeys.userToken, token);
   }

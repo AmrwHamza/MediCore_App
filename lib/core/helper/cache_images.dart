@@ -3,15 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/utils/logger_helper.dart';
 
-/// Central place for precaching app images so that screens that depend on
-/// them render without visible loading gaps.
 class ImageCacheHelper {
-  /// Preloads the images used by the Onboarding screens so that the second
-  /// page is already decoded by the time the user swipes to it.
-  ///
-  /// The SVG is parsed through flutter_svg's own cache while the PNG is
-  /// decoded into the Flutter image cache. Failures are swallowed on purpose:
-  /// precaching must never block navigation or crash the UI.
+
   static const int _logoTargetWidth = 512;
 
   static Future<void> cacheOnboardingImages(BuildContext context) async {

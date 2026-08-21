@@ -179,7 +179,7 @@ class _DoctorCardInHomeState extends State<DoctorCardInHome> {
                               ),
                             ),
                           ),
-                          // نقطة الحالة النشطة (Online Indicator)
+
                           Container(
                             width: 15,
                             height: 15,

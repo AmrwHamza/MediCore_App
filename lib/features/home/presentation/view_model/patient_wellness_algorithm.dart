@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
 
-/// Mood categories derived from the total wellness score (0 - 100).
 enum WellnessMood {
   excellent,
   good,
@@ -33,16 +32,13 @@ enum WellnessMood {
 }
 
 class WellnessResult {
-  /// Total wellness score from 0 to 100.
+
   final int score;
 
-  /// Appointments contribution (max 40).
   final int appointmentScore;
 
-  /// Medical log / profile contribution (max 30).
   final int careScore;
 
-  /// BMI contribution (max 30).
   final int bmiScore;
 
   final WellnessMood mood;
@@ -56,12 +52,6 @@ class WellnessResult {
   });
 }
 
-/// Pure front-end smart mood algorithm.
-///
-/// Score breakdown (0 - 100):
-/// - Appointments (40%): having an upcoming appointment scores highest.
-/// - Medical log (30%): completeness of the recorded medical profile.
-/// - BMI (30%): how close the BMI is to the healthy range.
 class PatientWellnessAlgorithm {
   const PatientWellnessAlgorithm();
 
@@ -107,11 +97,11 @@ class PatientWellnessAlgorithm {
 
   int _bmiScore(double? bmi) {
     if (bmi == null || bmi <= 0) return 15;
-    // Healthy range.
+
     if (bmi >= 18.5 && bmi < 25) return 30;
-    // Mild deviation.
+
     if ((bmi >= 16.5 && bmi < 18.5) || (bmi >= 25 && bmi < 30)) return 20;
-    // Extreme values.
+
     return 10;
   }
 

@@ -74,7 +74,7 @@ class DoctorDetailsView extends StatelessWidget {
                           ),
 
                           const SizedBox(height: 20),
-                          // Name
+
                           Text(
                             '${info.firstName} ${info.lastName}',
                             style: TextStyles.H1.copyWith(
@@ -85,7 +85,7 @@ class DoctorDetailsView extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 6),
-                          // Speciality Label
+
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 14,
@@ -105,12 +105,12 @@ class DoctorDetailsView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          // Rating
+
                           DoctorRatingSection(
                             doctorId: doctor.doctorId,
                           ),
                           const SizedBox(height: 32),
-                          // Contact Information Title
+
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -123,7 +123,7 @@ class DoctorDetailsView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          // Phone Card
+
                           ContactInfoCard(
                             icon: Icons.phone_rounded,
                             title: "phone".tr(),
@@ -131,7 +131,7 @@ class DoctorDetailsView extends StatelessWidget {
                             isDark: isDark,
                           ),
                           const SizedBox(height: 12),
-                          // Email Card
+
                           ContactInfoCard(
                             icon: Icons.email_rounded,
                             title: "email".tr(),

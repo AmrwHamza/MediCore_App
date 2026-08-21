@@ -17,7 +17,6 @@ class ChildrenInfoCubit extends Cubit<ChildrenInfoState> {
     result.fold((failure) => emit(ChildFailure(error: failure.message)), (
       childData,
     ) {
-      // LoggerHelper.warning(childData.childInfo.gender);
 
       _children.add(childData);
       emit(AddChildSuccess(child: childData));

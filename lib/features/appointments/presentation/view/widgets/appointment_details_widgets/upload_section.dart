@@ -17,13 +17,6 @@ import 'package:medicore_app/features/appointments/presentation/view/widgets/app
 import 'package:medicore_app/features/appointments/presentation/view_model/preview_upload_cubit/preview_upload_cubit.dart';
 import 'package:medicore_app/features/appointments/presentation/view_model/preview_upload_cubit/upload_state.dart';
 
-/// Medical Analysis section for a preview.
-///
-/// Editable mode (partial diagnosis, `diagnoseis_type = 0`): the patient can
-/// upload / view / replace / delete PDF documents.
-///
-/// Read-only mode (complete diagnosis, `diagnoseis_type = 1`): documents are
-/// shown view-only; no upload controls are rendered.
 class UploadSection extends StatefulWidget {
   final PrivewEntity privewEntity;
   final bool readOnly;
@@ -186,8 +179,7 @@ class _UploadSectionState extends State<UploadSection> {
 
   @override
   Widget build(BuildContext context) {
-    // Guard: only render when it is a partial (editable) or complete
-    // (read-only) diagnosis. Waiting/accepted states have no diagnosis yet.
+
     final isPartial = canUploadMedicalAnalysis(widget.privewEntity);
     final isComplete = isCompletedDiagnosis(widget.privewEntity);
     if (!isPartial && !isComplete) return const SizedBox.shrink();

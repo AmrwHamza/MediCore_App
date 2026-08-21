@@ -5,8 +5,6 @@ import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 import 'package:medicore_app/features/appointments/presentation/view/widgets/appointment_details_widgets/pdf_viewer_screen.dart';
 
-/// Sleek, strictly view-only card for a completed (archived) appointment's
-/// analysis PDF. No upload / replace / delete actions are rendered.
 class CompletedAnalysisCard extends StatelessWidget {
   final String fileName;
   final String fileUrl;

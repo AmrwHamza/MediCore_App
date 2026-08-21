@@ -10,7 +10,6 @@ import 'package:medicore_app/core/utils/app_images.dart';
 import 'package:medicore_app/core/widget/custom_shimer.dart';
 import 'package:medicore_app/features/onboarding_medical_info/domain/entities/get_child_entity.dart';
 
-/// Compact, information-rich card for a single family member.
 class FamilyMemberCard extends StatelessWidget {
   final GetChildEntity child;
   final VoidCallback onTap;
@@ -196,7 +195,6 @@ class _InfoPill extends StatelessWidget {
   }
 }
 
-/// Skeleton that mirrors the [FamilyMemberCard] layout while children load.
 class FamilyCardSkeleton extends StatelessWidget {
   const FamilyCardSkeleton({super.key});
 

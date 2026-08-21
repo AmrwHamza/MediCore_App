@@ -77,7 +77,7 @@ class ArticleRepoImpl implements ArticleRepo {
       data: null,
     );
     return response.fold((failure) => Left(failure), (json) {
-      // final data = ArticleModel.fromJson(json['data']);
+
       return const Right(null);
     });
   }

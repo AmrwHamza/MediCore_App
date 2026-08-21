@@ -13,7 +13,6 @@ import 'package:medicore_app/features/auth/forget_password/presentation/view/bac
 import 'package:medicore_app/features/auth/forget_password/presentation/view_model/forget_cubit/forget_password_cubit.dart';
 import 'package:medicore_app/features/auth/public_cubits/auth_validate_cubit/auth_validate_cubit.dart';
 
-// ignore: must_be_immutable
 class ForgetPasswordViewBody extends StatelessWidget {
   ForgetPasswordViewBody({super.key});
 

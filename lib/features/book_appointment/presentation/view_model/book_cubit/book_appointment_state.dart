@@ -1,5 +1,3 @@
-// book_appointment_state.dart
-
 part of 'book_appointment_cubit.dart';
 
 sealed class BookAppointmentState extends Equatable {

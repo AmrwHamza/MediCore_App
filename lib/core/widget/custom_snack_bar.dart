@@ -162,7 +162,7 @@ class _SnackbarWidgetState extends State<_SnackbarWidget>
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Indicator side strip
+
                       Container(
                         width: 5,
                         height: 64,

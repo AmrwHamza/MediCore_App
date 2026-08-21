@@ -18,8 +18,6 @@ import '../view_model/priviews_cubit/priviews_cubit.dart';
 class AppointmentsView extends StatefulWidget {
   static const routeName = '/appointments';
 
-  /// The tab to select when the screen is first opened. 0 = waiting,
-  /// 1 = accepted, 2 = incomplete.
   final int initialTab;
 
   const AppointmentsView({super.key, this.initialTab = 0});

@@ -45,10 +45,7 @@ class FirstPageAuthBody extends StatelessWidget {
                 const DropDown(),
                 const SizedBox(height: 70),
                 const AuthSection(),
-                // const SizedBox(height: 100),
-                // CustomDivider(title: 'or'.tr()),
-                // const SizedBox(height: 16),
-                // LoginWithID(),
+
               ],
             ),
           ),

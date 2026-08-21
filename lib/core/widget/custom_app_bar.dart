@@ -69,7 +69,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        // elevation: 2,
+
         iconTheme: IconThemeData(color: isMainBar ? KDarkBlue : KWhite),
       ),
     );

@@ -81,19 +81,7 @@ class DrawerView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Column(
                     children: [
-                      // ListTile(
-                      //   title: Text(
-                      //     'Doctors'.tr(),
-                      //     style: TextStyles.public.copyWith(color: KDarkBlue),
-                      //   ),
-                      //   onTap: () {
-                      //     context.push(DoctorsView.routeName);
-                      //   },
-                      //   leading: const FaIcon(
-                      //     FontAwesomeIcons.userDoctor,
-                      //     color: KOrange,
-                      //   ),
-                      // ),
+
                       ListTile(
                         title: Text(
                           'Articles'.tr(),

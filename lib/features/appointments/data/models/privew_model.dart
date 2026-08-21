@@ -75,7 +75,7 @@ class PrivewModel extends PrivewEntity {
       date: json['date'],
       status: json['status'],
       price: json['price_after_discount'] ?? 0,
-      createdAt: json['created_at'],
+      createdAt: json['created_at'] ?? DateTime.now(),
       updatedAt: json['updated_at'],
       diagnoseisType: json['diagnoseis_type'],
       patientName: json['patientName'] ?? '',

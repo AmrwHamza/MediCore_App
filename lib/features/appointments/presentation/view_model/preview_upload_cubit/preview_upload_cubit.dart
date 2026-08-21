@@ -85,7 +85,6 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
 
     if (isClosed) return;
 
-    // A manual cancel already reset the state; ignore the aborted request.
     if (_uploadCancelled) return;
 
     response.fold(
@@ -120,13 +119,10 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
           ),
         );
 
-        // Reconcile with the server list so only real records are shown.
-        // Child previews have no server list to reconcile with.
         if (!_isChild) {
           loadAnalyses();
         }
 
-        // Replace: delete the old document after the new upload succeeded.
         if (replaceOldId != null && replaceOldId != 0) {
           _delete(replaceOldId);
         }
@@ -134,7 +130,6 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
     );
   }
 
-  /// Aborts an in-progress upload (if any) and returns to the idle state.
   Future<void> cancelUpload() async {
     if (!state.isUploading) return;
     _uploadCancelled = true;
@@ -152,9 +147,6 @@ class PreviewUploadCubit extends Cubit<PreviewUploadState> {
     );
   }
 
-  /// Deletes an analysis after user confirmation (the caller shows the
-  /// confirmation dialog; [medicalId] == 0 marks an unsaved/temp item which is
-  /// removed locally only).
   Future<void> deleteAnalysis({required int medicalId}) async {
     if (state.deletingId != null) return;
     if (medicalId == 0) {

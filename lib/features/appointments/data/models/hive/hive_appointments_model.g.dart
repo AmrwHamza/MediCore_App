@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'hive_appointments_model.dart';
-
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class HiveAppointmentModelAdapter extends TypeAdapter<HiveAppointmentModel> {
   @override

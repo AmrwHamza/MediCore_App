@@ -15,7 +15,6 @@ class DropDown extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final surfaceColor = isDark ? KCardDark : KSurfaceLight;
     final textColor = isDark ? KTextPrimaryDark : KTextPrimaryLight;
-    // final mutedColor = isDark ? KTextSecondaryDark : KTextSecondaryLight;
 
     final languages = [
       {'locale': const Locale('en'), 'label': 'English', 'fontFamily': null},

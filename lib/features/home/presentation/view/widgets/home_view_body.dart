@@ -237,11 +237,7 @@ class HomeViewBody extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: BmiCard(),
                 ),
-                // const SizedBox(height: 16),
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 20),
-                //   child: QuickActionsRow(),
-                // ),
+
               ],
             ),
           ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 
-// ignore: must_be_immutable
 class CustomScrollWidget extends StatelessWidget {
   CustomScrollWidget({
     super.key,

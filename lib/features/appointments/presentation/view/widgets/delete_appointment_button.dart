@@ -20,7 +20,7 @@ class DeleteAppointmentButton extends StatelessWidget {
       listener: (context, state) {
         state.maybeWhen(
           success: (message) async {
-            // await context.read<PriviewsCubit>().getPriviews();
+
             await context.read<AppointmentsCubit>().getAppointments();
           },
           error: (errorMessage) {

@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicore_app/constants.dart';
 
-/// The "upload a new document" card, shown when a partial diagnosis has no
-/// uploaded analyses yet (or after cancel/delete).
-///
-/// It renders as a tappable dashed drop-zone. While an upload is running it
-/// switches to a progress view with a cancel action.
 class UploadAnalysisCard extends StatelessWidget {
   final bool isDark;
   final String? fileName;
@@ -80,7 +75,7 @@ class _DropZone extends StatelessWidget {
             border: Border.all(
               color: borderColor,
               width: 1.5.w,
-              style: BorderStyle.solid, // Ideally this would be dashed, but keeping it simple for now
+              style: BorderStyle.solid,
             ),
           ),
           child: Column(
@@ -107,7 +102,7 @@ class _DropZone extends StatelessWidget {
               ),
               SizedBox(height: 20.h),
               Text(
-                'upload_medical_analysis'.tr(), // Check if this key exists or use similar
+                'upload_medical_analysis'.tr(),
                 style: TextStyle(
                   fontSize: 17.sp,
                   fontWeight: FontWeight.bold,

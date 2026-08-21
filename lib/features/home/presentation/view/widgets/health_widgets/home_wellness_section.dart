@@ -10,8 +10,6 @@ import 'package:medicore_app/features/home/presentation/view/widgets/home_skelet
 import 'package:medicore_app/features/home/presentation/view/widgets/health_widgets/next_appointment_banner.dart';
 import 'package:medicore_app/features/home/presentation/view/widgets/health_widgets/smart_wellness_mood_card.dart';
 
-/// Composes the SmartWellnessMoodCard and the NextAppointmentBanner using a
-/// single source of appointment data from the shared [AppointmentsCubit].
 class HomeWellnessSection extends StatefulWidget {
   const HomeWellnessSection({super.key});
 

@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'hive_department_model.dart';
-
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class HiveDepartmentModelAdapter extends TypeAdapter<HiveDepartmentModel> {
   @override

@@ -19,15 +19,3 @@ class AddArticleFavSuccess extends FavoriteState {
   AddArticleFavSuccess({required this.message});
 }
 
-// class FavoriteState extends Equatable {
-//   final bool isFavorite;
-
-//   const FavoriteState({required this.isFavorite});
-
-//   FavoriteState copyWith({bool? isFavorite}) {
-//     return FavoriteState(isFavorite: isFavorite ?? this.isFavorite);
-//   }
-
-//   @override
-//   List<Object> get props => [isFavorite];
-// }

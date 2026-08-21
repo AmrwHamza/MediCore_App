@@ -3,10 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicore_app/core/theme/theme_provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-/// Applies the application's themed shimmer animation to [child].
-///
-/// Used to build skeleton layouts that closely mirror the real widgets while
-/// keeping a single, lightweight shimmer animation per section.
 class ShimmerBox extends StatelessWidget {
   final Widget child;
 

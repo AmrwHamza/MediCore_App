@@ -38,7 +38,6 @@ Future<void> storeDepartmentsInHive(List<DepartmentEntity> departments) async {
   final box = Hive.box<HiveDepartmentModel>('departments');
   await box.clear();
 
-  // تخزين الجديد
   for (var department in departments) {
     final hiveModel = mapEntityToHiveModel(department);
     await box.put(hiveModel.id, hiveModel);

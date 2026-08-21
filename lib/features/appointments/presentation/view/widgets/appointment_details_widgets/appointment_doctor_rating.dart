@@ -5,11 +5,6 @@ import 'package:medicore_app/features/home/presentation/view/widgets/doctor_deta
 
 import 'appointment_card_info.dart';
 
-/// Doctor rating block scoped to the appointment details screen.
-///
-/// Rating rules:
-/// - incomplete / completed (archive): fully interactive (create / edit / delete).
-/// - waiting / accepted: strictly read-only.
 class AppointmentDoctorRating extends StatelessWidget {
   final PrivewEntity privewEntity;
 
@@ -17,8 +12,7 @@ class AppointmentDoctorRating extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Rating becomes available once the diagnosis is complete
-    // (diagnoseis_type = 1). Partial/incomplete diagnoses are read-only.
+
     final editable = privewEntity.diagnoseisType == 1;
 
     return AppointmentCardInfo(

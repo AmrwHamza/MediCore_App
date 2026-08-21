@@ -1,10 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:medicore_app/features/appointments/data/models/medical_analysis_model.dart';
 
-/// Holds the full state of the Medical Analysis flow for a single preview.
-///
-/// Distinct flags are used for each async operation so one action (e.g. a
-/// delete) never disables an unrelated action (e.g. viewing a document).
 class PreviewUploadState extends Equatable {
   final bool isAnalysesLoading;
   final List<MedicalAnalysisModel> analyses;

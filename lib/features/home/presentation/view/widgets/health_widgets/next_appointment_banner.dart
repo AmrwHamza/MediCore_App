@@ -12,8 +12,6 @@ import 'package:medicore_app/features/appointments/presentation/view_model/appoi
 import 'package:medicore_app/features/book_appointment/presentation/views/book_appointment_view.dart';
 import 'package:medicore_app/features/main_home/presentation/view_model/nav_cubit/bottom_nav_cubit.dart';
 
-/// Shows the single nearest upcoming appointment, or a "book now" call to
-/// action when there is no upcoming appointment yet.
 class NextAppointmentBanner extends StatelessWidget {
   final PatientAppointmentEntity? nextAppointment;
 
@@ -44,9 +42,6 @@ class NextAppointmentBanner extends StatelessWidget {
     }
   }
 
-  /// Opens the appointments screen on the accepted tab. When the home screen
-  /// lives inside the main shell, it switches the bottom navigation instead of
-  /// stacking a duplicate appointments page.
   void _openAppointmentsAccepted(BuildContext context) {
     BottomNavCubit? navCubit;
     try {

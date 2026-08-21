@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:medicore_app/constants.dart';
 import 'package:medicore_app/core/helper/text_styles.dart';
 
-// ignore: must_be_immutable
 class CustomButton extends StatelessWidget {
   CustomButton({
     super.key,
